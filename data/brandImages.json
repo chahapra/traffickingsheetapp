@@ -1,0 +1,10 @@
+brandImages = {
+"Pokerstars": "images/pokerstars.png",
+"Full Tilt": "images/fulltilt.png",
+"Pokerstars Play": "images/pokerstarsplay.jpg",
+"Pokerstars Casino": "images/pokerstarscasino.jpg",
+"Fox Bet": "images/foxbet.jpg",
+"SkyBet": "images/skybet.jpg",
+"Sport": "images/pokerstarsports.jpg",
+"Pokerstars Sports": "images/pss-logo.png"
+}

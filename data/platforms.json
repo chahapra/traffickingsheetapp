@@ -1,0 +1,6 @@
+platforms = {
+  "DESKTOP": null,
+  "ANDROID": null,
+  "iOS": null,
+  "Mobile" : null
+}

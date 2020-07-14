@@ -1,0 +1,6 @@
+buyingPlatforms = {
+  "DV360": "DV360",
+  "MEDIAMATH": "MEDIAMATHDCM",
+  "STRANGE THOUGHTS": "STRANGETHOUGHTS",
+  "DIRECT": "DIRECT"
+};

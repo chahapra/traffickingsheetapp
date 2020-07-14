@@ -1,0 +1,10 @@
+brands = {
+  "Pokerstars": "PS",
+  "Full Tilt": "FT",
+  "Pokerstars Play": "PPLAY",
+  "Pokerstars Casino": "CS",
+  "Foxbet": "FXB",
+  "SkyBet": "SB",
+  "Sport": "SPORT",
+  "Pokerstars Sports":"PSS"
+};

@@ -1,0 +1,10 @@
+budgetCodes = {
+  "Global": "G",
+  "Local": "LOCAL",
+  "GVOD": "GVOD",
+  "Affiliates": "Affiliates",
+  "LiveEvents": "L",
+  "App Search Optimization": "ASO",
+  "PAIDSOCIAL": "PAIDSOCIAL",
+  "CRM": "CRM"
+}

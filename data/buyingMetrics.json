@@ -1,0 +1,9 @@
+buyingMetrics = {
+ "CPM": null,
+ "CPI": null,
+ "CPR": null,
+ "CPA": null,
+ "CPC": null,
+ "Flat Fee": null,
+ "Comission (%)": null
+}

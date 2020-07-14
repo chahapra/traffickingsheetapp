@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- <script src="https://appsforoffice.microsoft.com/lib/1/hosted/Office.js" type="text/javascript"></script> -->
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet' type='text/css'>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>.
+  <script src="https://apis.google.com/js/client.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.js"></script>
+  <script src="https://rawgit.com/unconditional/jquery-table2excel/master/src/jquery.table2excel.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
+
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script type="text/javascript" src="js\materialize.min.js"></script>
+  <script type="text/javascript" src="js\traffickingrequestform.js"></script>
+  <script type="text/javascript" src="js\createTSTable.js"></script>
+  <script type="text/javascript" src="data\countries.json"></script>
+  <script type="text/javascript" src="data\countriesLL.json"></script>
+  <script type="text/javascript" src="data\networkNamesList.json"></script>
+  <script type="text/javascript" src="data\agencyNamesList.json"></script>
+  <script type="text/javascript" src="data\brands.json"></script>
+  <script type="text/javascript" src="data\platforms.json"></script>
+  <script type="text/javascript" src="data\countries.json"></script>
+  <script type="text/javascript" src="data\budgetCodes.json"></script>
+  <script type="text/javascript" src="data\platformCodes.json"></script>
+  <script type="text/javascript" src="data\buyingPlatforms.json"></script>
+  <script type="text/javascript" src="data\brandImages.json"></script>
+  <script type="text/javascript" src="data\budgets.json"></script>
+  <script type="text/javascript" src="data\kpis.json"></script>
+  <script type="text/javascript" src="data\buyingMetrics.json"></script>
+  <script type="text/javascript" src="data\dimensionsArr.json"></script>
+  <script type="text/javascript" src="data\dimensionsBannerArr.json"></script>
+  <script type="text/javascript" src="data\dimensionsVideoArr.json"></script>
+
+  <title>SUBMIT TRAFFICKING REQUEST</title>
+
+  <!-- <style>
+    table#placementTable {
+      width: 95%;
+      margin: 0 auto;
+    }
+
+    table#placementTable th,
+    table#placementTable td {
+      font-weight: normal;
+      font-size: 12px;
+    }
+  </style> -->
+</head>
+
+<body>
+
+
+  <a id="signinOnLoad" class="waves-effect waves-light btn" onclick="handleSignInClick()">SIGN IN</a>
+  <blockquote>TRAFFICKING REQUEST FORM</blockquote>
+
+  <!-- Modal Trigger -->
+  <a id="modal-trigger" style="display:none" class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <h4>OOPS! You probably missed something!</h4>
+      <p id="modal1text"></p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">COOL</a>
+    </div>
+  </div>
+  <div class="row container left">
+
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s3"><a class="active" href="#campaignDetails">Campaign Details</a></li>
+        <li class="tab col s3"><a href="#siteDetails">Site details</a></li>
+        <li class="tab col s3"><a href="#targetingDetails">Targeting details</a></li>
+        <li class="tab col s3"><a href="#lpDetails">Landing page details</a></li>
+        <!-- <li class="tab col s3"><a href="#creativeDetails">Creative details</a></li> -->
+        <!-- <li class="tab col s3"><a href="#outputSection">Output</a></li> -->
+      </ul>
+    </div>
+    <fieldset class="fieldSetForm" id="displayPlacementNamesFS" style="border: 0;">
+      <div id="displayPlacementNames">
+        <div id="campaignDetails" class="col s11">
+          <!--YOURNAME-->
+          <h6>YOUR NAME</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">account_circle</i>
+            <input id="requester" style="text-transform: uppercase" type="text" class="validate tooltipped" data-position="right" data-tooltip="Please enter your name.">
+          </div>
+          <!--Campaign Name-->
+          <h6>CAMPAIGN NAME</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">assignment</i>
+            <input id="campaignName" style="text-transform: uppercase" type="text" class="pname tooltipped" data-position="right" data-tooltip="Please enter campaign name.">
+          </div>
+          <!--BRAND-->
+          <h6>BRAND</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">stars</i>
+            <input type="text" style="text-transform: uppercase" id="autocomplete-input" class="pname brands tooltipped" data-position="right" data-tooltip="Start typing a brand name.">
+          </div>
+          <!--BUDGET CODE-->
+          <h6>BUDGET</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">money_off</i>
+            <input type="text" value="Global" style="text-transform: uppercase" id="autocomplete-input" class="pname budgets tooltipped" data-position="right" data-tooltip="Start typing budget.">
+          </div>
+          <!--MAIN KPI-->
+          <h6>KPI</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">monetization_on</i>
+            <input type="text" value="First Deposit" style="text-transform: uppercase" id="autocomplete-input" class="pname kpis tooltipped" data-position="right" data-tooltip="Start typing KPI.">
+          </div>
+          <!--MAIN KPI-->
+          <h6>BUYING METRIC</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">attach_money</i>
+            <input type="text" value="CPM" style="text-transform: uppercase" id="autocomplete-input" class="pname buyingMetrics tooltipped" data-position="right" data-tooltip="Start typing buying metric.">
+          </div>
+          <!--COST-->
+          <h6>COST</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">attach_money</i>
+            <input id="cost" value="£ 5.00" style="text-transform: uppercase" type="text" class="pname validate tooltipped" data-position="right" data-tooltip="Please enter the cost.">
+          </div>
+          <!--Flight Dates-->
+          <h6>FLIGHT DATES</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">date_range</i>
+            <input type="text" id="startDate" class="datepicker tooltipped" data-position="right" data-tooltip="Pick a start date.">
+            <input type="text" id="endDate" class="datepicker tooltipped" data-position="right" data-tooltip="Pick an end date.">
+          </div>
+        </div>
+        <div id="siteDetails" class="col s12">
+          <h6>GEO</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">my_location</i>
+            <input type="text" style="text-transform: uppercase" id="autocomplete-input" class="pname countries tooltipped" data-position="right" data-tooltip="Start typing a geo name.">
+          </div>
+          <!--MESSAGE-->
+          <h6>CAMPAIGN MESSAGE</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">chat</i>
+            <input id="message" style="text-transform: uppercase" type="text" class="pname validate tooltipped" data-position="right" data-tooltip="What is the campaign message that you want to promote?">
+          </div>
+          <!--OFFER-->
+          <h6>CAMPAIGN OFFER</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">description</i>
+            <input id="offer" style="text-transform: uppercase" type="text" class="pname validate tooltipped" data-position="right" data-tooltip="Please enter the campaign offer.">
+          </div>
+          <!--Audience-->
+          <h6>TARGET AUDIENCE</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">album</i>
+            <input id="audience" value="ALL" style="text-transform: uppercase" type="text" class="pname validate tooltipped" data-position="right" data-tooltip="If none then enter ALL">
+          </div>
+          <!--VERTICAL/Sport/GameType-->
+          <h6>TARGET VERTICAL</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">arrow_upward</i>
+            <input id="vertical" value="ALL" style="text-transform: uppercase" type="text" class="pname validate tooltipped" data-position="right" data-tooltip="If none then enter ALL">
+          </div>
+        </div>
+        <div id="targetingDetails" class="col s12">
+          <h6>AGENCY</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">text_format</i>
+            <input type="text" value="TSG" id="autocomplete-input" style="text-transform: uppercase" class="pname agencyNamesList tooltipped" data-position="right" data-tooltip="Start entering an agency name.">
+          </div>
+          <!--Buying Platform/Trading Desk-->
+          <h6>PLATFORM TO BUY</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">storefront</i>
+            <input type="text" value="Mediamath" id="autocomplete-input" style="text-transform: uppercase" class="pname networkNamesList tooltipped" data-position="right" data-tooltip="Start entering an platform name.">
+          </div>
+          <!--Publisher/Network-->
+          <h6>PUBLISHER OR NETWORK</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">library_books</i>
+            <input type="text" value="OM" id="publisherOrNetwork" style="text-transform: uppercase" class="pname validate tooltipped" data-position="right" data-tooltip="Please enter the publisher name.">
+          </div>
+          <!--sub-site-->
+          <h6>PUBLISHER'S SUB-SITE</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">book</i>
+            <input id="sub-site" style="text-transform: uppercase" type="text" value="ROS" class="pname validate tooltipped" data-position="right" data-tooltip="Change if not ROS.">
+          </div>
+          <h6>TARGETING</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">developer_mode</i>
+            <select id="targeting" class="pname">
+              <option value="P">Prospecting</option>
+              <option value="R">Retargeting</option>
+            </select>
+          </div>
+          <!--Sub-Targeting-->
+          <h6>SUB-TARGETING</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">event_seat</i>
+            <input id="subTargeting" style="text-transform: uppercase" value="X" class="pname validate tooltipped" data-position="right" data-tooltip="Change if not X.">
+            </select>
+          </div>
+        </div>
+        <div id="lpDetails" class="col s12">
+          <h6>PLATFORM - DESTINATION</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">devices_other</i>
+            <select id="platforms" class="pname platforms">
+              <option value=""></option>
+              <option value="ANDLP">Android - Landing Page</option>
+              <option value="IOSLP">iOS - Landing Page</option>
+              <option value="AND">Android - Play Store</option>
+              <option value="IOS">iOS - App Store</option>
+              <option value="DSKLP">DESKTOP - Landing Page</option>
+              <option value="MOBLP">Mobile - Landing Page</option>
+            </select>
+          </div>
+          <i id="andlpIcon" style="display:none" class="material-icons prefix"></i>
+          <input id="andLp" style="display:none" type="url" class="pname andLp tooltipped" data-position="top" data-tooltip="Please enter android landing page URL">
+          <i id="ioslpIcon" style="display:none" class="material-icons prefix"></i>
+          <input id="iosLp" style="display:none" type="url" class="pname iosLp tooltipped" data-position="top" data-tooltip="Please enter iOS landing page URL">
+          <i id="dsklpIcon" style="display:none" class="material-icons prefix"></i>
+          <input id="dskLp" style="display:none" type="url" class="pname dskLp tooltipped" data-position="top" data-tooltip="Please enter desktop landing page URL">
+          <i id="moblpIcon" style="display:none" class="material-icons prefix"></i>
+          <input id="mobLp1" style="display:none" type="url" class="pname mobLp tooltipped" data-position="top" data-tooltip="Please enter mobile landing page URL">
+          <input id="mobLp2" style="display:none" type="url" class="pname mobLp tooltipped" data-position="top" data-tooltip="Please enter mobile landing page URL">
+          <!--AdFormat-->
+          <h6>AD FORMAT</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">exit_to_app</i>
+            <select id="adDimensions" class="pname adDimensions">
+              <option value="1x1">Tracking</option>
+              <option value="BAN">Banner</option>
+              <option value="VOD">Video</option>
+            </select>
+          </div>
+          <div id="bannerSizes" style="display:none" class="row input-field col s12 chips chips-initialBannerSizes tooltipped bannerSizes" data-position="top" data-tooltip="Start typing banner sizes."></div>
+          <div id="videoLengths" style="display:none" class="row input-field col s12 chips chips-initialVideoSizes tooltipped videoLengths" data-position="top" data-tooltip="Start typing VOD sizes."></div>
+          <div class="row input-field col s12">
+            <button id="submitBtn" class="waves-effect waves-light btn-large generateOutput" type="submit" name="action" onclick="generateOutput()">Generate Output
+              <i class="material-icons right">send</i></button>
+
+          </div>
+          <a id="modal-outputSection" class="btn-floating btn-large waves-effect waves-light red modal-trigger" style="display:none" href="#outputSection"><i class="material-icons left">open_in_new</i>Ouput Section</a>  
+          <!-- <input type="text" class="pname"> -->
+        </div>
+        <!-- <div id="creativeDetails" class="col s12">
+
+
+        </div> -->
+
+    </fieldset>
+  </div>
+
+  <div id="outputSection" class="modal bottom-sheet">
+    <div class="modal-content">
+      <div id="nonTableSection">
+        <h5 class="header">CAMPAIGN INFORMATION</h5>
+        <div class="card horizontal">
+          <!-- <div class="card-image">
+          <img src="images/starsgroup.png">
+        </div> -->
+          <div class="card-stacked">
+            <div class="card-content">
+
+            </div>
+            <!-- <div class="card-action">
+              <a href="#">This is a link</a>
+            </div> -->
+          </div>
+        </div>
+        <button id="exptToExcel" class="waves-effect waves-light btn-large" type="submit" name="action" onclick="fnExcelReport()">Export To Excel
+          <i class="material-icons right">send</i></button>
+        <br />
+        <div id="toCreateJiraTkt" style="display:none">
+          <a class="waves-effect waves-light btn" href="https://jira.pyrsoftware.ca/jira/secure/CreateIssue!default.jspa"><i class="material-icons right">cloud</i>Create Jira Ticket</a>
+        </div>
+      </div>
+      <div>
+        <table id="tsTable" class="responsive-table">
+          <thead>
+            <tr>
+              <!-- <th>REQUESTER</th> -->
+              <th>BRAND</th>
+              <th>GEO</th>
+              <th>PLATFORM</th>
+              <th>CAMPAIGN</th>
+              <th>BUDGET CODE</th>
+              <th>AGENCY</th>
+              <th>BUYING PLATFORM</th>
+              <th>PUBLISHER</th>
+              <th>SUB-SITE</th>
+              <th>AUDIENCE</th>
+              <th>VERTICAL</th>
+              <th>MESSAGE</th>
+              <th>OFFER</th>
+              <!-- <th>LANDING PAGE</th> -->
+              <th>FORMAT</th>
+              <th>TARGETING</th>
+              <th>SUB-TARGETING</th>
+              <th>DELIVERABLES</th>
+              <!-- <th>KPI</th>
+            <th>BUYING METRIC</th>
+            <th>DATES</th>
+            <th>PLACEMENT NAME</th> -->
+            </tr>
+          </thead>
+          <tbody id="tsTableBody">
+            <tr>
+              <td colspan="100%">
+              </td>
+            </tr>
+          </tbody>
+
+        </table></br>
+        <table id="placementTable" class="responsive-table">
+          <thead>
+            <tr>
+              <th>PLACEMENT NAME</th>
+              <th>iOS</th>
+              <th>Android</th>
+              <th>Desktop</th>
+              <th>Network/Publisher</th>
+              <th>Channel</th>
+              <th>Adserver</th>
+              <th>Campaign Name</th>
+              <th>Deliverable</th>
+              <th>Buying Metric</th>
+              <th>Unit Cost</th>
+              <th>Conversion</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+            </tr>
+          </thead>
+          <tbody id="placementTableBody">
+            <tr>
+              <td colspan="100%">
+              </td>
+            </tr>
+          </tbody>
+        </table></br>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Add More</a>
+    </div>
+
+  </div>
+
+  </script>
+  <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()">
+  </script>
+</body>
+
+</html>

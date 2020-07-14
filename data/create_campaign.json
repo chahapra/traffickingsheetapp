@@ -1,0 +1,111 @@
+create_campaign = {
+	"name": "TestCampaign_lh",
+	"advertiser": {
+		"id": 15881,
+		"name": "The Stars Group COM",
+		"departmentId": 1,
+		"mediaBuyer": {
+			"id": 14707,
+			"name": "The Stars Group",
+			"value": 14707,
+			"label": "The Stars Group"
+		},
+		"value": 15881,
+		"label": "The Stars Group COM",
+		"currencyId": 1
+	},
+	"mediaBuyerEmail": "adops@starsgroup.com",
+	"startDate": "2020-07-05",
+	"endDate": "2020-07-06",
+	"currency": {
+		"id": 1,
+		"name": "GBP",
+		"sign": "£",
+		"value": 1,
+		"label": "GBP"
+	},
+	"tagGenType": "Modern",
+	"mediaBuyer": {
+		"id": 14707,
+		"name": "The Stars Group",
+		"value": 14707,
+		"label": "The Stars Group"
+	},
+	"brand": {
+		"label": "Pokerstars",
+		"value": "Pokerstars",
+		"__isNew__": true,
+		"name": "Pokerstars"
+	},
+	"channel": {
+		"id": 1,
+		"name": "Display",
+		"value": 1,
+		"label": "Display"
+	},
+	"spotGroups": [{
+		"id": 12199,
+		"name": "conversions",
+		"advertiserId": 15881,
+		"lastUpdateDate": null,
+		"impressionBacktrackDays": null,
+		"clickBacktrackDays": null,
+		"type": null,
+		"isOneTag": null,
+		"isActive": null,
+		"numSpots": null,
+		"value": 12199,
+		"label": "conversions"
+	}],
+	"landingPageSuffix": null,
+	"isMobileEnhancedEnabled": true,
+	"isMrcStandardAdVisibilityTrackingEnabled": true,
+	"obaNotificationType": "No Notification",
+	"obaIconClickthroughUrl": null,
+	"blockingRule": null,
+	"campaignManagers": [],
+	"commercialContacts": [],
+	"processorLinks": [{
+		"level": "campaign",
+		"processor": {
+			"level": "advertiser",
+			"isSelected": true,
+			"linkedCampaignCount": 0,
+			"isDisabled": false,
+			"advertiserId": 15881,
+			"createUser": {
+				"id": 3458,
+				"name": "Jim Monkhouse",
+				"email": "jim.monkhouse@flashtalking.com"
+			},
+			"createDate": "2020-04-30",
+			"lastUpdateUser": {
+				"id": 3458,
+				"name": "Jim Monkhouse",
+				"email": "jim.monkhouse@flashtalking.com"
+			},
+			"name": "Stars group PIE mediamath",
+			"lastUpdateDate": "2020-04-30",
+			"userAccess": "write",
+			"status": "Active",
+			"contentType": "javascript",
+			"processorAccess": "none",
+			"isDefault": false,
+			"title": null,
+			"type": "preprocessor",
+			"id": 435,
+			"aid": 435,
+			"description": "Stars group PIE mediamath",
+			"siteFilterList": {
+				"filterType": "Include",
+				"sites": [{
+					"id": 19295,
+					"name": "Mediamath - Stars Group ",
+					"url": ""
+				}]
+			},
+			"gridLevel": "campaign",
+			"placementType": "HTML"
+		}
+	}]
+}

@@ -1,0 +1,11 @@
+agencyNamesList = {
+  "TSG":null,
+  "StrangeThoughts":null,
+  "Moblin":null,
+  "MediaMath":null,
+  "PHD":null,
+  "Mediacom":null,
+  "MindShare":null,
+  "LINICOM":null,
+  "Other (please add manually)":null
+}

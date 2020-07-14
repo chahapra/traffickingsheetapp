@@ -1,0 +1,10 @@
+budgets = {
+  "Global": null,
+  "Local": null,
+  "GVOD": null,
+  "Affiliates": null,
+  "LiveEvents": null,
+  "App Search Optimization": null,
+  "PAIDSOCIAL": null,
+  "CRM": null
+}

@@ -1,0 +1,12 @@
+dimensionsVideoArr = [
+  {tag:	'VOD6LAN',},
+  {tag:	'VOD10LAN',},
+  {tag:	'VOD15LAN',},
+  {tag:	'VOD20LAN',},
+  {tag:	'VOD30LAN',},
+  {tag:	'VOD6POR',},
+  {tag:	'VOD10POR',},
+  {tag:	'VOD15POR',},
+  {tag:	'VOD20POR',},
+  {tag:	'VOD30POR',},
+]
