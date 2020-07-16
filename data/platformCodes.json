@@ -2,5 +2,6 @@ platformCodes = {
   "Desktop": "DESK",
   "Android": "AND",
   "iOS": "iOS",
-  "Mobile": "MOB"
+  "MOB": "MOB",
+  "DIS": "DIS"
 };

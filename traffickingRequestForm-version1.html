@@ -63,20 +63,32 @@
 </head>
 
 <body>
+  <!-- Sign In Modal Trigger -->
+<a  id="signInModal" style="display:none" class="waves-effect waves-light btn modal-trigger signInModal" href="#modalInitial">Modal</a>
 
-
-  <a id="signinOnLoad" class="waves-effect waves-light btn" onclick="handleSignInClick()">SIGN IN</a>
-  <blockquote>TRAFFICKING REQUEST FORM</blockquote>
+<!-- Modal Structure -->
+<div id="modalInitial" class="modal">
+  <a id="closeModal" style="display:none" class="waves-effect waves-teal btn-flat right modal-close"><i class="material-icons">close</i></a>
+  <div class="modal-content">
+    <h4>ONLINE TS</h4>
+    <p>Please click the "signin" button below to login using your work google account credentials. Thanks!</p>
+  </div>
+  <div class="modal-footer">
+      <a id="signinOnLoad" class="waves-effect waves-light btn" onclick="handleSignInClick()">SIGN IN</a>
+  </div>
+</div>
+  <!-- <blockquote>TRAFFICKING REQUEST FORM</blockquote> -->
 
   <!-- Modal Trigger -->
   <a id="modal-trigger" style="display:none" class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
   <div id="modal1" class="modal">
+    <a id="closeModal" class="waves-effect waves-teal btn-flat right modal-close"><i class="material-icons">close</i></a>
     <div class="modal-content">
       <h4>OOPS! You probably missed something!</h4>
       <p id="modal1text"></p>
     </div>
     <div class="modal-footer">
-      <a href="#!" class="modal-close waves-effect waves-green btn-flat">COOL</a>
+
     </div>
   </div>
   <div class="row container left">
@@ -134,7 +146,7 @@
           <h6>COST</h6>
           <div class="row input-field col s12">
             <i class="material-icons prefix">attach_money</i>
-            <input id="cost" value="£ 5.00" style="text-transform: uppercase" type="text" class="pname validate tooltipped" data-position="right" data-tooltip="Please enter the cost.">
+            <input id="cost" value="5.00" style="text-transform: uppercase" type="text" class="pname validate tooltipped" data-position="right" data-tooltip="Please enter the cost.">
           </div>
           <!--Flight Dates-->
           <h6>FLIGHT DATES</h6>
@@ -227,6 +239,7 @@
               <option value="IOS">iOS - App Store</option>
               <option value="DSKLP">DESKTOP - Landing Page</option>
               <option value="MOBLP">Mobile - Landing Page</option>
+              <option value="DISLP">DIS - Landing Page</option>
             </select>
           </div>
           <i id="andlpIcon" style="display:none" class="material-icons prefix"></i>
@@ -236,8 +249,11 @@
           <i id="dsklpIcon" style="display:none" class="material-icons prefix"></i>
           <input id="dskLp" style="display:none" type="url" class="pname dskLp tooltipped" data-position="top" data-tooltip="Please enter desktop landing page URL">
           <i id="moblpIcon" style="display:none" class="material-icons prefix"></i>
-          <input id="mobLp1" style="display:none" type="url" class="pname mobLp tooltipped" data-position="top" data-tooltip="Please enter mobile landing page URL">
-          <input id="mobLp2" style="display:none" type="url" class="pname mobLp tooltipped" data-position="top" data-tooltip="Please enter mobile landing page URL">
+          <input id="mobLp" style="display:none" type="url" class="pname mobLp tooltipped" data-position="top" data-tooltip="Please enter landing page URL">
+          <!-- <input id="mobLp2" style="display:none" type="url" class="pname mobLp tooltipped" data-position="top" data-tooltip="Please enter Android Mob landing page URL"> -->
+          <i id="dislpIcon" style="display:none" class="material-icons prefix"></i>
+          <input id="disLp" style="display:none" type="url" class="pname disLp tooltipped" data-position="top" data-tooltip="Please enter landing page URL">
+          <!-- <input id="disLp2" style="display:none" type="url" class="pname mobLp tooltipped" data-position="top" data-tooltip="Please enter Android Mob landing page URL"> -->
           <!--AdFormat-->
           <h6>AD FORMAT</h6>
           <div class="row input-field col s12">
@@ -255,7 +271,7 @@
               <i class="material-icons right">send</i></button>
 
           </div>
-          <a id="modal-outputSection" class="btn-floating btn-large waves-effect waves-light red modal-trigger" style="display:none" href="#outputSection"><i class="material-icons left">open_in_new</i>Ouput Section</a>  
+          <a id="modal-outputSection" class="btn-floating btn-large waves-effect waves-light red modal-trigger" style="display:none" href="#outputSection"><i class="material-icons left">open_in_new</i>Ouput Section</a>
           <!-- <input type="text" class="pname"> -->
         </div>
         <!-- <div id="creativeDetails" class="col s12">
@@ -313,6 +329,7 @@
               <th>TARGETING</th>
               <th>SUB-TARGETING</th>
               <th>DELIVERABLES</th>
+              <th>COST</th>
               <!-- <th>KPI</th>
             <th>BUYING METRIC</th>
             <th>DATES</th>
@@ -357,7 +374,7 @@
     </div>
 
     <div class="modal-footer">
-      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Add More</a>
+      <a href="#!" class="modal-close waves-effect waves-light btn-large">Add More</a>
     </div>
 
   </div>
