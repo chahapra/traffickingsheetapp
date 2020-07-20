@@ -262,7 +262,7 @@ function generateOutput() {
       }
     }
     let dskLp = getValueById('dskLp');
-    if (platforms.toString() == "DSKSLP") {
+    if (platforms.toString() == "DSKLP") {
       if (dskLp) {
         dskLpLc = dskLp.toLowerCase();
         if (!regex.test(dskLpLc)) {
@@ -376,6 +376,7 @@ function generateOutput() {
         //   lowerCasePlatformsSelected = lowerCasePlatformsSelected+"1";
         // }
         landingPage = getValueById(lowerCasePlatformsSelected);
+        console.log("landingPage      " +landingPage);
       }
       let tsData = new Array();
       let createTr = document.createElement("tr");
@@ -386,7 +387,7 @@ function generateOutput() {
       let iOSLandingPage = "";
       let andLandingPage = "";
       let dskLandingPage = "";
-      if (truncatedPlatform == "DSK") {
+      if (truncatedPlatform === "DSK") {
         truncatedPlatform = "Desktop";
         dskLandingPage = dskLpLc;
       } else if (truncatedPlatform === "AND") {
@@ -405,7 +406,7 @@ function generateOutput() {
 
       let chosenDimension;
       amsId = amsIdArr[indexSubAdDimnsionSelected];
-      tsData.push(brand, country, truncatedPlatform, campaignName, budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), subAdDimensionsSelected.trim(), targeting, subTargeting, deliverables, cost);
+      tsData.push(brand, country, truncatedPlatform, campaignName, budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), subAdDimensionsSelected.trim(), targeting, subTargeting, deliverables, cost, landingPage.toLowerCase());
       tsData.forEach(function(tableElement, indexTSData) {
         let createTd = document.createElement("td");
         let contentEditable = document.createAttribute("contenteditable");
@@ -421,7 +422,7 @@ function generateOutput() {
         truncatedPlatform = "AND";
       }
       let brandCode = brands[brand];
-      tsDtFrPlacmntNme.push(brandCode, country, truncatedPlatform, campaignName, budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), amsId, subAdDimensionsSelected.trim(), targeting, subTargeting, cost);
+      tsDtFrPlacmntNme.push(brandCode, country, truncatedPlatform, campaignName, budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), amsId, subAdDimensionsSelected.trim(), targeting, subTargeting, cost, landingPage);
       placementName = tsDtFrPlacmntNme.join("-");
       let placementNameUsed = tsDtFrPlacmntNme.join("-"); + "," + amsId + "," + "DEFAULT";
       amsIdUsedArr.push(amsId);
@@ -435,6 +436,7 @@ function generateOutput() {
       } else if (andLandingPage === undefined) {
         andLandingPage = "AppStore";
       }
+      console.log("dskLandingPage "+dskLandingPage);
       placementTableArray.push(placementName, iOSLandingPage, andLandingPage, dskLandingPage, networkPublisher, "Display", "dcm", deliverables, serverCampaignName, buyingMetric, cost, kpi, getValueById('startDate'), getValueById('endDate'));
       placementTableArray.forEach(function(tableElement, indexplTData) {
         let createTdPlTb = document.createElement("td");
@@ -658,9 +660,9 @@ function batchUpdateValues(spreadsheetId, range, valueInputOption, _values, call
     });
     return c;
   }, []);
-  console.log("updatingValues   "+updatingValues);
-  collectAmsData = comprareAndUpdate(collectAmsData, updatingValues);
-  console.log("new collectAmsData   " + collectAmsData[1986]);
+
+  comprareAndUpdate(collectAmsData, updatingValues);
+
   var resource = {
     spreadsheetId: spreadsheetId,
     resource: {
@@ -708,13 +710,17 @@ function getValues(spreadsheetId, range, callback) {
 }
 
 function comprareAndUpdate(collectAmsData, updatingValues) {
+  console.log("updatingValues[1][0] "+0+ " " +updatingValues[1][0]);
+  console.log("updatingValues[2][0] "+1+ " " +updatingValues[2][0]);
+  console.log("updatingValues[3][0] "+2+ " " +updatingValues[3][0]);
    for (i = 0; i < collectAmsData.length; i++) {
     for (j = 0; j < updatingValues.length; j++) {
-        if(collectAmsData[i][0] == updatingValues[j][0]){
+        if(collectAmsData[i][0] === updatingValues[j][0]){
+          console.log("collectAmsData[i][0] "+i+ " " +collectAmsData[i][0]);
+          console.log("updatingValues[j][0] "+j+ " " +updatingValues[j][0]);
           collectAmsData[i] = updatingValues[j];
-          console.log("collectAmsData[i]   "+collectAmsData[i]);
+          console.log("collectAmsData   "+i+ " " +collectAmsData[i]);
         }
     }
   }
-  return collectAmsData;
 }
