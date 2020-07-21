@@ -376,7 +376,7 @@ function generateOutput() {
         //   lowerCasePlatformsSelected = lowerCasePlatformsSelected+"1";
         // }
         landingPage = getValueById(lowerCasePlatformsSelected);
-        console.log("landingPage      " +landingPage);
+        console.log("landingPage      " + landingPage);
       }
       let tsData = new Array();
       let createTr = document.createElement("tr");
@@ -408,11 +408,16 @@ function generateOutput() {
       amsId = amsIdArr[indexSubAdDimnsionSelected];
       tsData.push(brand, country, truncatedPlatform, campaignName, budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), subAdDimensionsSelected.trim(), targeting, subTargeting, deliverables, cost, landingPage.toLowerCase());
       tsData.forEach(function(tableElement, indexTSData) {
+        // var chkbox = document.createElement('input');
+        // chkbox.type = "checkbox";
+        // chkbox.id = "chk";
+        // chkbox.name = "chk";
         let createTd = document.createElement("td");
         let contentEditable = document.createAttribute("contenteditable");
         contentEditable.value = "true";
         createTd.setAttributeNode(contentEditable);
         createTd.innerHTML = tableElement;
+        // createTd.appendChild(chkbox);
         createTr.appendChild(createTd);
       });
       let tsDtFrPlacmntNme = new Array();
@@ -436,7 +441,7 @@ function generateOutput() {
       } else if (andLandingPage === undefined) {
         andLandingPage = "AppStore";
       }
-      console.log("dskLandingPage "+dskLandingPage);
+      console.log("dskLandingPage " + dskLandingPage);
       placementTableArray.push(placementName, iOSLandingPage, andLandingPage, dskLandingPage, networkPublisher, "Display", "dcm", deliverables, serverCampaignName, buyingMetric, cost, kpi, getValueById('startDate'), getValueById('endDate'));
       placementTableArray.forEach(function(tableElement, indexplTData) {
         let createTdPlTb = document.createElement("td");
@@ -670,7 +675,7 @@ function batchUpdateValues(spreadsheetId, range, valueInputOption, _values, call
       data: [{
         range: range,
         values: collectAmsData,
-        majorDimension:"ROWS"
+        majorDimension: "ROWS"
       }]
     }
   };
@@ -708,19 +713,35 @@ function getValues(spreadsheetId, range, callback) {
 
   // [END sheets_get_values]
 }
-
+// let newUpdatedAMSArray;
 function comprareAndUpdate(collectAmsData, updatingValues) {
-  console.log("updatingValues[1][0] "+0+ " " +updatingValues[1][0]);
-  console.log("updatingValues[2][0] "+1+ " " +updatingValues[2][0]);
-  console.log("updatingValues[3][0] "+2+ " " +updatingValues[3][0]);
-   for (i = 0; i < collectAmsData.length; i++) {
-    for (j = 0; j < updatingValues.length; j++) {
-        if(collectAmsData[i][0] === updatingValues[j][0]){
-          console.log("collectAmsData[i][0] "+i+ " " +collectAmsData[i][0]);
-          console.log("updatingValues[j][0] "+j+ " " +updatingValues[j][0]);
-          collectAmsData[i] = updatingValues[j];
-          console.log("collectAmsData   "+i+ " " +collectAmsData[i]);
-        }
-    }
-  }
+  // let newUpdatedAMSArray = collectAmsData;
+   const obj = collectAmsData.reduce((o, [b], i) => Object.assign(o, {[b]: i}), {});
+   const addValues = updatingValues.reduce((ar, [b, c]) => {
+     if (obj[b]) {
+       collectAmsData[obj[b]][1] = c;
+     } else {
+       ar.push([b, c]);
+     }
+     return ar;
+   }, []);
+   collectAmsData = collectAmsData.concat(addValues);
+  console.log(" collectAmsData    "+collectAmsData);
+  // collectAmsData.forEach((aMSsheetData, i) => {
+  //     updatingValues.forEach((valuesData, j) => {
+  //         if (aMSsheetData[0] === valuesData[0]) {
+  //           aMSsheetData[i] = updatingValues[j];
+  //         });
+  //
+  //     });
+    //  (i = 0; i < collectAmsData.length; i++) {
+    //   for (j = 0; j < updatingValues.length; j++) {
+    //     if (collectAmsData[i][0] === updatingValues[j][0]) {
+    //       console.log("collectAmsData[i][0] " + i + " " + collectAmsData[i][0]);
+    //       console.log("updatingValues[j][0] " + j + " " + updatingValues[j][0]);
+    //       collectAmsData[i] = updatingValues[j];
+    //       console.log("collectAmsData   " + i + " " + collectAmsData[i]);
+    //     }
+    //   }
+  // }
 }
