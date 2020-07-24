@@ -6,6 +6,8 @@ let amsIdUsedArr = [];
 let placementNameUsedArr = [];
 let openOutputSectionModal = true;
 let collectAmsData = [];
+let updatingValues;
+let updatedAMSArr;
 document.addEventListener('DOMContentLoaded', function() {
   // amsIdFromGSheet();
   // $('#signinOnLoad')[0].click();
@@ -405,6 +407,7 @@ function generateOutput() {
       }
 
       let chosenDimension;
+
       amsId = amsIdArr[indexSubAdDimnsionSelected];
       tsData.push(brand, country, truncatedPlatform, campaignName, budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), subAdDimensionsSelected.trim(), targeting, subTargeting, deliverables, cost, landingPage.toLowerCase());
       tsData.forEach(function(tableElement, indexTSData) {
@@ -429,8 +432,9 @@ function generateOutput() {
       let brandCode = brands[brand];
       tsDtFrPlacmntNme.push(brandCode, country, truncatedPlatform, campaignName, budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), amsId, subAdDimensionsSelected.trim(), targeting, subTargeting, cost, landingPage);
       placementName = tsDtFrPlacmntNme.join("-");
-      let placementNameUsed = tsDtFrPlacmntNme.join("-"); + "," + amsId + "," + "DEFAULT";
-      amsIdUsedArr.push(amsId);
+      //let placementNameUsed = tsDtFrPlacmntNme.join("-"); + "," + amsId + "," + "DEFAULT";
+
+
       // placementNameUsedArr.push(placementNameUsed);
       //signInAndMakeApiCall();
       let networkPublisher = (agency + buyingPlatforms).toUpperCase();
@@ -472,6 +476,9 @@ function fnExcelReport() {
       tsDtInnerFrPlacmntNmeNew.splice(2, 1, platformCodes[tbl.rows[i].cells.item(2).innerHTML]);
       tsDtInnerFrPlacmntNmeNew.join("-");
       tsDtInnerFrPlacmntNmeNew.splice(13, 0, amsIdArr[i - 2]);
+      amsIdUsedArr.push(amsIdArr[i - 2]);
+      console.log(amsIdUsedArr);
+      console.log("---------");
       let joinedtsDtInnerFrPlacmntNmeNew = tsDtInnerFrPlacmntNmeNew.join("-");
       console.log("PlcmntNmeNew    " + joinedtsDtInnerFrPlacmntNmeNew);
       document.getElementById("placementTable").rows[i].cells.item(0).innerHTML = joinedtsDtInnerFrPlacmntNmeNew;
@@ -497,9 +504,19 @@ function fnExcelReport() {
       name: `URLBuilderUpload_` + serverCampaignName + "_" + d
     }
   });
-  handleSignInClick();
-  updateSignInStatus();
-  batchUpdateValues('1of8Qdd8SYiYOlpjztSlLy09YqSIsg0or0iqD5uXq9Vc', 'Sheet2!B:D', 'RAW', updatingValues, callback);
+  // handleSignInClick();
+  // updateSignInStatus();
+  console.log(amsIdUsedArr);
+  console.log(placementNameUsedArr);
+  updatingValues = [amsIdUsedArr, placementNameUsedArr].reduce((c, v) => {
+    v.forEach((o, i) => {
+      c[i] = c[i] || [];
+      c[i].push(o);
+    });
+    return c;
+  }, []);
+  console.log(" updatingValues "+updatingValues[0]);
+  batchUpdateValues('1of8Qdd8SYiYOlpjztSlLy09YqSIsg0or0iqD5uXq9Vc', 'Sheet2!B:C', 'USER_ENTERED', updatingValues, callback);
 }
 
 
@@ -571,10 +588,7 @@ function amsIdFromGSheet() {
   xmlhttp.send(null);
 
 }
-let updatingValues;
 
-
-let updatedAMSArr;
 
 
 
@@ -605,7 +619,7 @@ function handleClientLoad() {
 
 function updateSignInStatus(isSignedIn) {
   if (isSignedIn) {
-    getValues("1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0", "Sheet1!B:C", callback);
+    getValues("1of8Qdd8SYiYOlpjztSlLy09YqSIsg0or0iqD5uXq9Vc", "Sheet2!B:C", callback);
   }
 }
 
@@ -626,67 +640,53 @@ function callback(response) {
 
 
 function batchUpdateValues(spreadsheetId, range, valueInputOption, _values, callback) {
-  // [START sheets_batch_update_values]
-  // var values = [
-  //   [
-  //     [amsIdUsedArr],
-  //   ],
-  //
+
+  // console.log(spreadsheetId);
+  // console.log(range);
+  // console.log(valueInputOption);
+  // console.log(_values);
+
+  // spreadsheetId = "1of8Qdd8SYiYOlpjztSlLy09YqSIsg0or0iqD5uXq9Vc";
+  // range = "Sheet2!B:C";
+  // valueInputOption = "USER_ENTERED";
+  // _values = [
+  //   ["18779496", "PS-DE-AND-ALWAYSON-G-TSG-Mediamath-OM-ROS-ALL-ALL-TEST--18779496-1x1-P-X"],
+  //   ["18779504", "PS-DE-iOS-ALWAYSON-G-TSG-Mediamath-OM-ROS-ALL-ALL-TEST--18779504-1x1-P-X"],
+  //   ["18779512", "PS-DE-iOS-ALWAYSON-G-TSG-Mediamath-OM-ROS-ALL-ALL-TEST--18779512-1x1-P-X"],
+  //   ["18779520", "PS-DE-iOS-ALWAYSON-G-TSG-Mediamath-OM-ROS-ALL-ALL-TEST--18779520-1x1-P-X"],
+  //   ["18779538", "PS-DE-iOS-ALWAYSON-G-TSG-Mediamath-OM-ROS-ALL-ALL-TEST--18779538-1x1-P-X"]
   // ];
-  // // [START_EXCLUDE silent]
-  // values = _values;
-  // // [END_EXCLUDE]
-  //
-  // var dataFilter = {
-  //   "dataFilter":amsIdUsedArr,
-  //   "majorDimension": "columns",
-  //   "values": [
-  //     _values
-  //   ]
-  // };
-  // var data = [];
-  // data.push({
-  //   "valueInputOption": valueInputOption,
-  //   "data": dataFilter,
-  //   "includeValuesInResponse": true,
-  //   "responseValueRenderOption": "UNFORMATTED_VALUE",
-  //   "responseDateTimeRenderOption": "SERIAL_NUMBER"
-  // });
-  // // Additional ranges to update.
-  //
-  // var body = {
-  //   data: data,
-  //   valueInputOption: valueInputOption
-  // };
-  updatingValues = [amsIdUsedArr, placementNameUsedArr].reduce((c, v) => {
-    v.forEach((o, i) => {
-      c[i] = c[i] || [];
-      c[i].push(o);
-    });
-    return c;
-  }, []);
 
-  comprareAndUpdate(collectAmsData, updatingValues);
+  // 1. Retrieve the existing values from "Sheet1" in the Spreadsheet using the method of values.get in Sheets API.
+   gapi.client.sheets.spreadsheets.values.get({spreadsheetId: spreadsheetId, range: range})
+   .then(function(response) {
 
-  var resource = {
-    spreadsheetId: spreadsheetId,
-    resource: {
-      valueInputOption: "RAW",
-      data: [{
-        range: range,
-        values: collectAmsData,
-        majorDimension: "ROWS"
-      }]
-    }
-  };
-  gapi.client.sheets.spreadsheets.values.batchUpdate(resource).then((response) => {
-    var result = response.result;
-    console.log(`${result.totalUpdatedCells} cells updated.`);
-    // [START_EXCLUDE silent]
-    callback(response);
-    // [END_EXCLUDE]
-  });
-  // [END sheets_batch_update_values]
+     // 2. Create the updated values using the retrieved values.
+     let values = response.result.values;
+     const obj = values.reduce((o, [b], i) => Object.assign(o, {[b]: i}), {});
+     const addValues = _values.reduce((ar, [b, c]) => {
+       if (obj[b]) {
+         values[obj[b]][1] = c;
+       } else {
+         ar.push([b, c]);
+       }
+       return ar;
+     }, []);
+     values = values.concat(addValues);
+
+     // 3. Put the updated values to "Sheet1" using your script.
+     var data = [];
+     data.push({range: range, values: values});
+     var body = {data: data, valueInputOption: valueInputOption};
+     gapi.client.sheets.spreadsheets.values.batchUpdate({spreadsheetId: spreadsheetId,resource: body})
+     .then((response) => {
+       var result = response.result;
+       console.log(`${result.totalUpdatedCells} cells updated.`);
+       callback(response);
+     });
+   }, function(reason) {
+     console.error('error: ' + reason.result.error.message);
+   });
 }
 
 function getValues(spreadsheetId, range, callback) {
@@ -714,34 +714,3 @@ function getValues(spreadsheetId, range, callback) {
   // [END sheets_get_values]
 }
 // let newUpdatedAMSArray;
-function comprareAndUpdate(collectAmsData, updatingValues) {
-  // let newUpdatedAMSArray = collectAmsData;
-   const obj = collectAmsData.reduce((o, [b], i) => Object.assign(o, {[b]: i}), {});
-   const addValues = updatingValues.reduce((ar, [b, c]) => {
-     if (obj[b]) {
-       collectAmsData[obj[b]][1] = c;
-     } else {
-       ar.push([b, c]);
-     }
-     return ar;
-   }, []);
-   collectAmsData = collectAmsData.concat(addValues);
-  console.log(" collectAmsData    "+collectAmsData);
-  // collectAmsData.forEach((aMSsheetData, i) => {
-  //     updatingValues.forEach((valuesData, j) => {
-  //         if (aMSsheetData[0] === valuesData[0]) {
-  //           aMSsheetData[i] = updatingValues[j];
-  //         });
-  //
-  //     });
-    //  (i = 0; i < collectAmsData.length; i++) {
-    //   for (j = 0; j < updatingValues.length; j++) {
-    //     if (collectAmsData[i][0] === updatingValues[j][0]) {
-    //       console.log("collectAmsData[i][0] " + i + " " + collectAmsData[i][0]);
-    //       console.log("updatingValues[j][0] " + j + " " + updatingValues[j][0]);
-    //       collectAmsData[i] = updatingValues[j];
-    //       console.log("collectAmsData   " + i + " " + collectAmsData[i]);
-    //     }
-    //   }
-  // }
-}
