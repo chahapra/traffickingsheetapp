@@ -9,9 +9,6 @@ let collectAmsData = [];
 let updatingValues;
 let updatedAMSArr;
 document.addEventListener('DOMContentLoaded', function() {
-  // amsIdFromGSheet();
-  // $('#signinOnLoad')[0].click();
-
   getElementById("startDate").value = (new Date()).toLocaleDateString();
   getElementById("endDate").value = new Date(new Date().getFullYear() + 1, 11, 31).toLocaleDateString();
   let elemsModal = document.querySelectorAll('.modal');
@@ -158,7 +155,7 @@ let serverCampaignName;
 
 function generateOutput() {
   //display trafficiking sheet table and export to excel button
-  updateSignInStatus();
+  //updateSignInStatus();
   displayBlock('tsTable');
   displayBlock('nonTableSection');
   displayBlock('exptToExcel');
@@ -408,7 +405,6 @@ function generateOutput() {
 
       let chosenDimension;
 
-      amsId = amsIdArr[indexSubAdDimnsionSelected];
       tsData.push(brand, country, truncatedPlatform, campaignName, budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), subAdDimensionsSelected.trim(), targeting, subTargeting, deliverables, cost, landingPage.toLowerCase());
       tsData.forEach(function(tableElement, indexTSData) {
         // var chkbox = document.createElement('input');
@@ -430,13 +426,8 @@ function generateOutput() {
         truncatedPlatform = "AND";
       }
       let brandCode = brands[brand];
-      tsDtFrPlacmntNme.push(brandCode, country, truncatedPlatform, campaignName, budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), amsId, subAdDimensionsSelected.trim(), targeting, subTargeting, cost, landingPage);
+      tsDtFrPlacmntNme.push(brandCode, country, truncatedPlatform, campaignName, budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), "amsId", subAdDimensionsSelected.trim(), targeting, subTargeting, cost, landingPage);
       placementName = tsDtFrPlacmntNme.join("-");
-      //let placementNameUsed = tsDtFrPlacmntNme.join("-"); + "," + amsId + "," + "DEFAULT";
-
-
-      // placementNameUsedArr.push(placementNameUsed);
-      //signInAndMakeApiCall();
       let networkPublisher = (agency + buyingPlatforms).toUpperCase();
       serverCampaignName = brandCode + " " + country + " " + campaignName + " " + budgetCode + " " + new Date().getFullYear();
       let placementTableArray = new Array();
@@ -465,6 +456,9 @@ function fnExcelReport() {
   let placementTable = getElementById("placementTable");
   let tsDtFrPlacmntNmeNew = [];
   let newPlacementName;
+  console.log("gapi.auth2.getAuthInstance().isSignedIn.get() "+gapi.auth2.getAuthInstance().isSignedIn.get());
+  updateSignInStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+
   if (tbl != null && placementTable != null) {
     for (var i = 2; i < tbl.rows.length; i++) {
       let tsDtInnerFrPlacmntNmeNew = [];
@@ -477,8 +471,6 @@ function fnExcelReport() {
       tsDtInnerFrPlacmntNmeNew.join("-");
       tsDtInnerFrPlacmntNmeNew.splice(13, 0, amsIdArr[i - 2]);
       amsIdUsedArr.push(amsIdArr[i - 2]);
-      console.log(amsIdUsedArr);
-      console.log("---------");
       let joinedtsDtInnerFrPlacmntNmeNew = tsDtInnerFrPlacmntNmeNew.join("-");
       console.log("PlcmntNmeNew    " + joinedtsDtInnerFrPlacmntNmeNew);
       document.getElementById("placementTable").rows[i].cells.item(0).innerHTML = joinedtsDtInnerFrPlacmntNmeNew;
@@ -516,7 +508,7 @@ function fnExcelReport() {
     return c;
   }, []);
   console.log(" updatingValues "+updatingValues[0]);
-  batchUpdateValues('1of8Qdd8SYiYOlpjztSlLy09YqSIsg0or0iqD5uXq9Vc', 'Sheet2!B:C', 'USER_ENTERED', updatingValues, callback);
+  batchUpdateValues('1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0', 'Sheet1!B:C', 'USER_ENTERED', updatingValues, callback);
 }
 
 
@@ -559,39 +551,6 @@ const addOptionTags = (elementId, dimensionArr) => {
 //This functioncalls a g.sheet and fetches AMSid which are not assigned to the placements.
 let amsIdArr = [];
 
-function amsIdFromGSheet() {
-
-  var url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTxaEOET9Vqrjzko8WKNoInYiVBSTobYFcPKZUmbI363JZ7Y80GaIpHPbdd_jGc_zRVYsp_L7r4T_vf/pub?gid=0&single=true&output=csv";
-
-  xmlhttp = new XMLHttpRequest();
-
-  xmlhttp.onreadystatechange = function() {
-
-    if (xmlhttp.readyState == 4) {
-
-      var collectAmsData = xmlhttp.responseText.split(/\r\n|\n/);
-      //console.log(collectAmsData.length);
-      for (i = 1; i < collectAmsData.length; i++) {
-        //  console.log("PrintEachRow  "+collectAmsData[i] + "Len"  +collectAmsData[i].length);
-        if (collectAmsData[i].length <= 40) {
-          let amsId = collectAmsData[i].split(",");
-          console.log("AMSID  " + amsId[2]);
-          amsIdArr.push(amsId[2]);
-        }
-      }
-    }
-
-  };
-
-  xmlhttp.open("GET", url, true);
-
-  xmlhttp.send(null);
-
-}
-
-
-
-
 function initClient() {
   var API_KEY = 'AIzaSyCatCt5LLHwUcyQtVdCwu_F46A4pcmSXkQ'; // TODO: Update placeholder with desired API key.
 
@@ -619,7 +578,7 @@ function handleClientLoad() {
 
 function updateSignInStatus(isSignedIn) {
   if (isSignedIn) {
-    getValues("1of8Qdd8SYiYOlpjztSlLy09YqSIsg0or0iqD5uXq9Vc", "Sheet2!B:C", callback);
+    getValues("1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0", "Sheet1!B:C", callback);
   }
 }
 
@@ -646,8 +605,8 @@ function batchUpdateValues(spreadsheetId, range, valueInputOption, _values, call
   // console.log(valueInputOption);
   // console.log(_values);
 
-  // spreadsheetId = "1of8Qdd8SYiYOlpjztSlLy09YqSIsg0or0iqD5uXq9Vc";
-  // range = "Sheet2!B:C";
+  // spreadsheetId = "1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0";
+  // range = "Sheet1!B:C";
   // valueInputOption = "USER_ENTERED";
   // _values = [
   //   ["18779496", "PS-DE-AND-ALWAYSON-G-TSG-Mediamath-OM-ROS-ALL-ALL-TEST--18779496-1x1-P-X"],
