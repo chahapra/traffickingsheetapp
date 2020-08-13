@@ -6,5 +6,6 @@ brands = {
   "Foxbet": "FXB",
   "SkyBet": "SB",
   "Sport": "SPORT",
-  "Pokerstars Sports":"PSS"
+  "Pokerstars Sports":"PSS",
+  "Masterbrand":"MB"
 };

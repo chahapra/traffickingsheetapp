@@ -230,10 +230,10 @@ function generateOutput() {
   let disLpLc;
   // let mobLpLc2;
   if ((platforms.toString()).includes("LP")) {
-    let andLp = getValueById('andLp');
+    let andLp = getElementById('andLp').value;
     if (platforms.toString() == "ANDLP") {
       if (andLp) {
-        andLpLc = andLp.toLowerCase();
+        andLpLc = andLp;
         if (!regex.test(andLpLc)) {
           $('#modal-trigger')[0].click();
           getElementById('modal1text').innerHTML = "Please enter a proper URL.";
@@ -245,10 +245,10 @@ function generateOutput() {
         return;
       }
     }
-    let iosLp = getValueById('iosLp');
+    let iosLp = getElementById('iosLp').value;
     if (platforms.toString() == "IOSLP") {
       if (iosLp) {
-        iosLpLc = iosLp.toLowerCase();
+        iosLpLc = iosLp;
         if (!regex.test(iosLpLc)) {
           $('#modal-trigger')[0].click();
           getElementById('modal1text').innerHTML = "Please enter a proper URL.";
@@ -260,10 +260,10 @@ function generateOutput() {
         return;
       }
     }
-    let dskLp = getValueById('dskLp');
+    let dskLp = getElementById('dskLp').value;
     if (platforms.toString() == "DSKLP") {
       if (dskLp) {
-        dskLpLc = dskLp.toLowerCase();
+        dskLpLc = dskLp;
         if (!regex.test(dskLpLc)) {
           $('#modal-trigger')[0].click();
           getElementById('modal1text').innerHTML = "Please enter a proper URL."
@@ -275,7 +275,7 @@ function generateOutput() {
         return;
       }
     }
-    let mobLp = getValueById('mobLp');
+    let mobLp = getElementById('mobLp').value;
     if (platforms.toString() == "MOBLP") {
       if (mobLp) {
         mobLpLc = mobLp.toLowerCase();
@@ -299,7 +299,7 @@ function generateOutput() {
     //     return;
     //   }
     // }
-    let disLp = getValueById('disLp');
+    let disLp = getElementById('disLp').value;
     if (platforms.toString() == "DISLP") {
       if (disLp) {
         disLpLc = disLp.toLowerCase();
@@ -374,7 +374,7 @@ function generateOutput() {
         // if(lowerCasePlatformsSelected == "mobLp"){
         //   lowerCasePlatformsSelected = lowerCasePlatformsSelected+"1";
         // }
-        landingPage = getValueById(lowerCasePlatformsSelected);
+        landingPage = document.getElementById(lowerCasePlatformsSelected).value;
         console.log("landingPage      " + landingPage);
       }
       let tsData = new Array();
@@ -405,7 +405,7 @@ function generateOutput() {
 
       let chosenDimension;
 
-      tsData.push(brand, country, truncatedPlatform, campaignName, budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), subAdDimensionsSelected.trim(), targeting, subTargeting, deliverables, cost, landingPage.toLowerCase());
+      tsData.push(brand, country, truncatedPlatform, campaignName.trim(), budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), subAdDimensionsSelected.trim(), targeting, subTargeting, deliverables, cost, landingPage);
       tsData.forEach(function(tableElement, indexTSData) {
         // var chkbox = document.createElement('input');
         // chkbox.type = "checkbox";
@@ -426,7 +426,7 @@ function generateOutput() {
         truncatedPlatform = "AND";
       }
       let brandCode = brands[brand];
-      tsDtFrPlacmntNme.push(brandCode, country, truncatedPlatform, campaignName, budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), "amsId", subAdDimensionsSelected.trim(), targeting, subTargeting, cost, landingPage);
+      tsDtFrPlacmntNme.push(brandCode, country, truncatedPlatform, campaignName.trim(), budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), "amsId", subAdDimensionsSelected.trim(), targeting, subTargeting, cost, landingPage);
       placementName = tsDtFrPlacmntNme.join("-");
       let networkPublisher = (agency + buyingPlatforms).toUpperCase();
       serverCampaignName = brandCode + " " + country + " " + campaignName + " " + budgetCode + " " + new Date().getFullYear();
@@ -453,7 +453,9 @@ function fnExcelReport() {
   var d = n.split("/")[2] + n.split("/")[1] + n.split("/")[0];
   let tsTable = getElementById("tsTable");
   var tbl = document.getElementById("tsTable");
+  console.log("tbl  "+tbl.rows[2].cells.item(18).innerHTML);
   let placementTable = getElementById("placementTable");
+  //console.log("placementTable  "+placementTable.rows[0].cells.item(18).innerHTML);
   let tsDtFrPlacmntNmeNew = [];
   let newPlacementName;
   console.log("gapi.auth2.getAuthInstance().isSignedIn.get() "+gapi.auth2.getAuthInstance().isSignedIn.get());
@@ -465,6 +467,7 @@ function fnExcelReport() {
       let brandNew;
       for (var j = 0; j <= 15; j++) {
         tsDtInnerFrPlacmntNmeNew.push(tbl.rows[i].cells.item(j).innerHTML);
+        console.log("row item    "+ j + "  "+tbl.rows[i].cells.item(j).innerHTML);
       }
       tsDtInnerFrPlacmntNmeNew.splice(0, 1, brands[tbl.rows[i].cells.item(0).innerHTML]);
       tsDtInnerFrPlacmntNmeNew.splice(2, 1, platformCodes[tbl.rows[i].cells.item(2).innerHTML]);
@@ -480,6 +483,7 @@ function fnExcelReport() {
     }
   }
 
+  console.log("tbl before  "+tbl.rows[2].cells.item(18).innerHTML);
 
   TableToExcel.convert(tsTable, {
     name: `TS_` + serverCampaignName + "_" + d + `.xlsx`,
@@ -487,7 +491,7 @@ function fnExcelReport() {
       name: `TS_` + serverCampaignName + "_" + d
     }
   });
-
+  console.log("tbl after  "+tbl.rows[2].cells.item(18).innerHTML);
 
 
   TableToExcel.convert(placementTable, {
@@ -496,6 +500,7 @@ function fnExcelReport() {
       name: `URLBuilderUpload_` + serverCampaignName + "_" + d
     }
   });
+
   // handleSignInClick();
   // updateSignInStatus();
   console.log(amsIdUsedArr);
@@ -672,4 +677,3 @@ function getValues(spreadsheetId, range, callback) {
 
   // [END sheets_get_values]
 }
-// let newUpdatedAMSArray;
