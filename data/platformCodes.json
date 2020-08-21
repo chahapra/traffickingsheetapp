@@ -3,5 +3,6 @@ platformCodes = {
   "Android": "AND",
   "iOS": "iOS",
   "MOB": "MOB",
-  "DIS": "DIS"
+  "DIS": "DIS",
+  "CTV": "CTV"
 };

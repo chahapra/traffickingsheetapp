@@ -106,6 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
       displayNone('mobLp2')
       displayNone('dskLpIcon');
       displayNone('mobLp1Icon');
+      displayNone('ctvLpIcon');
     }
     if (platforms.includes("ANDLP")) {
       displayBlock('andLp');
@@ -148,6 +149,15 @@ document.addEventListener('DOMContentLoaded', function() {
       displayNone('disLp');
       // displayNone('disLp2')
       displayNone('dislpIcon');
+    }if (platforms.includes("CTVLP")) {
+      displayBlock('ctvLp');
+      // displayBlock('disLp2')
+      displayBlock('ctvlpIcon');
+
+    } else if (!(platforms.includes("CTVLP"))) {
+      displayNone('ctvLp');
+      // displayNone('disLp2')
+      displayNone('ctvlpIcon');
     }
   });
 });
@@ -228,7 +238,7 @@ function generateOutput() {
   let dskLpLc;
   let mobLpLc;
   let disLpLc;
-  // let mobLpLc2;
+  let ctvLpLc;
   if ((platforms.toString()).includes("LP")) {
     let andLp = getElementById('andLp').value;
     if (platforms.toString() == "ANDLP") {
@@ -309,6 +319,22 @@ function generateOutput() {
           return;
         }
       } else if (disLp == "") {
+        $('#modal-trigger')[0].click();
+        getElementById('modal1text').innerHTML = "Please enter a URL.";
+        return;
+      }
+    }
+
+    let ctvLp = getElementById('ctvLp').value;
+    if (platforms.toString() == "CTVLP") {
+      if (ctvLp) {
+        ctvLpLc = ctvLp.toLowerCase();
+        if (!regex.test(ctvLpLc)) {
+          $('#modal-trigger')[0].click();
+          getElementById('modal1text').innerHTML = "Please enter a proper URL."
+          return;
+        }
+      } else if (ctvLp == "") {
         $('#modal-trigger')[0].click();
         getElementById('modal1text').innerHTML = "Please enter a URL.";
         return;
@@ -401,6 +427,9 @@ function generateOutput() {
       } else if (truncatedPlatform === "DIS") {
         truncatedPlatform = "DIS"
         dskLandingPage = disLpLc;
+      } else if (truncatedPlatform === "CTV") {
+        truncatedPlatform = "CTV"
+        dskLandingPage = ctvLpLc;
       }
 
       let chosenDimension;
@@ -453,12 +482,12 @@ function fnExcelReport() {
   var d = n.split("/")[2] + n.split("/")[1] + n.split("/")[0];
   let tsTable = getElementById("tsTable");
   var tbl = document.getElementById("tsTable");
-  console.log("tbl  "+tbl.rows[2].cells.item(18).innerHTML);
+  console.log("tbl  " + tbl.rows[2].cells.item(18).innerHTML);
   let placementTable = getElementById("placementTable");
   //console.log("placementTable  "+placementTable.rows[0].cells.item(18).innerHTML);
   let tsDtFrPlacmntNmeNew = [];
   let newPlacementName;
-  console.log("gapi.auth2.getAuthInstance().isSignedIn.get() "+gapi.auth2.getAuthInstance().isSignedIn.get());
+  console.log("gapi.auth2.getAuthInstance().isSignedIn.get() " + gapi.auth2.getAuthInstance().isSignedIn.get());
   updateSignInStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
 
   if (tbl != null && placementTable != null) {
@@ -467,7 +496,7 @@ function fnExcelReport() {
       let brandNew;
       for (var j = 0; j <= 15; j++) {
         tsDtInnerFrPlacmntNmeNew.push(tbl.rows[i].cells.item(j).innerHTML);
-        console.log("row item    "+ j + "  "+tbl.rows[i].cells.item(j).innerHTML);
+        console.log("row item    " + j + "  " + tbl.rows[i].cells.item(j).innerHTML);
       }
       tsDtInnerFrPlacmntNmeNew.splice(0, 1, brands[tbl.rows[i].cells.item(0).innerHTML]);
       tsDtInnerFrPlacmntNmeNew.splice(2, 1, platformCodes[tbl.rows[i].cells.item(2).innerHTML]);
@@ -483,7 +512,7 @@ function fnExcelReport() {
     }
   }
 
-  console.log("tbl before  "+tbl.rows[2].cells.item(18).innerHTML);
+  console.log("tbl before  " + tbl.rows[2].cells.item(18).innerHTML);
 
   TableToExcel.convert(tsTable, {
     name: `TS_` + serverCampaignName + "_" + d + `.xlsx`,
@@ -491,7 +520,7 @@ function fnExcelReport() {
       name: `TS_` + serverCampaignName + "_" + d
     }
   });
-  console.log("tbl after  "+tbl.rows[2].cells.item(18).innerHTML);
+  console.log("tbl after  " + tbl.rows[2].cells.item(18).innerHTML);
 
 
   TableToExcel.convert(placementTable, {
@@ -512,7 +541,7 @@ function fnExcelReport() {
     });
     return c;
   }, []);
-  console.log(" updatingValues "+updatingValues[0]);
+  console.log(" updatingValues " + updatingValues[0]);
   batchUpdateValues('1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0', 'Sheet1!B:C', 'USER_ENTERED', updatingValues, callback);
 }
 
@@ -622,35 +651,49 @@ function batchUpdateValues(spreadsheetId, range, valueInputOption, _values, call
   // ];
 
   // 1. Retrieve the existing values from "Sheet1" in the Spreadsheet using the method of values.get in Sheets API.
-   gapi.client.sheets.spreadsheets.values.get({spreadsheetId: spreadsheetId, range: range})
-   .then(function(response) {
+  gapi.client.sheets.spreadsheets.values.get({
+      spreadsheetId: spreadsheetId,
+      range: range
+    })
+    .then(function(response) {
 
-     // 2. Create the updated values using the retrieved values.
-     let values = response.result.values;
-     const obj = values.reduce((o, [b], i) => Object.assign(o, {[b]: i}), {});
-     const addValues = _values.reduce((ar, [b, c]) => {
-       if (obj[b]) {
-         values[obj[b]][1] = c;
-       } else {
-         ar.push([b, c]);
-       }
-       return ar;
-     }, []);
-     values = values.concat(addValues);
+      // 2. Create the updated values using the retrieved values.
+      let values = response.result.values;
+      const obj = values.reduce((o, [b], i) => Object.assign(o, {
+        [b]: i
+      }), {});
+      const addValues = _values.reduce((ar, [b, c]) => {
+        if (obj[b]) {
+          values[obj[b]][1] = c;
+        } else {
+          ar.push([b, c]);
+        }
+        return ar;
+      }, []);
+      values = values.concat(addValues);
 
-     // 3. Put the updated values to "Sheet1" using your script.
-     var data = [];
-     data.push({range: range, values: values});
-     var body = {data: data, valueInputOption: valueInputOption};
-     gapi.client.sheets.spreadsheets.values.batchUpdate({spreadsheetId: spreadsheetId,resource: body})
-     .then((response) => {
-       var result = response.result;
-       console.log(`${result.totalUpdatedCells} cells updated.`);
-       callback(response);
-     });
-   }, function(reason) {
-     console.error('error: ' + reason.result.error.message);
-   });
+      // 3. Put the updated values to "Sheet1" using your script.
+      var data = [];
+      data.push({
+        range: range,
+        values: values
+      });
+      var body = {
+        data: data,
+        valueInputOption: valueInputOption
+      };
+      gapi.client.sheets.spreadsheets.values.batchUpdate({
+          spreadsheetId: spreadsheetId,
+          resource: body
+        })
+        .then((response) => {
+          var result = response.result;
+          console.log(`${result.totalUpdatedCells} cells updated.`);
+          callback(response);
+        });
+    }, function(reason) {
+      console.error('error: ' + reason.result.error.message);
+    });
 }
 
 function getValues(spreadsheetId, range, callback) {

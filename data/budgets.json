@@ -1,10 +1,11 @@
 budgets = {
-  "Global": null,
+  "Global (G)": null,
   "Local": null,
   "GVOD": null,
   "Affiliates": null,
   "LiveEvents": null,
   "App Search Optimization": null,
   "PAIDSOCIAL": null,
-  "CRM": null
+  "CRM": null,
+  "ADDITIONAL": null
 }
