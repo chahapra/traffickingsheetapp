@@ -356,7 +356,7 @@ function generateOutput() {
   let getCardClass = document.querySelector('.card-content');
   getCardClass.innerHTML = `
   <p>KPI  - ${kpi}</p>
-  <p>BUYING METRIC - ${buyingMetric}</p>
+  <!-- <p>BUYING METRIC - ${buyingMetric}</p> -->
   <p>FLIGHT DATES - ${date_range}</p>
   <br/>
   <p>TS REQUESTER - ${yourName}</p>
@@ -367,7 +367,9 @@ function generateOutput() {
     adDimensions[i] = $(selected).attr('value');
   });
   let adDimensionsSelected = [];
-  let deliverables = "click and impression trackers";
+  let sd = getElementById("deliverables");
+  let deliverables = sd.options[sd.selectedIndex].text;
+  console.log("Develirable Selected   "+deliverables);
   if (adDimensions == "1x1") {
     adDimensionsSelected = ["1x1"];
   } else if (adDimensions == "BAN") {
@@ -376,14 +378,14 @@ function generateOutput() {
     for (var i = 0; i < selectedChipNodesDmsns.length; i++) {
       adDimensionsSelected.push(selectedChipNodesDmsns[i]);
     }
-    deliverables = "Javascript Tag";
+  //  deliverables = "Javascript Tag";
   } else if (adDimensions == "VOD") {
     let selectedChipNodesDmsns = document.querySelector('.videoLengths').innerText.split("close");
     selectedChipNodesDmsns.pop();
     for (var i = 0; i < selectedChipNodesDmsns.length; i++) {
       adDimensionsSelected.push(selectedChipNodesDmsns[i].replace("↵close", ""));
     }
-    deliverables = "VAST/VPAID Tag";
+  //  deliverables = "VAST/VPAID Tag";
   }
   let tsTBE = getElementById('tsTable');
   let placementTBE = getElementById('placementTable');
@@ -434,7 +436,7 @@ function generateOutput() {
 
       let chosenDimension;
 
-      tsData.push(brand, country, truncatedPlatform, campaignName.trim(), budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), subAdDimensionsSelected.trim(), targeting, subTargeting, deliverables, cost, landingPage);
+      tsData.push(brand, country, truncatedPlatform, campaignName.trim(), budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), subAdDimensionsSelected.trim(), targeting, subTargeting, deliverables,buyingMetric, cost, landingPage);
       tsData.forEach(function(tableElement, indexTSData) {
         // var chkbox = document.createElement('input');
         // chkbox.type = "checkbox";
@@ -455,7 +457,7 @@ function generateOutput() {
         truncatedPlatform = "AND";
       }
       let brandCode = brands[brand];
-      tsDtFrPlacmntNme.push(brandCode, country, truncatedPlatform, campaignName.trim(), budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), "amsId", subAdDimensionsSelected.trim(), targeting, subTargeting, cost, landingPage);
+      tsDtFrPlacmntNme.push(brandCode, country, truncatedPlatform, campaignName.trim(), budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), "amsId", subAdDimensionsSelected.trim(), targeting, subTargeting, buyingMetric, cost, landingPage);
       placementName = tsDtFrPlacmntNme.join("-");
       let networkPublisher = (agency + buyingPlatforms).toUpperCase();
       serverCampaignName = brandCode + " " + country + " " + campaignName + " " + budgetCode + " " + new Date().getFullYear();

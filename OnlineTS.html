@@ -64,19 +64,19 @@
 
 <body>
   <!-- Sign In Modal Trigger -->
-<a  id="signInModal" style="display:none" class="waves-effect waves-light btn modal-trigger signInModal" href="#modalInitial">Modal</a>
+  <a id="signInModal" style="display:none" class="waves-effect waves-light btn modal-trigger signInModal" href="#modalInitial">Modal</a>
 
-<!-- Modal Structure -->
-<div id="modalInitial" class="modal">
-  <a id="closeModal" style="display:none" class="waves-effect waves-teal btn-flat right modal-close"><i class="material-icons">close</i></a>
-  <div class="modal-content">
-    <h4>ONLINE TS</h4>
-    <p>Please click the "signin" button below to login using your work google account credentials. Thanks!</p>
-  </div>
-  <div class="modal-footer">
+  <!-- Modal Structure -->
+  <div id="modalInitial" class="modal">
+    <a id="closeModal" style="display:none" class="waves-effect waves-teal btn-flat right modal-close"><i class="material-icons">close</i></a>
+    <div class="modal-content">
+      <h4>ONLINE TS</h4>
+      <p>Please click the "signin" button below to login using your work google account credentials. Thanks!</p>
+    </div>
+    <div class="modal-footer">
       <a id="signinOnLoad" class="waves-effect waves-light btn" onclick="handleSignInClick()">SIGN IN</a>
+    </div>
   </div>
-</div>
   <!-- <blockquote>TRAFFICKING REQUEST FORM</blockquote> -->
 
   <!-- Modal Trigger -->
@@ -270,17 +270,27 @@
           </div>
           <div id="bannerSizes" style="display:none" class="row input-field col s12 chips chips-initialBannerSizes tooltipped bannerSizes" data-position="top" data-tooltip="Start typing banner sizes."></div>
           <div id="videoLengths" style="display:none" class="row input-field col s12 chips chips-initialVideoSizes tooltipped videoLengths" data-position="top" data-tooltip="Start typing VOD sizes."></div>
+          <!--Deliverables-->
+          <h6>DELIVERABLES</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">child_friendly</i>
+            <select id="deliverables" class="pname deliverables">
+              <option value="Impression & Click Trackers">Impression & Click Trackers</option>
+              <option value="Javascript Tag">Javascript Tag</option>
+              <option value="VAST/VPAID">VAST/VPAID Tags</option>
+              <option value="Appsflyer Machine Wrapped">Appsflyer Machine Wrapped Tags</option>
+            </select>
+          </div>
+
           <div class="row input-field col s12">
             <button id="submitBtn" class="waves-effect waves-light btn-large generateOutput" type="submit" name="action" onclick="generateOutput()">Generate Output
               <i class="material-icons right">send</i></button>
-
           </div>
           <a id="modal-outputSection" class="btn-floating btn-large waves-effect waves-light red modal-trigger" style="display:none" href="#outputSection"><i class="material-icons left">open_in_new</i>Ouput Section</a>
-          <!-- <input type="text" class="pname"> -->
         </div>
+        <!-- <input type="text" class="pname"> -->
+
         <!-- <div id="creativeDetails" class="col s12">
-
-
         </div> -->
 
     </fieldset>
@@ -333,6 +343,7 @@
               <th>TARGETING</th>
               <th>SUB-TARGETING</th>
               <th>DELIVERABLES</th>
+              <th>BUYING METRIC</th>
               <th>COST</th>
               <th>LANDING PAGE</th>
               <!-- <th>KPI</th>
