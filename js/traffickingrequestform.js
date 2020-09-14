@@ -9,6 +9,16 @@ let collectAmsData = [];
 let updatingValues;
 let updatedAMSArr;
 document.addEventListener('DOMContentLoaded', function() {
+  console.log("getElementById('publisherOrNetwork')   "+getElementById('publisherOrNetwork'));
+  document.querySelector('.networkNamesList').addEventListener("change", event => {
+    let a = getValueByClassName("agencyNamesList");
+    let b = getValueByClassName("networkNamesList");
+    if (a === "TSG" && b === "DV360") {
+      console.log("getElementById('publisherOrNetwork')   "+getElementById('publisherOrNetwork'));
+      getElementById('publisherOrNetwork').value = "Youtube";
+    }
+  });
+
   getElementById("startDate").value = (new Date()).toLocaleDateString();
   getElementById("endDate").value = new Date(new Date().getFullYear() + 1, 11, 31).toLocaleDateString();
   let elemsModal = document.querySelectorAll('.modal');
@@ -149,7 +159,8 @@ document.addEventListener('DOMContentLoaded', function() {
       displayNone('disLp');
       // displayNone('disLp2')
       displayNone('dislpIcon');
-    }if (platforms.includes("CTVLP")) {
+    }
+    if (platforms.includes("CTVLP")) {
       displayBlock('ctvLp');
       // displayBlock('disLp2')
       displayBlock('ctvlpIcon');
@@ -212,7 +223,7 @@ function generateOutput() {
     getElementById('modal1text').innerHTML = "Please select a buying platform."
     return;
   }
-  let publisherOrNetwork = getValueById('publisherOrNetwork');
+  let publisherOrNetwork = getElementById('publisherOrNetwork').value;
   if (!publisherOrNetwork) {
     $('#modal-trigger')[0].click();
     getElementById('modal1text').innerHTML = "Please select a Publisher Network."
@@ -369,7 +380,7 @@ function generateOutput() {
   let adDimensionsSelected = [];
   let sd = getElementById("deliverables");
   let deliverables = sd.options[sd.selectedIndex].text;
-  console.log("Develirable Selected   "+deliverables);
+  console.log("Develirable Selected   " + deliverables);
   if (adDimensions == "1x1") {
     adDimensionsSelected = ["1x1"];
   } else if (adDimensions == "BAN") {
@@ -378,14 +389,14 @@ function generateOutput() {
     for (var i = 0; i < selectedChipNodesDmsns.length; i++) {
       adDimensionsSelected.push(selectedChipNodesDmsns[i]);
     }
-  //  deliverables = "Javascript Tag";
+    //  deliverables = "Javascript Tag";
   } else if (adDimensions == "VOD") {
     let selectedChipNodesDmsns = document.querySelector('.videoLengths').innerText.split("close");
     selectedChipNodesDmsns.pop();
     for (var i = 0; i < selectedChipNodesDmsns.length; i++) {
       adDimensionsSelected.push(selectedChipNodesDmsns[i].replace("↵close", ""));
     }
-  //  deliverables = "VAST/VPAID Tag";
+    //  deliverables = "VAST/VPAID Tag";
   }
   let tsTBE = getElementById('tsTable');
   let placementTBE = getElementById('placementTable');
@@ -436,7 +447,7 @@ function generateOutput() {
 
       let chosenDimension;
 
-      tsData.push(brand, country, truncatedPlatform, campaignName.trim(), budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), subAdDimensionsSelected.trim(), targeting, subTargeting, deliverables,buyingMetric, cost, landingPage);
+      tsData.push(brand, country, truncatedPlatform, campaignName.trim(), budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), subAdDimensionsSelected.trim(), targeting, subTargeting, deliverables, buyingMetric, cost, landingPage);
       tsData.forEach(function(tableElement, indexTSData) {
         // var chkbox = document.createElement('input');
         // chkbox.type = "checkbox";

@@ -136,6 +136,21 @@
             <i class="material-icons prefix">monetization_on</i>
             <input type="text" value="First Deposit" style="text-transform: uppercase" id="autocomplete-input" class="pname kpis tooltipped" data-position="right" data-tooltip="Start typing KPI.">
           </div>
+          <!--GEO-->
+          <h6>GEO</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">my_location</i>
+            <input type="text" style="text-transform: uppercase" id="autocomplete-input" class="pname countries tooltipped" data-position="right" data-tooltip="Start typing a geo name.">
+          </div>
+          <!--Flight Dates-->
+          <h6>FLIGHT DATES</h6>
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">date_range</i>
+            <input type="text" id="startDate" class="datepicker tooltipped" data-position="right" data-tooltip="Pick a start date.">
+            <input type="text" id="endDate" class="datepicker tooltipped" data-position="right" data-tooltip="Pick an end date.">
+          </div>
+        </div>
+        <div id="siteDetails" class="col s12">
           <!--MAIN KPI-->
           <h6>BUYING METRIC</h6>
           <div class="row input-field col s12">
@@ -148,20 +163,7 @@
             <i class="material-icons prefix">attach_money</i>
             <input id="cost" value="0.00" style="text-transform: uppercase" type="text" class="pname validate tooltipped" data-position="right" data-tooltip="Please enter the cost.">
           </div>
-          <!--Flight Dates-->
-          <h6>FLIGHT DATES</h6>
-          <div class="row input-field col s12">
-            <i class="material-icons prefix">date_range</i>
-            <input type="text" id="startDate" class="datepicker tooltipped" data-position="right" data-tooltip="Pick a start date.">
-            <input type="text" id="endDate" class="datepicker tooltipped" data-position="right" data-tooltip="Pick an end date.">
-          </div>
-        </div>
-        <div id="siteDetails" class="col s12">
-          <h6>GEO</h6>
-          <div class="row input-field col s12">
-            <i class="material-icons prefix">my_location</i>
-            <input type="text" style="text-transform: uppercase" id="autocomplete-input" class="pname countries tooltipped" data-position="right" data-tooltip="Start typing a geo name.">
-          </div>
+
           <!--MESSAGE-->
           <h6>CAMPAIGN MESSAGE</h6>
           <div class="row input-field col s12">
@@ -203,7 +205,7 @@
           <h6>PUBLISHER OR NETWORK</h6>
           <div class="row input-field col s12">
             <i class="material-icons prefix">library_books</i>
-            <input type="text" value="OM" id="publisherOrNetwork" style="text-transform: uppercase" class="pname validate tooltipped" data-position="right" data-tooltip="Please enter the publisher name.">
+            <input type="text" value="OpenMarket" id="publisherOrNetwork" class="pname validate tooltipped" data-position="right" data-tooltip="Please enter the publisher name.">
           </div>
           <!--sub-site-->
           <h6>PUBLISHER'S SUB-SITE</h6>
@@ -217,7 +219,8 @@
             <select id="targeting" class="pname">
               <option value="P">Prospecting</option>
               <option value="R">Retargeting</option>
-              <option value="REM">Remarketing</option>
+              <option value="R">Remarketing</option>
+              <option value="E">Engagement</option>
             </select>
           </div>
           <!--Sub-Targeting-->
