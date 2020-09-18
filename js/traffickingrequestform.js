@@ -471,6 +471,10 @@ function generateOutput() {
       tsDtFrPlacmntNme.push(brandCode, country, truncatedPlatform, campaignName.trim(), budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), "amsId", subAdDimensionsSelected.trim(), targeting, subTargeting, buyingMetric, cost, landingPage);
       placementName = tsDtFrPlacmntNme.join("-");
       let networkPublisher = (agency + buyingPlatforms).toUpperCase();
+      if(buyingPlatforms === "Direct"){
+        networkPublisher = (agency + publisherOrNetwork).toUpperCase();
+      }
+      console.log("networkPublisher    "+networkPublisher);
       serverCampaignName = brandCode + " " + country + " " + campaignName + " " + budgetCode + " " + new Date().getFullYear();
       let placementTableArray = new Array();
       if (iOSLandingPage === undefined) {
