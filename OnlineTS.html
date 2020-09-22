@@ -235,8 +235,7 @@
           <h6>PLATFORM - DESTINATION</h6>
           <div class="row input-field col s12">
             <i class="material-icons prefix">devices_other</i>
-            <select id="platforms" class="pname platforms">
-              <option value=""></option>
+            <select multiple id="platforms" class="pname platforms">
               <option value="ANDLP">Android - Landing Page</option>
               <option value="IOSLP">iOS - Landing Page</option>
               <option value="AND">Android - Play Store</option>
@@ -317,18 +316,29 @@
             </div> -->
           </div>
         </div>
+        <button id="check_circle" class="waves-effect waves-light btn-large checkcircle">Ready to export?
+          <i class="material-icons right">check_circle</i></button>
+
         <button id="exptToExcel" class="waves-effect waves-light btn-large" type="submit" name="action" onclick="fnExcelReport()">Export To Excel
           <i class="material-icons right">send</i></button>
         <br />
-        <div id="toCreateJiraTkt" style="display:none">
-          <a class="waves-effect waves-light btn" href="https://jira.pyrsoftware.ca/jira/secure/CreateIssue!default.jspa"><i class="material-icons right">cloud</i>Create Jira Ticket</a>
+        <div id="toCreateJiraTkt">
+          <a class="waves-effect waves-light btn-large" href="https://jira.pyrsoftware.ca/jira/secure/CreateIssue!default.jspa"><i class="material-icons right">cloud</i>Create Jira Ticket</a>
         </div>
       </div>
       <div>
         <table id="tsTable" class="responsive-table">
+
+          <!-- <button class="waves-effect waves-light btn-large btn_save">Save
+            <i class="material-icons right">check_circle</i></button>
+          <button class="waves-effect waves-light btn-large btn_cancel">Cancel
+            <i class="material-icons right">check_circle</i></button> -->
           <thead>
+
             <tr>
-              <!-- <th>REQUESTER</th> -->
+              <!-- <th> </th> -->
+              <!-- <button class="waves-effect waves-light btn-large btn_edit">Edit
+                <i class="material-icons right">check_circle</i></button> -->
               <th>BRAND</th>
               <th>GEO</th>
               <th>PLATFORM</th>

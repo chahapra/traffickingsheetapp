@@ -8,13 +8,44 @@ let openOutputSectionModal = true;
 let collectAmsData = [];
 let updatingValues;
 let updatedAMSArr;
+let tsTBE;
 document.addEventListener('DOMContentLoaded', function() {
-  console.log("getElementById('publisherOrNetwork')   "+getElementById('publisherOrNetwork'));
+
+  // $(document).on('click', '.btn_edit', function(event)
+  // {
+  // 	event.preventDefault();
+  // 	var tbl_row = $(this).closest('tr');
+  // 	var row_id = tbl_row.attr('row_id');
+  // 	tbl_row.find('.btn_save').show();
+  // 	tbl_row.find('.btn_cancel').show();
+  // 	//hide edit button
+  // 	tbl_row.find('.btn_edit').hide();
+  // 	//make the whole row editable
+  // 	tbl_row.find('.row_data')
+  // 	.attr('contenteditable', 'true')
+  // 	.attr('edit_type', 'button')
+  // 	.addClass('bg-warning')
+  // 	.css('padding','3px')
+  // 	//--->add the original entry > start
+  // 	tbl_row.find('.row_data').each(function(index, val)
+  // 	{
+  // 		//this will help in case user decided to click on cancel button
+  // 		$(this).attr('original_entry', $(this).html());
+  // 	});
+  // 	//--->add the original entry > end
+  // });
+
+  document.querySelector('.checkcircle').addEventListener("click", event => {
+    displayBlock('exptToExcel');
+    displayBlock('toCreateJiraTkt');
+    displayNone('check_circle');
+  });
+
   document.querySelector('.networkNamesList').addEventListener("change", event => {
     let a = getValueByClassName("agencyNamesList");
     let b = getValueByClassName("networkNamesList");
     if (a === "TSG" && b === "DV360") {
-      console.log("getElementById('publisherOrNetwork')   "+getElementById('publisherOrNetwork'));
+      console.log("getElementById('publisherOrNetwork')   " + getElementById('publisherOrNetwork'));
       getElementById('publisherOrNetwork').value = "Youtube";
     }
   });
@@ -112,8 +143,8 @@ document.addEventListener('DOMContentLoaded', function() {
       displayNone('iosLp');
       displayNone('ioslpIcon');
       displayNone('dskLp');
-      displayNone('mobLp1');
-      displayNone('mobLp2')
+      displayNone('mobLp');
+      //displayNone('mobLp2')
       displayNone('dskLpIcon');
       displayNone('mobLp1Icon');
       displayNone('ctvLpIcon');
@@ -179,8 +210,9 @@ function generateOutput() {
   //updateSignInStatus();
   displayBlock('tsTable');
   displayBlock('nonTableSection');
-  displayBlock('exptToExcel');
-  displayBlock('toCreateJiraTkt');
+  displayBlock('check_circle');
+  displayNone('exptToExcel');
+  displayNone('toCreateJiraTkt');
 
   let yourName = getValueById('requester');
   let brand = getValueByClassName('brands');
@@ -398,7 +430,7 @@ function generateOutput() {
     }
     //  deliverables = "VAST/VPAID Tag";
   }
-  let tsTBE = getElementById('tsTable');
+  tsTBE = getElementById('tsTable');
   let placementTBE = getElementById('placementTable');
   if (openOutputSectionModal) {
     $('#modal-outputSection')[0].click();
@@ -418,6 +450,9 @@ function generateOutput() {
       }
       let tsData = new Array();
       let createTr = document.createElement("tr");
+      // let contentEditable = document.createAttribute("contenteditable");
+      // contentEditable.value = "true";
+      // createTr.setAttributeNode(contentEditable);
       let createTrPlcmnt = document.createElement("tr");
       tsTBE.appendChild(createTr);
       placementTBE.appendChild(createTrPlcmnt);
@@ -446,19 +481,14 @@ function generateOutput() {
       }
 
       let chosenDimension;
-
-      tsData.push(brand, country, truncatedPlatform, campaignName.trim(), budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), subAdDimensionsSelected.trim(), targeting, subTargeting, deliverables, buyingMetric, cost, landingPage);
+      tsData.push(brand, country, truncatedPlatform, campaignName.trim(), budgetCode, agency.trim(), buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), subAdDimensionsSelected.trim(), targeting, subTargeting, deliverables, buyingMetric, cost, landingPage);
       tsData.forEach(function(tableElement, indexTSData) {
-        // var chkbox = document.createElement('input');
-        // chkbox.type = "checkbox";
-        // chkbox.id = "chk";
-        // chkbox.name = "chk";
+
         let createTd = document.createElement("td");
         let contentEditable = document.createAttribute("contenteditable");
         contentEditable.value = "true";
         createTd.setAttributeNode(contentEditable);
         createTd.innerHTML = tableElement;
-        // createTd.appendChild(chkbox);
         createTr.appendChild(createTd);
       });
       let tsDtFrPlacmntNme = new Array();
@@ -468,13 +498,13 @@ function generateOutput() {
         truncatedPlatform = "AND";
       }
       let brandCode = brands[brand];
-      tsDtFrPlacmntNme.push(brandCode, country, truncatedPlatform, campaignName.trim(), budgetCode, agency, buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), "amsId", subAdDimensionsSelected.trim(), targeting, subTargeting, buyingMetric, cost, landingPage);
+      tsDtFrPlacmntNme.push(brandCode, country, truncatedPlatform, campaignName.trim(), budgetCode, agency.trim(), buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), "amsId", subAdDimensionsSelected.trim(), targeting, subTargeting, buyingMetric, cost, landingPage);
       placementName = tsDtFrPlacmntNme.join("-");
       let networkPublisher = (agency + buyingPlatforms).toUpperCase();
-      if(buyingPlatforms === "Direct"){
+      if (buyingPlatforms === "Direct") {
         networkPublisher = (agency + publisherOrNetwork).toUpperCase();
       }
-      console.log("networkPublisher    "+networkPublisher);
+      console.log("networkPublisher    " + networkPublisher);
       serverCampaignName = brandCode + " " + country + " " + campaignName + " " + budgetCode + " " + new Date().getFullYear();
       let placementTableArray = new Array();
       if (iOSLandingPage === undefined) {
@@ -560,6 +590,7 @@ function fnExcelReport() {
   }, []);
   console.log(" updatingValues " + updatingValues[0]);
   batchUpdateValues('1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0', 'Sheet1!B:C', 'USER_ENTERED', updatingValues, callback);
+
 }
 
 
@@ -630,13 +661,33 @@ function handleClientLoad() {
 function updateSignInStatus(isSignedIn) {
   if (isSignedIn) {
     getValues("1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0", "Sheet1!B:C", callback);
+    document.querySelector("#modalInitial > div.modal-content > p").innerText = "User Authorized, welcome " + gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
+    document.querySelector("#requester").value = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
+    displayBlock("closeModal");
+    displayNone("signinOnLoad");
   }
 }
 
 function handleSignInClick(event) {
-  gapi.auth2.getAuthInstance().signIn();
-  displayBlock("closeModal");
-  displayNone("signinOnLoad");
+  //gapi.auth2.getAuthInstance().signIn();
+  gapi.auth2.getAuthInstance().signIn().then(function(response){
+    //If Google OAuth 2 works fine
+    console.log("response  "+response);
+}, function(error){
+    //If Google OAuth 2 occured error
+    console.log("error" +error);
+
+});
+  // if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+  //   document.querySelector("#modalInitial > div.modal-content > p").innerText = "User Authorized, welcome " + gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
+  //   document.querySelector("#requester").value = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
+  //   displayBlock("closeModal");
+  //   displayNone("signinOnLoad");
+  // } else {
+  //   document.querySelector("#modalInitial > div.modal-content > p").innerText = "User Not Authorized, please reload";
+  //   displayBlock("closeModal");
+  //   displayNone("signinOnLoad");
+  // }
 }
 
 function handleSignOutClick(event) {
@@ -647,7 +698,10 @@ function callback(response) {
   // console.log("called back   " + response.result);
 }
 
-
+function callbackAfterUpdate(response) {
+  // console.log("called back   " + response.result);
+  location.reload();
+}
 
 function batchUpdateValues(spreadsheetId, range, valueInputOption, _values, callback) {
 
@@ -706,7 +760,7 @@ function batchUpdateValues(spreadsheetId, range, valueInputOption, _values, call
         .then((response) => {
           var result = response.result;
           console.log(`${result.totalUpdatedCells} cells updated.`);
-          callback(response);
+          callbackAfterUpdate(response);
         });
     }, function(reason) {
       console.error('error: ' + reason.result.error.message);
