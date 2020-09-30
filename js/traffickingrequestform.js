@@ -462,22 +462,28 @@ function generateOutput() {
       let dskLandingPage = "";
       if (truncatedPlatform === "DSK") {
         truncatedPlatform = "Desktop";
-        dskLandingPage = dskLpLc;
+        dskLandingPage = landingPage;
+      console.log("dskLandingPage " + dskLandingPage);
       } else if (truncatedPlatform === "AND") {
         truncatedPlatform = "Android";
-        andLandingPage = andLpLc;
+        andLandingPage = landingPage;
+      console.log("andLandingPage " + andLandingPage);
       } else if (truncatedPlatform === "IOS") {
         truncatedPlatform = "iOS";
-        iOSLandingPage = iosLpLc;
+        iOSLandingPage = landingPage;
+      console.log("iOSLandingPage " + iOSLandingPage);
       } else if (truncatedPlatform === "MOB") {
         truncatedPlatform = "MOB"
-        dskLandingPage = mobLpLc;
+        dskLandingPage = landingPage;
+      console.log("dskLandingPage " + dskLandingPage);
       } else if (truncatedPlatform === "DIS") {
         truncatedPlatform = "DIS"
-        dskLandingPage = disLpLc;
+        dskLandingPage = landingPage;
+      console.log("dskLandingPage " + dskLandingPage);
       } else if (truncatedPlatform === "CTV") {
         truncatedPlatform = "CTV"
-        dskLandingPage = ctvLpLc;
+        dskLandingPage = landingPage;
+      console.log("dskLandingPage " + dskLandingPage);
       }
 
       let chosenDimension;
@@ -512,6 +518,8 @@ function generateOutput() {
       } else if (andLandingPage === undefined) {
         andLandingPage = "AppStore";
       }
+      console.log("iOSLandingPage " + iOSLandingPage);
+      console.log("andLandingPage " + andLandingPage);
       console.log("dskLandingPage " + dskLandingPage);
       placementTableArray.push(placementName, iOSLandingPage, andLandingPage, dskLandingPage, networkPublisher, "Display", "dcm", deliverables, serverCampaignName, buyingMetric, cost, kpi, getValueById('startDate'), getValueById('endDate'));
       placementTableArray.forEach(function(tableElement, indexplTData) {
