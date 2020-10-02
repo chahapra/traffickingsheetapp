@@ -271,7 +271,10 @@ function generateOutput() {
   let vertical = getValueById('vertical');
   let message = getValueById('message');
   let offer = getValueById('offer');
-  let targeting = getValueById('targeting');
+  let targeting = [];
+  $('#targeting option:selected').each(function(i, selected) {
+    targeting[i] = $(selected).attr('value');
+  });
   let subTargeting = getValueById('subTargeting');
   let cost = getValueById('cost');
   let regex = /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
@@ -436,99 +439,102 @@ function generateOutput() {
     $('#modal-outputSection')[0].click();
     displayBlock('modal-outputSection');
   }
-  adDimensionsSelected.forEach(function(subAdDimensionsSelected, indexSubAdDimnsionSelected) {
-    platforms.forEach(function(platformSelected, indexPlatforms) {
-      let landingPage = "AppStore";
-      let lowerCasePlatformsSelected;
-      if (platformSelected.search("LP") > 1) {
-        lowerCasePlatformsSelected = platformSelected[0].toLowerCase() + platformSelected[1].toLowerCase() + platformSelected[2].toLowerCase() + platformSelected[3] + platformSelected[4].toLowerCase();
-        // if(lowerCasePlatformsSelected == "mobLp"){
-        //   lowerCasePlatformsSelected = lowerCasePlatformsSelected+"1";
-        // }
-        landingPage = document.getElementById(lowerCasePlatformsSelected).value;
-        console.log("landingPage      " + landingPage);
-      }
-      let tsData = new Array();
-      let createTr = document.createElement("tr");
-      // let contentEditable = document.createAttribute("contenteditable");
-      // contentEditable.value = "true";
-      // createTr.setAttributeNode(contentEditable);
-      let createTrPlcmnt = document.createElement("tr");
-      tsTBE.appendChild(createTr);
-      placementTBE.appendChild(createTrPlcmnt);
-      let truncatedPlatform = platformSelected.substr(0, 3);
-      let iOSLandingPage = "";
-      let andLandingPage = "";
-      let dskLandingPage = "";
-      if (truncatedPlatform === "DSK") {
-        truncatedPlatform = "Desktop";
-        dskLandingPage = landingPage;
-      console.log("dskLandingPage " + dskLandingPage);
-      } else if (truncatedPlatform === "AND") {
-        truncatedPlatform = "Android";
-        andLandingPage = landingPage;
-      console.log("andLandingPage " + andLandingPage);
-      } else if (truncatedPlatform === "IOS") {
-        truncatedPlatform = "iOS";
-        iOSLandingPage = landingPage;
-      console.log("iOSLandingPage " + iOSLandingPage);
-      } else if (truncatedPlatform === "MOB") {
-        truncatedPlatform = "MOB"
-        dskLandingPage = landingPage;
-      console.log("dskLandingPage " + dskLandingPage);
-      } else if (truncatedPlatform === "DIS") {
-        truncatedPlatform = "DIS"
-        dskLandingPage = landingPage;
-      console.log("dskLandingPage " + dskLandingPage);
-      } else if (truncatedPlatform === "CTV") {
-        truncatedPlatform = "CTV"
-        dskLandingPage = landingPage;
-      console.log("dskLandingPage " + dskLandingPage);
-      }
+  targeting.forEach(function(targetingSelected, indexTargetingSelected) {
+    adDimensionsSelected.forEach(function(subAdDimensionsSelected, indexSubAdDimnsionSelected) {
+      platforms.forEach(function(platformSelected, indexPlatforms) {
+        let landingPage = "AppStore";
+        let lowerCasePlatformsSelected;
+        if (platformSelected.search("LP") > 1) {
+          lowerCasePlatformsSelected = platformSelected[0].toLowerCase() + platformSelected[1].toLowerCase() + platformSelected[2].toLowerCase() + platformSelected[3] + platformSelected[4].toLowerCase();
+          // if(lowerCasePlatformsSelected == "mobLp"){
+          //   lowerCasePlatformsSelected = lowerCasePlatformsSelected+"1";
+          // }
+          landingPage = document.getElementById(lowerCasePlatformsSelected).value;
+          console.log("landingPage      " + landingPage);
+        }
+        let tsData = new Array();
+        let createTr = document.createElement("tr");
+        // let contentEditable = document.createAttribute("contenteditable");
+        // contentEditable.value = "true";
+        // createTr.setAttributeNode(contentEditable);
+        let createTrPlcmnt = document.createElement("tr");
+        tsTBE.appendChild(createTr);
+        placementTBE.appendChild(createTrPlcmnt);
+        let truncatedPlatform = platformSelected.substr(0, 3);
+        let iOSLandingPage = "";
+        let andLandingPage = "";
+        let dskLandingPage = "";
+        if (truncatedPlatform === "DSK") {
+          truncatedPlatform = "Desktop";
+          dskLandingPage = landingPage;
+          console.log("dskLandingPage " + dskLandingPage);
+        } else if (truncatedPlatform === "AND") {
+          truncatedPlatform = "Android";
+          andLandingPage = landingPage;
+          console.log("andLandingPage " + andLandingPage);
+        } else if (truncatedPlatform === "IOS") {
+          truncatedPlatform = "iOS";
+          iOSLandingPage = landingPage;
+          console.log("iOSLandingPage " + iOSLandingPage);
+        } else if (truncatedPlatform === "MOB") {
+          truncatedPlatform = "MOB"
+          dskLandingPage = landingPage;
+          console.log("dskLandingPage " + dskLandingPage);
+        } else if (truncatedPlatform === "DIS") {
+          truncatedPlatform = "DIS"
+          dskLandingPage = landingPage;
+          console.log("dskLandingPage " + dskLandingPage);
+        } else if (truncatedPlatform === "CTV") {
+          truncatedPlatform = "CTV"
+          dskLandingPage = landingPage;
+          console.log("dskLandingPage " + dskLandingPage);
+        }
 
-      let chosenDimension;
-      tsData.push(brand, country, truncatedPlatform, campaignName.trim(), budgetCode, agency.trim(), buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), subAdDimensionsSelected.trim(), targeting, subTargeting, deliverables, buyingMetric, cost, landingPage);
-      tsData.forEach(function(tableElement, indexTSData) {
+        let chosenDimension;
+        tsData.push(brand, country, truncatedPlatform, campaignName.trim(), budgetCode, agency.trim(), buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), subAdDimensionsSelected.trim(), targetingSelected, subTargeting, deliverables, buyingMetric, cost, landingPage);
+        tsData.forEach(function(tableElement, indexTSData) {
 
-        let createTd = document.createElement("td");
-        let contentEditable = document.createAttribute("contenteditable");
-        contentEditable.value = "true";
-        createTd.setAttributeNode(contentEditable);
-        createTd.innerHTML = tableElement;
-        createTr.appendChild(createTd);
-      });
-      let tsDtFrPlacmntNme = new Array();
-      if (truncatedPlatform == "Desktop") {
-        truncatedPlatform = "DESK";
-      } else if (truncatedPlatform == "Android") {
-        truncatedPlatform = "AND";
-      }
-      let brandCode = brands[brand];
-      tsDtFrPlacmntNme.push(brandCode, country, truncatedPlatform, campaignName.trim(), budgetCode, agency.trim(), buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), "amsId", subAdDimensionsSelected.trim(), targeting, subTargeting, buyingMetric, cost, landingPage);
-      placementName = tsDtFrPlacmntNme.join("-");
-      let networkPublisher = (agency + buyingPlatforms).toUpperCase();
-      if (buyingPlatforms === "Direct") {
-        networkPublisher = (agency + publisherOrNetwork).toUpperCase();
-      }
-      console.log("networkPublisher    " + networkPublisher);
-      serverCampaignName = brandCode + " " + country + " " + campaignName + " " + budgetCode + " " + new Date().getFullYear();
-      let placementTableArray = new Array();
-      if (iOSLandingPage === undefined) {
-        iOSLandingPage = "AppStore";
-      } else if (andLandingPage === undefined) {
-        andLandingPage = "AppStore";
-      }
-      console.log("iOSLandingPage " + iOSLandingPage);
-      console.log("andLandingPage " + andLandingPage);
-      console.log("dskLandingPage " + dskLandingPage);
-      placementTableArray.push(placementName, iOSLandingPage, andLandingPage, dskLandingPage, networkPublisher, "Display", "dcm", deliverables, serverCampaignName, buyingMetric, cost, kpi, getValueById('startDate'), getValueById('endDate'));
-      placementTableArray.forEach(function(tableElement, indexplTData) {
-        let createTdPlTb = document.createElement("td");
-        createTdPlTb.innerHTML = tableElement;
-        createTrPlcmnt.appendChild(createTdPlTb);
+          let createTd = document.createElement("td");
+          let contentEditable = document.createAttribute("contenteditable");
+          contentEditable.value = "true";
+          createTd.setAttributeNode(contentEditable);
+          createTd.innerHTML = tableElement;
+          createTr.appendChild(createTd);
+        });
+        let tsDtFrPlacmntNme = new Array();
+        if (truncatedPlatform == "Desktop") {
+          truncatedPlatform = "DESK";
+        } else if (truncatedPlatform == "Android") {
+          truncatedPlatform = "AND";
+        }
+        let brandCode = brands[brand];
+        tsDtFrPlacmntNme.push(brandCode, country, truncatedPlatform, campaignName.trim(), budgetCode, agency.trim(), buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), "amsId", subAdDimensionsSelected.trim(), targetingSelected, subTargeting, buyingMetric, cost, landingPage);
+        placementName = tsDtFrPlacmntNme.join("-");
+        let networkPublisher = (agency + buyingPlatforms).toUpperCase();
+        if (buyingPlatforms === "Direct") {
+          networkPublisher = (agency + publisherOrNetwork).toUpperCase();
+        }
+        console.log("networkPublisher    " + networkPublisher);
+        serverCampaignName = brandCode + " " + country + " " + campaignName + " " + budgetCode + " " + new Date().getFullYear();
+        let placementTableArray = new Array();
+        if (iOSLandingPage === undefined) {
+          iOSLandingPage = "AppStore";
+        } else if (andLandingPage === undefined) {
+          andLandingPage = "AppStore";
+        }
+        console.log("iOSLandingPage " + iOSLandingPage);
+        console.log("andLandingPage " + andLandingPage);
+        console.log("dskLandingPage " + dskLandingPage);
+        placementTableArray.push(placementName, iOSLandingPage, andLandingPage, dskLandingPage, networkPublisher, "Display", "dcm", deliverables, serverCampaignName, buyingMetric, cost, kpi, getValueById('startDate'), getValueById('endDate'));
+        placementTableArray.forEach(function(tableElement, indexplTData) {
+          let createTdPlTb = document.createElement("td");
+          createTdPlTb.innerHTML = tableElement;
+          createTrPlcmnt.appendChild(createTdPlTb);
+        });
       });
     });
   });
+
 
 }
 
@@ -669,7 +675,7 @@ function handleClientLoad() {
 function updateSignInStatus(isSignedIn) {
   if (isSignedIn) {
     getValues("1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0", "Sheet1!B:C", callback);
-    document.querySelector("#modalInitial > div.modal-content > p").innerText = "User Authorized, welcome " + gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
+    document.querySelector("#modalInitial > div.modal-content > p").innerText = "Welcome " + gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
     document.querySelector("#requester").value = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
     displayBlock("closeModal");
     displayNone("signinOnLoad");
@@ -678,14 +684,14 @@ function updateSignInStatus(isSignedIn) {
 
 function handleSignInClick(event) {
   //gapi.auth2.getAuthInstance().signIn();
-  gapi.auth2.getAuthInstance().signIn().then(function(response){
+  gapi.auth2.getAuthInstance().signIn().then(function(response) {
     //If Google OAuth 2 works fine
-    console.log("response  "+response);
-}, function(error){
+    console.log("response  " + response);
+  }, function(error) {
     //If Google OAuth 2 occured error
-    console.log("error" +error);
+    console.log("error" + error);
 
-});
+  });
   // if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
   //   document.querySelector("#modalInitial > div.modal-content > p").innerText = "User Authorized, welcome " + gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
   //   document.querySelector("#requester").value = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
