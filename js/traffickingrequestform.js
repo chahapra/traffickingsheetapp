@@ -804,7 +804,7 @@ function createCampaignOnDCM() {
         "accountId": 470006,
         "endDate": endDate,
         "startDate": startDate,
-        "name": serverCampaignName + "FT TRACKING",
+        "name": serverCampaignName + " FT TRACKING",
         "defaultLandingPageId": landingPageId
       }
     })
