@@ -45,6 +45,7 @@
   <script type="text/javascript" src="data\dimensionsArr.json"></script>
   <script type="text/javascript" src="data\dimensionsBannerArr.json"></script>
   <script type="text/javascript" src="data\dimensionsVideoArr.json"></script>
+  <script type="text/javascript" src="data\advertIdsDCM.json"></script>
 
   <title>SUBMIT TRAFFICKING REQUEST</title>
 
@@ -317,61 +318,50 @@
           </div>
         </div>
         <button id="check_circle" class="waves-effect waves-light btn-large checkcircle">Ready to export?
-          <i class="material-icons right">check_circle</i></button>
+          <i class="material-icons right">check_circle</i>
+
+        </button>
 
         <button id="exptToExcel" class="waves-effect waves-light btn-large" type="submit" name="action" onclick="fnExcelReport()">Export To Excel
-          <i class="material-icons right">send</i></button>
+          <i class="material-icons right">send</i>
+        </button>
         <br />
         <div id="toCreateJiraTkt">
           <a class="waves-effect waves-light btn-large" href="https://jira.pyrsoftware.ca/jira/secure/CreateIssue!default.jspa"><i class="material-icons right">cloud</i>Create Jira Ticket</a>
         </div>
+        <blockquote id="showTableRows"></blockquote>
       </div>
       <div>
-        <table id="tsTable" class="responsive-table">
-
-          <!-- <button class="waves-effect waves-light btn-large btn_save">Save
-            <i class="material-icons right">check_circle</i></button>
-          <button class="waves-effect waves-light btn-large btn_cancel">Cancel
-            <i class="material-icons right">check_circle</i></button> -->
-          <thead>
-
-            <tr>
-              <!-- <th> </th> -->
-              <!-- <button class="waves-effect waves-light btn-large btn_edit">Edit
-                <i class="material-icons right">check_circle</i></button> -->
-              <th>BRAND</th>
-              <th>GEO</th>
-              <th>PLATFORM</th>
-              <th>CAMPAIGN</th>
-              <th>BUDGET CODE</th>
-              <th>AGENCY</th>
-              <th>BUYING PLATFORM</th>
-              <th>PUBLISHER</th>
-              <th>SUB-SITE</th>
-              <th>AUDIENCE</th>
-              <th>VERTICAL</th>
-              <th>MESSAGE</th>
-              <th>OFFER</th>
-              <!-- <th>LANDING PAGE</th> -->
-              <th>FORMAT</th>
-              <th>TARGETING</th>
-              <th>SUB-TARGETING</th>
-              <th>DELIVERABLES</th>
-              <th>BUYING METRIC</th>
-              <th>COST</th>
-              <th>LANDING PAGE</th>
-              <!-- <th>KPI</th>
+        <table id="tsTable" class="highlight">
+          <tr>
+            <th>BRAND</th>
+            <th>GEO</th>
+            <th>PLATFORM</th>
+            <th>CAMPAIGN</th>
+            <th>BUDGET CODE</th>
+            <th>AGENCY</th>
+            <th>BUYING PLATFORM</th>
+            <th>PUBLISHER</th>
+            <th>SUB-SITE</th>
+            <th>AUDIENCE</th>
+            <th>VERTICAL</th>
+            <th>MESSAGE</th>
+            <th>OFFER</th>
+            <th>FORMAT</th>
+            <th>TARGETING</th>
+            <th>SUB-TARGETING</th>
+            <th>DELIVERABLES</th>
             <th>BUYING METRIC</th>
-            <th>DATES</th>
-            <th>PLACEMENT NAME</th> -->
-            </tr>
-          </thead>
-          <tbody id="tsTableBody">
+            <th>COST</th>
+            <th>LANDING PAGE</th>
+            <th>ACTION</th>
+          </tr>
+          <!-- <tbody id="tsTableBody">
             <tr>
               <td colspan="100%">
               </td>
             </tr>
-          </tbody>
+          </tbody> -->
 
         </table></br>
         <table id="placementTable" class="responsive-table">
@@ -393,12 +383,6 @@
               <th>End Date</th>
             </tr>
           </thead>
-          <tbody id="placementTableBody">
-            <tr>
-              <td colspan="100%">
-              </td>
-            </tr>
-          </tbody>
         </table></br>
       </div>
     </div>

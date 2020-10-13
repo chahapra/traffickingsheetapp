@@ -11,36 +11,20 @@ let updatedAMSArr;
 let tsTBE;
 document.addEventListener('DOMContentLoaded', function() {
 
-  // $(document).on('click', '.btn_edit', function(event)
-  // {
-  // 	event.preventDefault();
-  // 	var tbl_row = $(this).closest('tr');
-  // 	var row_id = tbl_row.attr('row_id');
-  // 	tbl_row.find('.btn_save').show();
-  // 	tbl_row.find('.btn_cancel').show();
-  // 	//hide edit button
-  // 	tbl_row.find('.btn_edit').hide();
-  // 	//make the whole row editable
-  // 	tbl_row.find('.row_data')
-  // 	.attr('contenteditable', 'true')
-  // 	.attr('edit_type', 'button')
-  // 	.addClass('bg-warning')
-  // 	.css('padding','3px')
-  // 	//--->add the original entry > start
-  // 	tbl_row.find('.row_data').each(function(index, val)
-  // 	{
-  // 		//this will help in case user decided to click on cancel button
-  // 		$(this).attr('original_entry', $(this).html());
-  // 	});
-  // 	//--->add the original entry > end
+  //   document.querySelector('#tsTable tr').addEventListener("click", event => {
+  //     console.log(" inside this listner "+document.querySelector('#tsTable tbody'));
+  // var x = document.getElementById("tsTable").rows.length-1;
+  // document.getElementById("showTableRows").innerHTML = x + " entries in the table.";
   // });
+  $(document).on('click', '#tsTable tr', function() {
+    checkTsTableLength();
+  })
 
   document.querySelector('.checkcircle').addEventListener("click", event => {
     displayBlock('exptToExcel');
     displayBlock('toCreateJiraTkt');
     displayNone('check_circle');
   });
-
   document.querySelector('.networkNamesList').addEventListener("change", event => {
     let a = getValueByClassName("agencyNamesList");
     let b = getValueByClassName("networkNamesList");
@@ -49,16 +33,11 @@ document.addEventListener('DOMContentLoaded', function() {
       getElementById('publisherOrNetwork').value = "Youtube";
     }
   });
-
   getElementById("startDate").value = (new Date()).toLocaleDateString();
   getElementById("endDate").value = new Date(new Date().getFullYear() + 1, 11, 31).toLocaleDateString();
   let elemsModal = document.querySelectorAll('.modal');
   let instancesModal = M.Modal.init(elemsModal, null);
   $('#signInModal')[0].click();
-  // document.getElementById("signinOnLoad").addEventListener("click", event => {
-  //   $('#modalInitial').close();
-  // });
-
   let elemsDropDownTrigger = document.querySelectorAll('.dropdown-trigger');
   let instancesDDT = M.Dropdown.init(elemsDropDownTrigger, null)
   let elemsTT = document.querySelectorAll('.tooltipped');
@@ -67,8 +46,6 @@ document.addEventListener('DOMContentLoaded', function() {
   let instancesChips = M.Chips.init(elemsChips, null);
   let elemsdp = document.querySelectorAll('.datepicker');
   let instancesdp = M.Datepicker.init(elemsdp, null);
-  // addOptionTags('mulMobDm', mobileBannerSizes);
-  // addOptionTags('mulDskDm', desktopBannerSizes);
   let elemsSelect = document.querySelectorAll('select');
   let instancesSelect = M.FormSelect.init(elemsSelect, null);
   const arrayofDataObjs = {
@@ -188,32 +165,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
     } else if (!(platforms.includes("DISLP"))) {
       displayNone('disLp');
-      // displayNone('disLp2')
       displayNone('dislpIcon');
     }
     if (platforms.includes("CTVLP")) {
       displayBlock('ctvLp');
-      // displayBlock('disLp2')
       displayBlock('ctvlpIcon');
-
     } else if (!(platforms.includes("CTVLP"))) {
       displayNone('ctvLp');
-      // displayNone('disLp2')
       displayNone('ctvlpIcon');
     }
   });
 });
 let serverCampaignName;
+let advertiserId;
+let landingPageforDCMlandingPageId;
 
 function generateOutput() {
-  //display trafficiking sheet table and export to excel button
-  //updateSignInStatus();
+
   displayBlock('tsTable');
   displayBlock('nonTableSection');
   displayBlock('check_circle');
   displayNone('exptToExcel');
   displayNone('toCreateJiraTkt');
-
   let yourName = getValueById('requester');
   let brand = getValueByClassName('brands');
   if (!brand) {
@@ -278,7 +251,6 @@ function generateOutput() {
   let subTargeting = getValueById('subTargeting');
   let cost = getValueById('cost');
   let regex = /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
-
   let andLpLc;
   let iosLpLc;
   let dskLpLc;
@@ -346,15 +318,6 @@ function generateOutput() {
         return;
       }
     }
-    // let mobLp2 = getValueById('mobLp2');
-    // if (mobLp2) {
-    //    mobLp2Lc = mobLp2.toLowerCase();
-    //   if (!regex.test(mobLp2Lc)) {
-    //     $('#modal-trigger')[0].click();
-    //     getElementById('modal1text').innerHTML = "Please enter a proper URL."
-    //     return;
-    //   }
-    // }
     let disLp = getElementById('disLp').value;
     if (platforms.toString() == "DISLP") {
       if (disLp) {
@@ -370,7 +333,6 @@ function generateOutput() {
         return;
       }
     }
-
     let ctvLp = getElementById('ctvLp').value;
     if (platforms.toString() == "CTVLP") {
       if (ctvLp) {
@@ -387,24 +349,13 @@ function generateOutput() {
       }
     }
   }
-  // let disLp2 = getValueById('disLp2');
-  // if (disLp2) {
-  //    disLp2Lc = disLp2.toLowerCase();
-  //   if (!regex.test(disLp2Lc)) {
-  //     $('#modal-trigger')[0].click();
-  //     getElementById('modal1text').innerHTML = "Please enter a proper URL."
-  //     return;
-  //   }
-  // }
   let kpi = getValueByClassName('kpis');
   let buyingMetric = getValueByClassName('buyingMetrics');
   let date_range = getValueById('startDate') + " - " + getValueById('endDate');
   let getCardClass = document.querySelector('.card-content');
   getCardClass.innerHTML = `
   <p>KPI  - ${kpi}</p>
-  <!-- <p>BUYING METRIC - ${buyingMetric}</p> -->
   <p>FLIGHT DATES - ${date_range}</p>
-  <br/>
   <p>TS REQUESTER - ${yourName}</p>
 `;
 
@@ -446,17 +397,12 @@ function generateOutput() {
         let lowerCasePlatformsSelected;
         if (platformSelected.search("LP") > 1) {
           lowerCasePlatformsSelected = platformSelected[0].toLowerCase() + platformSelected[1].toLowerCase() + platformSelected[2].toLowerCase() + platformSelected[3] + platformSelected[4].toLowerCase();
-          // if(lowerCasePlatformsSelected == "mobLp"){
-          //   lowerCasePlatformsSelected = lowerCasePlatformsSelected+"1";
-          // }
           landingPage = document.getElementById(lowerCasePlatformsSelected).value;
+          landingPageforDCMlandingPageId = landingPage;
           console.log("landingPage      " + landingPage);
         }
         let tsData = new Array();
         let createTr = document.createElement("tr");
-        // let contentEditable = document.createAttribute("contenteditable");
-        // contentEditable.value = "true";
-        // createTr.setAttributeNode(contentEditable);
         let createTrPlcmnt = document.createElement("tr");
         tsTBE.appendChild(createTr);
         placementTBE.appendChild(createTrPlcmnt);
@@ -491,15 +437,39 @@ function generateOutput() {
         }
 
         let chosenDimension;
+        var ibtnRemove = document.createElement('i');
+        ibtnRemove.setAttribute('class', 'material-icons');
+        ibtnRemove.innerHTML = 'delete';
+        var buttonrm = document.createElement('a');
+
+        // set the attributes.
+        buttonrm.setAttribute('type', 'button');
+        //buttonrm.setAttribute('value', 'Remove');
+        buttonrm.setAttribute('class', 'waves-effect waves-light btn-small');
+        buttonrm.appendChild(ibtnRemove);
+
+        var ibtncpy = document.createElement('i');
+        ibtncpy.setAttribute('class', 'material-icons');
+        ibtncpy.innerHTML = 'add';
+        var buttoncpy = document.createElement('a');
+        // set the attributes.
+        buttoncpy.setAttribute('type', 'button');
+        //buttoncpy.setAttribute('value', 'Copy');
+        buttoncpy.setAttribute('class', 'waves-effect waves-light btn-small');
+        buttoncpy.appendChild(ibtncpy);
         tsData.push(brand, country, truncatedPlatform, campaignName.trim(), budgetCode, agency.trim(), buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), subAdDimensionsSelected.trim(), targetingSelected, subTargeting, deliverables, buyingMetric, cost, landingPage);
         tsData.forEach(function(tableElement, indexTSData) {
-
           let createTd = document.createElement("td");
           let contentEditable = document.createAttribute("contenteditable");
           contentEditable.value = "true";
           createTd.setAttributeNode(contentEditable);
           createTd.innerHTML = tableElement;
           createTr.appendChild(createTd);
+          buttonrm.setAttribute('onclick', 'removeRow(this)');
+          //    ,\'' + createTr + '\', \'' + createTrPlcmnt + '\'
+          buttoncpy.setAttribute('onclick', 'cpyRow(this)');
+          createTr.appendChild(buttonrm);
+          createTr.appendChild(buttoncpy);
         });
         let tsDtFrPlacmntNme = new Array();
         if (truncatedPlatform == "Desktop") {
@@ -514,7 +484,7 @@ function generateOutput() {
         if (buyingPlatforms === "Direct") {
           networkPublisher = (agency + publisherOrNetwork).toUpperCase();
         }
-        console.log("networkPublisher    " + networkPublisher);
+        advertiserId = advertIdsDCM[country];
         serverCampaignName = brandCode + " " + country + " " + campaignName + " " + budgetCode + " " + new Date().getFullYear();
         let placementTableArray = new Array();
         if (iOSLandingPage === undefined) {
@@ -522,20 +492,19 @@ function generateOutput() {
         } else if (andLandingPage === undefined) {
           andLandingPage = "AppStore";
         }
-        console.log("iOSLandingPage " + iOSLandingPage);
-        console.log("andLandingPage " + andLandingPage);
-        console.log("dskLandingPage " + dskLandingPage);
         placementTableArray.push(placementName, iOSLandingPage, andLandingPage, dskLandingPage, networkPublisher, "Display", "dcm", deliverables, serverCampaignName, buyingMetric, cost, kpi, getValueById('startDate'), getValueById('endDate'));
-        placementTableArray.forEach(function(tableElement, indexplTData) {
+        placementTableArray.forEach(function(tableElementPlTblArr, indexplTData) {
           let createTdPlTb = document.createElement("td");
-          createTdPlTb.innerHTML = tableElement;
+          createTdPlTb.innerHTML = tableElementPlTblArr;
           createTrPlcmnt.appendChild(createTdPlTb);
+          // buttoncpypl.setAttribute('onclick', 'cpyRow(this)');
+          // createTrPlcmnt.appendChild(buttoncpypl);
         });
       });
     });
   });
 
-
+  checkTsTableLength();
 }
 
 function fnExcelReport() {
@@ -552,7 +521,7 @@ function fnExcelReport() {
   updateSignInStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
 
   if (tbl != null && placementTable != null) {
-    for (var i = 2; i < tbl.rows.length; i++) {
+    for (var i = 1; i < tbl.rows.length; i++) {
       let tsDtInnerFrPlacmntNmeNew = [];
       let brandNew;
       for (var j = 0; j <= 15; j++) {
@@ -562,8 +531,8 @@ function fnExcelReport() {
       tsDtInnerFrPlacmntNmeNew.splice(0, 1, brands[tbl.rows[i].cells.item(0).innerHTML]);
       tsDtInnerFrPlacmntNmeNew.splice(2, 1, platformCodes[tbl.rows[i].cells.item(2).innerHTML]);
       tsDtInnerFrPlacmntNmeNew.join("-");
-      tsDtInnerFrPlacmntNmeNew.splice(13, 0, amsIdArr[i - 2]);
-      amsIdUsedArr.push(amsIdArr[i - 2]);
+      tsDtInnerFrPlacmntNmeNew.splice(13, 0, amsIdArr[i - 1]);
+      amsIdUsedArr.push(amsIdArr[i - 1]);
       let joinedtsDtInnerFrPlacmntNmeNew = tsDtInnerFrPlacmntNmeNew.join("-");
       console.log("PlcmntNmeNew    " + joinedtsDtInnerFrPlacmntNmeNew);
       document.getElementById("placementTable").rows[i].cells.item(0).innerHTML = joinedtsDtInnerFrPlacmntNmeNew;
@@ -573,7 +542,6 @@ function fnExcelReport() {
     }
   }
 
-  console.log("tbl before  " + tbl.rows[2].cells.item(18).innerHTML);
 
   TableToExcel.convert(tsTable, {
     name: `TS_` + serverCampaignName + "_" + d + `.xlsx`,
@@ -609,7 +577,7 @@ function fnExcelReport() {
 
 
 
-
+//9374
 
 //function to display an element
 const displayBlock = elementId => {
@@ -655,7 +623,7 @@ function initClient() {
   //   'https://www.googleapis.com/auth/drive'
   //   'https://www.googleapis.com/auth/drive.file'
   //   'https://www.googleapis.com/auth/spreadsheets'
-  var SCOPE = 'https://www.googleapis.com/auth/spreadsheets';
+  var SCOPE = 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/dfatrafficking';
 
   gapi.client.init({
     'apiKey': API_KEY,
@@ -774,7 +742,7 @@ function batchUpdateValues(spreadsheetId, range, valueInputOption, _values, call
         .then((response) => {
           var result = response.result;
           console.log(`${result.totalUpdatedCells} cells updated.`);
-          callbackAfterUpdate(response);
+          loadDFAClient();
         });
     }, function(reason) {
       console.error('error: ' + reason.result.error.message);
@@ -804,4 +772,118 @@ function getValues(spreadsheetId, range, callback) {
   });
 
   // [END sheets_get_values]
+}
+
+//create campaignName
+
+function loadDFAClient() {
+  return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/dfareporting/v3.4/rest")
+    .then(function() {
+        console.log("GAPI client loaded for API");
+        getUserProfileIdAndInsertLandingPage();
+      },
+      function(err) {
+        console.error("Error loading GAPI client for API", err);
+
+      });
+}
+// Make sure the client is loaded and sign-in is complete before calling this method.
+let profileId;
+let landingPageId;
+
+// Create Campaign on DCM
+
+function createCampaignOnDCM() {
+  let startDate = new Date().toISOString().slice(0, 10);
+  let endDate = new Date("2021-12-31").toISOString().slice(0, 10);
+
+  gapi.client.dfareporting.campaigns.insert({
+      "profileId": profileId,
+      "resource": {
+        "advertiserId": advertiserId,
+        "accountId": 470006,
+        "endDate": endDate,
+        "startDate": startDate,
+        "name": serverCampaignName + "FT TRACKING",
+        "defaultLandingPageId": landingPageId
+      }
+    })
+    .then(function(response) {
+        // Handle the results here (response.result has the parsed body).
+        console.log("Response", response);
+      },
+      function(err) {
+        console.error("Campaign Creation error error", err);
+      });
+}
+
+// get DCM userProfile & insert a landing Page
+
+function getUserProfileIdAndInsertLandingPage() {
+
+  gapi.client.dfareporting.userProfiles.list({})
+    .then(function(response) {
+        // Handle the results here (response.result has the parsed body).
+        console.log("Get UserProfile Response", response);
+        profileId = Number(JSON.parse(response.body).items[0].profileId);
+        console.log("profileId --" + profileId);
+        getLandingePageId();
+      },
+      function(err) {
+        console.error("Get UserProfile Execute error", err);
+      });
+
+}
+
+
+// get DCM landing Page ID
+
+function getLandingePageId() {
+  console.log(" Profile Id in getLandingPagId  " + profileId);
+  gapi.client.dfareporting.advertiserLandingPages.insert({
+      "profileId": profileId,
+      "resource": {
+        "advertiserId": advertiserId,
+        "name": serverCampaignName.trim(),
+        "url": landingPageforDCMlandingPageId,
+      }
+    })
+    .then(function(response) {
+        // Handle the results here (response.result has the parsed body).
+        console.log("AdvLandingPage Insert Response", response);
+        landingPageId = (JSON.parse(response.body)).id;
+        console.log("landingPageId -- " + landingPageId);
+        createCampaignOnDCM();
+      },
+      function(err) {
+        console.error("AdvLandingPage Insert Execute error", err);
+        alert("No DCM Campaign  created");
+      });
+}
+
+
+function removeRow(oButton) {
+  var empTab = document.getElementById('tsTable');
+  empTab.deleteRow(oButton.parentNode.rowIndex); // buttton -> td -> tr
+  var plcmntTab = document.getElementById('placementTable');
+  plcmntTab.deleteRow(oButton.parentNode.rowIndex); // buttton -> td -> tr
+  checkTsTableLength();
+}
+
+function cpyRow(oButton) {
+  var empTab = document.getElementById('tsTable');
+  var tsRow = oButton.parentNode;
+  var newRow = tsRow.cloneNode(true);
+  empTab.appendChild(newRow);
+  var plcmntTab = document.getElementById('placementTable');
+  var plRow = plcmntTab.rows[oButton.parentNode.rowIndex];
+  var newPlRow = plRow.cloneNode(true);
+  plcmntTab.appendChild(newPlRow);
+}
+
+function checkTsTableLength(){
+  var x = document.getElementById("tsTable").rows.length - 1;
+  console.log("x "+x);
+  document.getElementById("showTableRows").innerHTML = x + " entries in the table.";
+  return;
 }
