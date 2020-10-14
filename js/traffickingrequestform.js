@@ -512,7 +512,6 @@ function fnExcelReport() {
   var d = n.split("/")[2] + n.split("/")[1] + n.split("/")[0];
   let tsTable = getElementById("tsTable");
   var tbl = document.getElementById("tsTable");
-  console.log("tbl  " + tbl.rows[2].cells.item(18).innerHTML);
   let placementTable = getElementById("placementTable");
   //console.log("placementTable  "+placementTable.rows[0].cells.item(18).innerHTML);
   let tsDtFrPlacmntNmeNew = [];
@@ -549,8 +548,6 @@ function fnExcelReport() {
       name: `TS_` + serverCampaignName + "_" + d
     }
   });
-  console.log("tbl after  " + tbl.rows[2].cells.item(18).innerHTML);
-
 
   TableToExcel.convert(placementTable, {
     name: `URLBuilderUpload_` + serverCampaignName + "_" + d + `.csv`,
