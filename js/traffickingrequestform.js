@@ -9,6 +9,8 @@ let collectAmsData = [];
 let updatingValues;
 let updatedAMSArr;
 let tsTBE;
+let gSheetToUpdate = 'Sheet1!B:C';
+let paidSocialCampaign;
 document.addEventListener('DOMContentLoaded', function() {
 
   //   document.querySelectorAll('trim').addEventListener("change", event => {
@@ -220,6 +222,11 @@ function generateOutput() {
     getElementById('modal1text').innerHTML = "Please select an agency."
     return;
   }
+  if (budgetCode == 'PAIDSOCIAL' || agency == 'Outflink') {
+    gSheetToUpdate = 'Sheet2!B:C';
+    paidSocialCampaign = true;
+  }
+
   let buyingPlatforms = getValueByClassName('networkNamesList');
   if (!buyingPlatforms) {
     $('#modal-trigger')[0].click();
@@ -455,7 +462,7 @@ function generateOutput() {
         //buttoncpy.setAttribute('value', 'Copy');
         buttoncpy.setAttribute('class', 'waves-effect waves-light btn-small');
         buttoncpy.appendChild(ibtncpy);
-        tsData.push(brand, country, truncatedPlatform, campaignName.replace(/\s/g,''), budgetCode, agency.replace(/\s/g,''), buyingPlatforms, publisherOrNetwork.replace(/\s/g,''), subSite.replace(/\s/g,''), audience.replace(/\s/g,''), vertical.replace(/\s/g,''), message.replace(/\s/g,''), offer.replace(/\s/g,''), subAdDimensionsSelected.replace(/\s/g,''), targetingSelected, subTargeting.replace(/\s/g,''), deliverables, buyingMetric, cost, landingPage);
+        tsData.push(brand, country, truncatedPlatform, campaignName.replace(/\s/g, ''), budgetCode, agency.replace(/\s/g, ''), buyingPlatforms, publisherOrNetwork.replace(/\s/g, ''), subSite.replace(/\s/g, ''), audience.replace(/\s/g, ''), vertical.replace(/\s/g, ''), message.replace(/\s/g, ''), offer.replace(/\s/g, ''), subAdDimensionsSelected.replace(/\s/g, ''), targetingSelected, subTargeting.replace(/\s/g, ''), deliverables, buyingMetric, cost, landingPage);
         tsData.forEach(function(tableElement, indexTSData) {
           let createTd = document.createElement("td");
           let contentEditable = document.createAttribute("contenteditable");
@@ -476,7 +483,7 @@ function generateOutput() {
           truncatedPlatform = "AND";
         }
         let brandCode = brands[brand];
-        tsDtFrPlacmntNme.push(brandCode, country, truncatedPlatform, campaignName.replace(/\s/g,''), budgetCode, agency.replace(/\s/g,''), buyingPlatforms, publisherOrNetwork.replace(/\s/g,''), subSite.replace(/\s/g,''), audience.replace(/\s/g,''), vertical.replace(/\s/g,''), message.replace(/\s/g,''), offer.replace(/\s/g,''), "amsId", subAdDimensionsSelected.replace(/\s/g,''), targetingSelected, subTargeting.replace(/\s/g,''), buyingMetric, cost, landingPage);
+        tsDtFrPlacmntNme.push(brandCode, country, truncatedPlatform, campaignName.replace(/\s/g, ''), budgetCode, agency.replace(/\s/g, ''), buyingPlatforms, publisherOrNetwork.replace(/\s/g, ''), subSite.replace(/\s/g, ''), audience.replace(/\s/g, ''), vertical.replace(/\s/g, ''), message.replace(/\s/g, ''), offer.replace(/\s/g, ''), "amsId", subAdDimensionsSelected.replace(/\s/g, ''), targetingSelected, subTargeting.replace(/\s/g, ''), buyingMetric, cost, landingPage);
         placementName = tsDtFrPlacmntNme.join("-");
         let networkPublisher = (agency + buyingPlatforms).toUpperCase();
         if (buyingPlatforms === "Direct") {
@@ -501,11 +508,12 @@ function generateOutput() {
       });
     });
   });
-
+  getValues("1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0", gSheetToUpdate, callback);
   checkTsTableLength();
 }
 
 function fnExcelReport() {
+
   var n = new Date().toLocaleDateString();
   var d = n.split("/")[2] + n.split("/")[1] + n.split("/")[0];
   let tsTable = getElementById("tsTable");
@@ -566,8 +574,7 @@ function fnExcelReport() {
     return c;
   }, []);
   console.log(" updatingValues " + updatingValues[0]);
-  batchUpdateValues('1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0', 'Sheet1!B:C', 'USER_ENTERED', updatingValues, callback);
-
+  batchUpdateValues('1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0', gSheetToUpdate, 'USER_ENTERED', updatingValues, callback);
 }
 
 
@@ -637,7 +644,7 @@ function handleClientLoad() {
 
 function updateSignInStatus(isSignedIn) {
   if (isSignedIn) {
-    getValues("1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0", "Sheet1!B:C", callback);
+    //getValues("1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0", gSheetToUpdate, callback);
     document.querySelector("#modalInitial > div.modal-content > p").innerText = "Welcome " + gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
     document.querySelector("#requester").value = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
     displayBlock("closeModal");
@@ -737,7 +744,11 @@ function batchUpdateValues(spreadsheetId, range, valueInputOption, _values, call
         .then((response) => {
           var result = response.result;
           console.log(`${result.totalUpdatedCells} cells updated.`);
-          loadDFAClient();
+          if (paidSocialCampaign) {
+            callbackAfterUpdate();
+          } else {
+            loadDFAClient();
+          }
         });
     }, function(reason) {
       console.error('error: ' + reason.result.error.message);
@@ -797,7 +808,8 @@ function createCampaignOnDCM() {
     .then(function(response) {
         // Handle the results here (response.result has the parsed body).
         if ((response.result.campaigns.filter(p => p.name == serverCampaignName + " FT TRACKING"))[0]) {
-          alert("Campaign Exists in DCM. No new campaign created");
+          $('#modal-trigger')[0].click();
+          getElementById('modal1text').innerHTML = "Campaign Exists in DCM. AdOps will add placements to that one. Please submit URLbuilder and TS sheets";
         } else {
           gapi.client.dfareporting.campaigns.insert({
               "profileId": profileId,
@@ -813,6 +825,7 @@ function createCampaignOnDCM() {
             .then(function(response) {
                 // Handle the results here (response.result has the parsed body).
                 console.log("Response", response);
+                callbackAfterUpdate();
               },
               function(err) {
                 console.error("Campaign Creation error", err);
@@ -853,7 +866,7 @@ function getLandingePageId() {
       "profileId": profileId,
       "resource": {
         "advertiserId": advertiserId,
-        "name": serverCampaignName.replace(/\s/g,''),
+        "name": serverCampaignName.replace(/\s/g, ''),
         "url": landingPageforDCMlandingPageId,
       }
     })
@@ -866,7 +879,9 @@ function getLandingePageId() {
       },
       function(err) {
         console.error("AdvLandingPage Insert Execute error", err);
-        alert("No DCM Campaign created, landing page error");
+        //alert("No DCM Campaign created, landing page error");
+        $('#modal-trigger')[0].click();
+        getElementById('modal1text').innerHTML = "No DCM Campaign created, please submit URLbuilder and TS sheets sheet to AdOps and they will sort it out.";
       });
 }
 
