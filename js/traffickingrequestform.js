@@ -11,10 +11,8 @@ let updatedAMSArr;
 let tsTBE;
 document.addEventListener('DOMContentLoaded', function() {
 
-  //   document.querySelector('#tsTable tr').addEventListener("click", event => {
-  //     console.log(" inside this listner "+document.querySelector('#tsTable tbody'));
-  // var x = document.getElementById("tsTable").rows.length-1;
-  // document.getElementById("showTableRows").innerHTML = x + " entries in the table.";
+  //   document.querySelectorAll('trim').addEventListener("change", event => {
+  //     document.querySelectorAll('trim')[0].value.trim;
   // });
   $(document).on('click', '#tsTable tr', function() {
     checkTsTableLength();
@@ -122,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
       displayNone('dskLp');
       displayNone('mobLp');
       //displayNone('mobLp2')
-      displayNone('dskLpIcon');
+      displayNone('dsklpIcon');
       displayNone('mobLp1Icon');
       displayNone('ctvLpIcon');
     }
@@ -457,7 +455,7 @@ function generateOutput() {
         //buttoncpy.setAttribute('value', 'Copy');
         buttoncpy.setAttribute('class', 'waves-effect waves-light btn-small');
         buttoncpy.appendChild(ibtncpy);
-        tsData.push(brand, country, truncatedPlatform, campaignName.trim(), budgetCode, agency.trim(), buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), subAdDimensionsSelected.trim(), targetingSelected, subTargeting, deliverables, buyingMetric, cost, landingPage);
+        tsData.push(brand, country, truncatedPlatform, campaignName.replace(/\s/g,''), budgetCode, agency.replace(/\s/g,''), buyingPlatforms, publisherOrNetwork.replace(/\s/g,''), subSite.replace(/\s/g,''), audience.replace(/\s/g,''), vertical.replace(/\s/g,''), message.replace(/\s/g,''), offer.replace(/\s/g,''), subAdDimensionsSelected.replace(/\s/g,''), targetingSelected, subTargeting.replace(/\s/g,''), deliverables, buyingMetric, cost, landingPage);
         tsData.forEach(function(tableElement, indexTSData) {
           let createTd = document.createElement("td");
           let contentEditable = document.createAttribute("contenteditable");
@@ -478,7 +476,7 @@ function generateOutput() {
           truncatedPlatform = "AND";
         }
         let brandCode = brands[brand];
-        tsDtFrPlacmntNme.push(brandCode, country, truncatedPlatform, campaignName.trim(), budgetCode, agency.trim(), buyingPlatforms, publisherOrNetwork.trim(), subSite.trim(), audience, vertical.trim(), message.trim(), offer.trim(), "amsId", subAdDimensionsSelected.trim(), targetingSelected, subTargeting, buyingMetric, cost, landingPage);
+        tsDtFrPlacmntNme.push(brandCode, country, truncatedPlatform, campaignName.replace(/\s/g,''), budgetCode, agency.replace(/\s/g,''), buyingPlatforms, publisherOrNetwork.replace(/\s/g,''), subSite.replace(/\s/g,''), audience.replace(/\s/g,''), vertical.replace(/\s/g,''), message.replace(/\s/g,''), offer.replace(/\s/g,''), "amsId", subAdDimensionsSelected.replace(/\s/g,''), targetingSelected, subTargeting.replace(/\s/g,''), buyingMetric, cost, landingPage);
         placementName = tsDtFrPlacmntNme.join("-");
         let networkPublisher = (agency + buyingPlatforms).toUpperCase();
         if (buyingPlatforms === "Direct") {
@@ -525,7 +523,7 @@ function fnExcelReport() {
       let brandNew;
       for (var j = 0; j <= 15; j++) {
         tsDtInnerFrPlacmntNmeNew.push(tbl.rows[i].cells.item(j).innerHTML);
-        console.log("row item    " + j + "  " + tbl.rows[i].cells.item(j).innerHTML);
+        //console.log("row item    " + j + "  " + tbl.rows[i].cells.item(j).innerHTML);
       }
       tsDtInnerFrPlacmntNmeNew.splice(0, 1, brands[tbl.rows[i].cells.item(0).innerHTML]);
       tsDtInnerFrPlacmntNmeNew.splice(2, 1, platformCodes[tbl.rows[i].cells.item(2).innerHTML]);
@@ -793,25 +791,39 @@ let landingPageId;
 function createCampaignOnDCM() {
   let startDate = new Date().toISOString().slice(0, 10);
   let endDate = new Date("2021-12-31").toISOString().slice(0, 10);
-
-  gapi.client.dfareporting.campaigns.insert({
-      "profileId": profileId,
-      "resource": {
-        "advertiserId": advertiserId,
-        "accountId": 470006,
-        "endDate": endDate,
-        "startDate": startDate,
-        "name": serverCampaignName + " FT TRACKING",
-        "defaultLandingPageId": landingPageId
-      }
+  gapi.client.dfareporting.campaigns.list({
+      "profileId": 5624416
     })
     .then(function(response) {
         // Handle the results here (response.result has the parsed body).
-        console.log("Response", response);
+        if ((response.result.campaigns.filter(p => p.name == serverCampaignName + " FT TRACKING"))[0]) {
+          alert("Campaign Exists in DCM. No new campaign created");
+        } else {
+          gapi.client.dfareporting.campaigns.insert({
+              "profileId": profileId,
+              "resource": {
+                "advertiserId": advertiserId,
+                "accountId": 470006,
+                "endDate": endDate,
+                "startDate": startDate,
+                "name": serverCampaignName + " FT TRACKING",
+                "defaultLandingPageId": landingPageId
+              }
+            })
+            .then(function(response) {
+                // Handle the results here (response.result has the parsed body).
+                console.log("Response", response);
+              },
+              function(err) {
+                console.error("Campaign Creation error", err);
+              });
+        };
       },
       function(err) {
-        console.error("Campaign Creation error error", err);
+        console.error("Execute error", err);
       });
+
+
 }
 
 // get DCM userProfile & insert a landing Page
@@ -841,7 +853,7 @@ function getLandingePageId() {
       "profileId": profileId,
       "resource": {
         "advertiserId": advertiserId,
-        "name": serverCampaignName.trim(),
+        "name": serverCampaignName.replace(/\s/g,''),
         "url": landingPageforDCMlandingPageId,
       }
     })
@@ -854,7 +866,7 @@ function getLandingePageId() {
       },
       function(err) {
         console.error("AdvLandingPage Insert Execute error", err);
-        alert("No DCM Campaign  created");
+        alert("No DCM Campaign created, landing page error");
       });
 }
 
@@ -878,9 +890,9 @@ function cpyRow(oButton) {
   plcmntTab.appendChild(newPlRow);
 }
 
-function checkTsTableLength(){
+function checkTsTableLength() {
   var x = document.getElementById("tsTable").rows.length - 1;
-  console.log("x "+x);
-  document.getElementById("showTableRows").innerHTML = x + " entries in the table.";
+  console.log("x " + x);
+  document.getElementById("showTableRows").innerHTML = x + " placements";
   return;
 }
