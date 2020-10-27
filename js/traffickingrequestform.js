@@ -486,7 +486,7 @@ function generateOutput() {
         tsDtFrPlacmntNme.push(brandCode, country, truncatedPlatform, campaignName.replace(/\s/g, ''), budgetCode, agency.replace(/\s/g, ''), buyingPlatforms, publisherOrNetwork.replace(/\s/g, ''), subSite.replace(/\s/g, ''), audience.replace(/\s/g, ''), vertical.replace(/\s/g, ''), message.replace(/\s/g, ''), offer.replace(/\s/g, ''), "amsId", subAdDimensionsSelected.replace(/\s/g, ''), targetingSelected, subTargeting.replace(/\s/g, ''), buyingMetric, cost, landingPage);
         placementName = tsDtFrPlacmntNme.join("-");
         let networkPublisher = (agency + buyingPlatforms).toUpperCase();
-        if (buyingPlatforms === "Direct") {
+        if (buyingPlatforms === "Direct" || buyingPlatforms === "DIRECT") {
           networkPublisher = (agency + publisherOrNetwork).toUpperCase();
         }
         advertiserId = advertIdsDCM[country];
@@ -649,6 +649,7 @@ function updateSignInStatus(isSignedIn) {
     document.querySelector("#requester").value = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
     displayBlock("closeModal");
     displayNone("signinOnLoad");
+    justLoadDFAClient();
   }
 }
 
@@ -780,7 +781,7 @@ function getValues(spreadsheetId, range, callback) {
   // [END sheets_get_values]
 }
 
-//create campaignName
+//loadDFAClient & Call to create Campaign
 
 function loadDFAClient() {
   return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/dfareporting/v3.4/rest")
@@ -803,7 +804,7 @@ function createCampaignOnDCM() {
   let startDate = new Date().toISOString().slice(0, 10);
   let endDate = new Date("2021-12-31").toISOString().slice(0, 10);
   gapi.client.dfareporting.campaigns.list({
-      "profileId": 5624416
+      "profileId": profileId
     })
     .then(function(response) {
         // Handle the results here (response.result has the parsed body).
@@ -910,4 +911,17 @@ function checkTsTableLength() {
   console.log("x " + x);
   document.getElementById("showTableRows").innerHTML = x + " placements";
   return;
+}
+
+//just load DFA client on load of the page
+function justLoadDFAClient() {
+  return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/dfareporting/v3.4/rest")
+    .then(function() {
+        console.log("GAPI client loaded for API");
+        //getUserProfileIdAndInsertLandingPage();
+      },
+      function(err) {
+        console.error("Error loading GAPI client for API", err);
+
+      });
 }
