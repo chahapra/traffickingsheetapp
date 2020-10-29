@@ -222,7 +222,7 @@ function generateOutput() {
     getElementById('modal1text').innerHTML = "Please select an agency."
     return;
   }
-  if (budgetCode == 'PAIDSOCIAL' || agency == 'Outflink') {
+  if (budgetCode == 'PAIDSOCIAL' || agency == 'Outflink' || agency == 'outflink' || agency == 'OUTFLINK') {
     gSheetToUpdate = 'Sheet2!B:C';
     paidSocialCampaign = true;
   }
@@ -797,12 +797,12 @@ function loadDFAClient() {
 // Make sure the client is loaded and sign-in is complete before calling this method.
 let profileId;
 let landingPageId;
-
+let startDate = new Date().toISOString().slice(0, 10);
+let endDate = new Date("2022-01-31").toISOString().slice(0, 10);
 // Create Campaign on DCM
 
 function createCampaignOnDCM() {
-  let startDate = new Date().toISOString().slice(0, 10);
-  let endDate = new Date("2021-12-31").toISOString().slice(0, 10);
+
   gapi.client.dfareporting.campaigns.list({
       "profileId": profileId
     })
@@ -827,6 +827,7 @@ function createCampaignOnDCM() {
                 // Handle the results here (response.result has the parsed body).
                 console.log("Response", response);
                 callbackAfterUpdate();
+                //createPlacements();
               },
               function(err) {
                 console.error("Campaign Creation error", err);
@@ -885,6 +886,46 @@ function getLandingePageId() {
         getElementById('modal1text').innerHTML = "No DCM Campaign created, please submit URLbuilder and TS sheets sheet to AdOps and they will sort it out.";
       });
 }
+
+// function to create placement names
+let siteId;
+
+function createPlacements() {
+
+  return gapi.client.dfareporting.placements.insert({
+      "profileId": profileId,
+      "resource": {
+        "accountId": 470006,
+        "siteId": 5916554,
+        "name": placementNameUsedArr[1],
+        "compatibility": "DISPLAY",
+        "externalId": "1234",
+        "campaignId": 24824452,
+        "tagFormats": [
+          "PLACEMENT_TAG_STANDARD"
+        ],
+        "pricingSchedule": {
+          "endDate": endDate,
+          "startDate": startDate,
+          "pricingType": "PRICING_TYPE_CPM"
+        },
+        "size": {
+          "height": 250,
+          "width": 300
+        },
+        "paymentSource": "PLACEMENT_AGENCY_PAID"
+      }
+    })
+    .then(function(response) {
+        // Handle the results here (response.result has the parsed body).
+        console.log("Response", response);
+        callbackAfterUpdate();
+      },
+      function(err) {
+        console.error("Execute error", err);
+      });
+}
+
 
 
 function removeRow(oButton) {
