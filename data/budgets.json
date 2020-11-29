@@ -7,5 +7,6 @@ budgets = {
   "App Search Optimization": null,
   "PAIDSOCIAL": null,
   "CRM": null,
-  "ADDITIONAL": null
+  "ADDITIONAL": null,
+  "BRP002" : null
 }

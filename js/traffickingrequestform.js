@@ -4,12 +4,17 @@ let placementName;
 let amsId;
 let amsIdUsedArr = [];
 let placementNameUsedArr = [];
+let profileNamePsuedoArr = [];
+let profileName;
+let buyingMetricArr = [];
+let costArr = []
+let forAMSsystem = [];
 let openOutputSectionModal = true;
 let collectAmsData = [];
 let updatingValues;
 let updatedAMSArr;
 let tsTBE;
-let gSheetToUpdate = 'Sheet1!B:C';
+let gSheetToUpdate = 'Sheet1!B:H';
 let paidSocialCampaign;
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -123,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
       displayNone('mobLp');
       //displayNone('mobLp2')
       displayNone('dsklpIcon');
-      displayNone('mobLp1Icon');
+      displayNone('moblpIcon');
       displayNone('ctvLpIcon');
     }
     if (platforms.includes("ANDLP")) {
@@ -508,12 +513,16 @@ function generateOutput() {
       });
     });
   });
-  getValues("1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0", gSheetToUpdate, callback);
+
   checkTsTableLength();
 }
 
-function fnExcelReport() {
+function getvaluesandexport() {
+  getValues("1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0", gSheetToUpdate, fnExcelReport);
+}
 
+function fnExcelReport() {
+  console.log("control is in export to excel");
   var n = new Date().toLocaleDateString();
   var d = n.split("/")[2] + n.split("/")[1] + n.split("/")[0];
   let tsTable = getElementById("tsTable");
@@ -544,6 +553,10 @@ function fnExcelReport() {
       //document.getElementById("placementTable").rows[i].cells.item(i).innerHTML = joinedtsDtInnerFrPlacmntNmeNew;
       tsDtFrPlacmntNmeNew.push(joinedtsDtInnerFrPlacmntNmeNew);
       placementNameUsedArr.push(joinedtsDtInnerFrPlacmntNmeNew);
+      forAMSsystem.push(joinedtsDtInnerFrPlacmntNmeNew + ", " + amsIdArr[i - 1] + ", " + "DEFAULT");
+      buyingMetricArr.push(tbl.rows[i].cells.item(17).innerHTML);
+      costArr.push(tbl.rows[i].cells.item(18).innerHTML);
+      profileNamePsuedoArr.push(profileName);
     }
   }
 
@@ -564,16 +577,18 @@ function fnExcelReport() {
 
   // handleSignInClick();
   // updateSignInStatus();
-  console.log(amsIdUsedArr);
-  console.log(placementNameUsedArr);
-  updatingValues = [amsIdUsedArr, placementNameUsedArr].reduce((c, v) => {
+  // console.log("amsIdUsedArr " + amsIdUsedArr);
+  // console.log("placementNameUsedArr " + placementNameUsedArr);
+  // console.log("forAMSsystem " + forAMSsystem);
+  // console.log("profileName " + profileNamePsuedoArr);
+  updatingValues = [amsIdUsedArr, placementNameUsedArr, forAMSsystem, buyingMetricArr, costArr, profileNamePsuedoArr].reduce((c, v) => {
     v.forEach((o, i) => {
       c[i] = c[i] || [];
       c[i].push(o);
     });
     return c;
   }, []);
-  console.log(" updatingValues " + updatingValues[0]);
+
   batchUpdateValues('1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0', gSheetToUpdate, 'USER_ENTERED', updatingValues, callback);
 }
 
@@ -642,9 +657,11 @@ function handleClientLoad() {
   gapi.load('client:auth2', initClient);
 }
 
+
 function updateSignInStatus(isSignedIn) {
   if (isSignedIn) {
     //getValues("1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0", gSheetToUpdate, callback);
+    profileName = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
     document.querySelector("#modalInitial > div.modal-content > p").innerText = "Welcome " + gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
     document.querySelector("#requester").value = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
     displayBlock("closeModal");
@@ -660,8 +677,8 @@ function handleSignInClick(event) {
     console.log("response  " + response);
   }, function(error) {
     //If Google OAuth 2 occured error
-    console.log("error" + error);
-
+    console.log("error " + error);
+    
   });
   // if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
   //   document.querySelector("#modalInitial > div.modal-content > p").innerText = "User Authorized, welcome " + gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
@@ -690,10 +707,10 @@ function callbackAfterUpdate(response) {
 
 function batchUpdateValues(spreadsheetId, range, valueInputOption, _values, callback) {
 
-  // console.log(spreadsheetId);
-  // console.log(range);
-  // console.log(valueInputOption);
-  // console.log(_values);
+  console.log(spreadsheetId);
+  console.log(range);
+  console.log(valueInputOption);
+  console.log(" values " + _values);
 
   // spreadsheetId = "1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0";
   // range = "Sheet1!B:C";
@@ -712,22 +729,40 @@ function batchUpdateValues(spreadsheetId, range, valueInputOption, _values, call
       range: range
     })
     .then(function(response) {
-
       // 2. Create the updated values using the retrieved values.
       let values = response.result.values;
-      const obj = values.reduce((o, [b], i) => Object.assign(o, {
-        [b]: i
-      }), {});
-      const addValues = _values.reduce((ar, [b, c]) => {
+      const obj = values.reduce(
+        (o, [b], i) => Object.assign(o, {
+          [b]: i
+        }), {}
+      );
+      const addValues = _values.reduce((ar, [b, c, d, e, f, g, h]) => {
+        // console.log("  ar " + ar);
+        // console.log("  b " + b);
+        // console.log("  c " + c);
+        // console.log("  d " + d);
+        // console.log("  e " + e);
         if (obj[b]) {
           values[obj[b]][1] = c;
+          values[obj[b]][2] = d;
+          values[obj[b]][3] = e;
+          values[obj[b]][4] = f;
+          values[obj[b]][5] = g;
+          values[obj[b]][6] = h;
+          // console.log("  values[obj[b]][0] " + values[obj[b]][0]);
+          // console.log("  values[obj[b]][1] " + values[obj[b]][1]);
+          // console.log("  values[obj[b]][2] " + values[obj[b]][2]);
+          // console.log("  c in obj[b]" + c);
+          // console.log("  d in obj[b]" + d);
+          // console.log("  e in obj[b]" + e);
         } else {
           ar.push([b, c]);
+          console.log("  ar in else" + ar);
         }
         return ar;
       }, []);
-      values = values.concat(addValues);
 
+      values = values.concat(addValues);
       // 3. Put the updated values to "Sheet1" using your script.
       var data = [];
       data.push({
@@ -756,7 +791,7 @@ function batchUpdateValues(spreadsheetId, range, valueInputOption, _values, call
     });
 }
 
-function getValues(spreadsheetId, range, callback) {
+function getValues(spreadsheetId, range, fnExcelReport) {
   // [START sheets_get_values]
   gapi.client.sheets.spreadsheets.values.get({
     spreadsheetId: spreadsheetId,
@@ -773,9 +808,7 @@ function getValues(spreadsheetId, range, callback) {
         amsIdArr.push(amsId[0]);
       }
     }
-    // [START_EXCLUDE silent]
-    callback(response);
-    // [END_EXCLUDE]
+    fnExcelReport();
   });
 
   // [END sheets_get_values]
@@ -826,8 +859,8 @@ function createCampaignOnDCM() {
             .then(function(response) {
                 // Handle the results here (response.result has the parsed body).
                 console.log("Response", response);
-                callbackAfterUpdate();
-                //createPlacements();
+                //callbackAfterUpdate();
+                createPlacements();
               },
               function(err) {
                 console.error("Campaign Creation error", err);
@@ -897,7 +930,7 @@ function createPlacements() {
       "resource": {
         "accountId": 470006,
         "siteId": 5916554,
-        "name": placementNameUsedArr[1],
+        "name": placementNameUsedArr[0],
         "compatibility": "DISPLAY",
         "externalId": "1234",
         "campaignId": 24824452,

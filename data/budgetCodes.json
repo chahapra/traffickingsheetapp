@@ -7,5 +7,6 @@ budgetCodes = {
   "App Search Optimization": "ASO",
   "PAIDSOCIAL": "PAIDSOCIAL",
   "CRM": "CRM",
-  "ADDITIONAL": "ADD"
+  "ADDITIONAL": "ADD",
+  "BRP002" : "BRP002"
 }
