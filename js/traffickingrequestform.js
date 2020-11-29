@@ -678,7 +678,7 @@ function handleSignInClick(event) {
   }, function(error) {
     //If Google OAuth 2 occured error
     console.log("error " + error);
-    
+
   });
   // if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
   //   document.querySelector("#modalInitial > div.modal-content > p").innerText = "User Authorized, welcome " + gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
@@ -706,11 +706,11 @@ function callbackAfterUpdate(response) {
 }
 
 function batchUpdateValues(spreadsheetId, range, valueInputOption, _values, callback) {
-
-  console.log(spreadsheetId);
-  console.log(range);
-  console.log(valueInputOption);
-  console.log(" values " + _values);
+  document.getElementById("exptToExcel").disabled = true;
+  // console.log(spreadsheetId);
+  // console.log(range);
+  // console.log(valueInputOption);
+  // console.log(" values " + _values);
 
   // spreadsheetId = "1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0";
   // range = "Sheet1!B:C";
