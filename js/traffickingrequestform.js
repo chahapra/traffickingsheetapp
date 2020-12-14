@@ -7,7 +7,7 @@ let placementNameUsedArr = [];
 let profileNamePsuedoArr = [];
 let profileName;
 let buyingMetricArr = [];
-let costArr = []
+let costArr = [];
 let forAMSsystem = [];
 let openOutputSectionModal = true;
 let collectAmsData = [];
@@ -16,15 +16,60 @@ let updatedAMSArr;
 let tsTBE;
 let gSheetToUpdate = 'Sheet1!B:H';
 let paidSocialCampaign;
+let kpi;
+let buyingMetric;
+let date_range;
+
+function saveUsingLocalStorage() {
+  window.localStorage.setItem("kpi", kpi);
+  window.localStorage.setItem("buyingMetric", buyingMetric);
+  window.localStorage.setItem("date_range", date_range);
+  let tstable = document.getElementById("tsTable");
+  let tstablelength = tstable.rows.length;
+  localStorage.setItem("tstablelength", tstablelength);
+  for (var i = 1; i < tstablelength; i++) {
+    window.localStorage.setItem("ts" + i, tstable.rows[i].outerHTML);
+  }
+
+  let placementstable = document.getElementById("placementTable");
+  let placementtablelength = placementstable.rows.length;
+  localStorage.setItem("placementtablelength", placementtablelength);
+  for (var i = 1; i < placementtablelength; i++) {
+    window.localStorage.setItem("pl" + i, placementstable.rows[i].outerHTML);
+  }
+}
+
+function getSavedLocalStorage() {
+  addandremovebuttons();
+  displayBlock("nonTableSection");
+  generateCard();
+  displayBlock('modal-outputSection');
+  displayBlock('tsTable');
+  let tssavedrows = parseInt(window.localStorage.getItem("tstablelength"));
+  for (var i = 1; i < tssavedrows; i++) {
+    buttonrm.setAttribute('onclick', 'removeRow(this)');
+    buttoncpy.setAttribute('onclick', 'cpyRow(this)');
+    $("#tsTable").append(window.localStorage.getItem("ts" + i));
+  }
+  let pltsavedrows = parseInt(window.localStorage.getItem("placementtablelength"));
+  for (var i = 1; i < pltsavedrows; i++) {
+    $("#placementTable").append(window.localStorage.getItem("pl" + i));
+  }
+  checkTsTableLength();
+  window.localStorage.clear();
+}
+
 document.addEventListener('DOMContentLoaded', function() {
 
-  //   document.querySelectorAll('trim').addEventListener("change", event => {
-  //     document.querySelectorAll('trim')[0].value.trim;
-  // });
+  document.querySelector('.saveoutput').addEventListener("click", event => {
+    $('#modal-outputSection')[0].click();
+    displayBlock('modal-outputSection');
+    document.getElementsByClassName('saveoutput')[0].style.display = "none";
+  });
+
   $(document).on('click', '#tsTable tr', function() {
     checkTsTableLength();
-  })
-
+  });
   document.querySelector('.checkcircle').addEventListener("click", event => {
     displayBlock('exptToExcel');
     displayBlock('toCreateJiraTkt');
@@ -192,7 +237,7 @@ function generateOutput() {
   displayBlock('check_circle');
   displayNone('exptToExcel');
   displayNone('toCreateJiraTkt');
-  let yourName = getValueById('requester');
+  //let yourName = getValueById('requester');
   let brand = getValueByClassName('brands');
   if (!brand) {
     $('#modal-trigger')[0].click();
@@ -227,10 +272,6 @@ function generateOutput() {
     getElementById('modal1text').innerHTML = "Please select an agency."
     return;
   }
-  if (budgetCode == 'PAIDSOCIAL' || agency == 'Outflink' || agency == 'outflink' || agency == 'OUTFLINK') {
-    gSheetToUpdate = 'Sheet2!B:C';
-    paidSocialCampaign = true;
-  }
 
   let buyingPlatforms = getValueByClassName('networkNamesList');
   if (!buyingPlatforms) {
@@ -238,6 +279,12 @@ function generateOutput() {
     getElementById('modal1text').innerHTML = "Please select a buying platform."
     return;
   }
+
+  if (budgetCode == 'PAIDSOCIAL' || agency == 'Outflink' || agency == 'outflink' || agency == 'OUTFLINK' || buyingPlatforms == 'Outflink') {
+    gSheetToUpdate = 'Sheet2!B:H';
+    paidSocialCampaign = true;
+  }
+
   let publisherOrNetwork = getElementById('publisherOrNetwork').value;
   if (!publisherOrNetwork) {
     $('#modal-trigger')[0].click();
@@ -359,15 +406,8 @@ function generateOutput() {
       }
     }
   }
-  let kpi = getValueByClassName('kpis');
-  let buyingMetric = getValueByClassName('buyingMetrics');
-  let date_range = getValueById('startDate') + " - " + getValueById('endDate');
-  let getCardClass = document.querySelector('.card-content');
-  getCardClass.innerHTML = `
-  <p>KPI  - ${kpi}</p>
-  <p>FLIGHT DATES - ${date_range}</p>
-  <p>TS REQUESTER - ${yourName}</p>
-`;
+
+  generateCard();
 
   let adDimensions = [];
   $('#adDimensions option:selected').each(function(i, selected) {
@@ -447,26 +487,10 @@ function generateOutput() {
         }
 
         let chosenDimension;
-        var ibtnRemove = document.createElement('i');
-        ibtnRemove.setAttribute('class', 'material-icons');
-        ibtnRemove.innerHTML = 'delete';
-        var buttonrm = document.createElement('a');
 
-        // set the attributes.
-        buttonrm.setAttribute('type', 'button');
-        //buttonrm.setAttribute('value', 'Remove');
-        buttonrm.setAttribute('class', 'waves-effect waves-light btn-small');
-        buttonrm.appendChild(ibtnRemove);
+        //add and remove buttons added in the below function
+        addandremovebuttons();
 
-        var ibtncpy = document.createElement('i');
-        ibtncpy.setAttribute('class', 'material-icons');
-        ibtncpy.innerHTML = 'add';
-        var buttoncpy = document.createElement('a');
-        // set the attributes.
-        buttoncpy.setAttribute('type', 'button');
-        //buttoncpy.setAttribute('value', 'Copy');
-        buttoncpy.setAttribute('class', 'waves-effect waves-light btn-small');
-        buttoncpy.appendChild(ibtncpy);
         tsData.push(brand, country, truncatedPlatform, campaignName.replace(/\s/g, ''), budgetCode, agency.replace(/\s/g, ''), buyingPlatforms, publisherOrNetwork.replace(/\s/g, ''), subSite.replace(/\s/g, ''), audience.replace(/\s/g, ''), vertical.replace(/\s/g, ''), message.replace(/\s/g, ''), offer.replace(/\s/g, ''), subAdDimensionsSelected.replace(/\s/g, ''), targetingSelected, subTargeting.replace(/\s/g, ''), deliverables, buyingMetric, cost, landingPage);
         tsData.forEach(function(tableElement, indexTSData) {
           let createTd = document.createElement("td");
@@ -476,7 +500,6 @@ function generateOutput() {
           createTd.innerHTML = tableElement;
           createTr.appendChild(createTd);
           buttonrm.setAttribute('onclick', 'removeRow(this)');
-          //    ,\'' + createTr + '\', \'' + createTrPlcmnt + '\'
           buttoncpy.setAttribute('onclick', 'cpyRow(this)');
           createTr.appendChild(buttonrm);
           createTr.appendChild(buttoncpy);
@@ -502,13 +525,11 @@ function generateOutput() {
         } else if (andLandingPage === undefined) {
           andLandingPage = "AppStore";
         }
-        placementTableArray.push(placementName, iOSLandingPage, andLandingPage, dskLandingPage, networkPublisher, "Display", "dcm", deliverables, serverCampaignName, buyingMetric, cost, kpi, getValueById('startDate'), getValueById('endDate'));
+        placementTableArray.push(placementName, iOSLandingPage, andLandingPage, dskLandingPage, networkPublisher, "Display", "ft", deliverables, serverCampaignName, buyingMetric, cost, kpi, getValueById('startDate'), getValueById('endDate'));
         placementTableArray.forEach(function(tableElementPlTblArr, indexplTData) {
           let createTdPlTb = document.createElement("td");
           createTdPlTb.innerHTML = tableElementPlTblArr;
           createTrPlcmnt.appendChild(createTdPlTb);
-          // buttoncpypl.setAttribute('onclick', 'cpyRow(this)');
-          // createTrPlcmnt.appendChild(buttoncpypl);
         });
       });
     });
@@ -522,7 +543,6 @@ function getvaluesandexport() {
 }
 
 function fnExcelReport() {
-  console.log("control is in export to excel");
   var n = new Date().toLocaleDateString();
   var d = n.split("/")[2] + n.split("/")[1] + n.split("/")[0];
   let tsTable = getElementById("tsTable");
@@ -789,6 +809,7 @@ function batchUpdateValues(spreadsheetId, range, valueInputOption, _values, call
     }, function(reason) {
       console.error('error: ' + reason.result.error.message);
     });
+  localStorage.clear();
 }
 
 function getValues(spreadsheetId, range, fnExcelReport) {
@@ -998,4 +1019,47 @@ function justLoadDFAClient() {
         console.error("Error loading GAPI client for API", err);
 
       });
+}
+
+function generateCard() {
+  kpi = window.localStorage.getItem("kpi");
+  buyingMetric = window.localStorage.getItem("buyingMetric");
+  date_range = window.localStorage.getItem("date_range");
+  yourName = document.querySelector("#requester").value;
+  if (kpi === null) {
+    kpi = getValueByClassName('kpis');
+    buyingMetric = getValueByClassName('buyingMetrics');
+    date_range = getValueById('startDate') + " - " + getValueById('endDate');
+  }
+  let getCardClass = document.querySelector('.card-content');
+  getCardClass.innerHTML = `
+  <p>KPI  - ${kpi}</p>
+  <p>FLIGHT DATES - ${date_range}</p>
+  <p>TS REQUESTER - ${yourName}</p>
+`;
+}
+
+var ibtnRemove;
+var buttonrm;
+var ibtncpy;
+var buttoncpy;
+
+function addandremovebuttons() {
+  ibtnRemove = document.createElement('i');
+  ibtnRemove.setAttribute('class', 'material-icons');
+  ibtnRemove.innerHTML = 'delete';
+
+  buttonrm = document.createElement('a');
+  buttonrm.setAttribute('type', 'button');
+  buttonrm.setAttribute('class', 'waves-effect waves-light btn-small');
+  buttonrm.appendChild(ibtnRemove);
+
+  ibtncpy = document.createElement('i');
+  ibtncpy.setAttribute('class', 'material-icons');
+  ibtncpy.innerHTML = 'add';
+
+  buttoncpy = document.createElement('a');
+  buttoncpy.setAttribute('type', 'button');
+  buttoncpy.setAttribute('class', 'waves-effect waves-light btn-small');
+  buttoncpy.appendChild(ibtncpy);
 }

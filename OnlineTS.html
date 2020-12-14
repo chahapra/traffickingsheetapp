@@ -67,7 +67,6 @@
 <body>
   <!-- Sign In Modal Trigger -->
   <a id="signInModal" style="display:none" class="waves-effect waves-light btn modal-trigger signInModal" href="#modalInitial">Modal</a>
-
   <!-- Modal Structure -->
   <div id="modalInitial" class="modal">
     <a id="closeModal" style="display:none" class="waves-effect waves-teal btn-flat right modal-close"><i class="material-icons">close</i></a>
@@ -109,6 +108,8 @@
       <div id="displayPlacementNames">
         <div id="campaignDetails" class="col s11">
           <!--YOURNAME-->
+          <button class="right waves-effect waves-light btn-large saveoutput" type="submit" name="action" onclick="getSavedLocalStorage()">Get Saved Items
+            <i class="material-icons right">file_download</i></button>
           <h6>YOUR NAME</h6>
           <div class="row input-field col s12">
             <i class="material-icons prefix">account_circle</i>
@@ -326,6 +327,10 @@
         <button id="exptToExcel" class="waves-effect waves-light btn-large" type="submit" name="action" onclick="getvaluesandexport()">Export To Excel
           <i class="material-icons right">send</i>
         </button>
+        <button id="saveUsingLocalStorage" class="waves-effect waves-light btn-large" type="submit" name="action" onclick="saveUsingLocalStorage()">Save 4 Later
+          <i class="material-icons right">send</i>
+        </button>
+        <br />
         <br />
         <div id="toCreateJiraTkt">
           <a class="waves-effect waves-light btn-large" href="https://jira.pyrsoftware.ca/jira/secure/CreateIssue!default.jspa"><i class="material-icons right">cloud</i>Create Jira Ticket</a>
