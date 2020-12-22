@@ -19,6 +19,8 @@ let paidSocialCampaign;
 let kpi;
 let buyingMetric;
 let date_range;
+let affiliate_req;
+let btag;
 
 function saveUsingLocalStorage() {
   window.localStorage.setItem("kpi", kpi);
@@ -297,6 +299,11 @@ function generateOutput() {
     getElementById('modal1text').innerHTML = "Please select a subsite."
     return;
   }
+  btag = document.getElementById('btag').value;
+  if (btag != "") {
+    affiliate_req = true;
+  }
+
   let audience = getValueById('audience');
   let vertical = getValueById('vertical');
   let message = getValueById('message');
@@ -539,7 +546,12 @@ function generateOutput() {
 }
 
 function getvaluesandexport() {
-  getValues("1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0", gSheetToUpdate, fnExcelReport);
+  document.getElementById("exptToExcel").disabled = true;
+  if (affiliate_req) {
+    fnExcelReport();
+  } else {
+    getValues("1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0", gSheetToUpdate, fnExcelReport);
+  }
 }
 
 function fnExcelReport() {
@@ -565,7 +577,11 @@ function fnExcelReport() {
       tsDtInnerFrPlacmntNmeNew.splice(0, 1, brands[tbl.rows[i].cells.item(0).innerHTML]);
       tsDtInnerFrPlacmntNmeNew.splice(2, 1, platformCodes[tbl.rows[i].cells.item(2).innerHTML]);
       tsDtInnerFrPlacmntNmeNew.join("-");
-      tsDtInnerFrPlacmntNmeNew.splice(13, 0, amsIdArr[i - 1]);
+      if (affiliate_req) {
+        tsDtInnerFrPlacmntNmeNew.splice(13, 0, (btag.replace("btag=", "")));
+      } else {
+        tsDtInnerFrPlacmntNmeNew.splice(13, 0, amsIdArr[i - 1]);
+      }
       amsIdUsedArr.push(amsIdArr[i - 1]);
       let joinedtsDtInnerFrPlacmntNmeNew = tsDtInnerFrPlacmntNmeNew.join("-");
       console.log("PlcmntNmeNew    " + joinedtsDtInnerFrPlacmntNmeNew);
@@ -589,27 +605,23 @@ function fnExcelReport() {
   });
 
   TableToExcel.convert(placementTable, {
-    name: `URLBuilderUpload_` + serverCampaignName + "_" + d + `.csv`,
+    name: `URLBuilderUpload_` + serverCampaignName + "_" + d + `.xlsx`,
     sheet: {
       name: `URLBuilderUpload_` + serverCampaignName + "_" + d
     }
   });
 
-  // handleSignInClick();
-  // updateSignInStatus();
-  // console.log("amsIdUsedArr " + amsIdUsedArr);
-  // console.log("placementNameUsedArr " + placementNameUsedArr);
-  // console.log("forAMSsystem " + forAMSsystem);
-  // console.log("profileName " + profileNamePsuedoArr);
-  updatingValues = [amsIdUsedArr, placementNameUsedArr, forAMSsystem, buyingMetricArr, costArr, profileNamePsuedoArr].reduce((c, v) => {
-    v.forEach((o, i) => {
-      c[i] = c[i] || [];
-      c[i].push(o);
-    });
-    return c;
-  }, []);
-
-  batchUpdateValues('1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0', gSheetToUpdate, 'USER_ENTERED', updatingValues, callback);
+  debugger;
+  if (!affiliate_req) {
+    updatingValues = [amsIdUsedArr, placementNameUsedArr, forAMSsystem, buyingMetricArr, costArr, profileNamePsuedoArr].reduce((c, v) => {
+      v.forEach((o, i) => {
+        c[i] = c[i] || [];
+        c[i].push(o);
+      });
+      return c;
+    }, []);
+    batchUpdateValues('1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0', gSheetToUpdate, 'USER_ENTERED', updatingValues, callback);
+  }
 }
 
 
@@ -880,8 +892,8 @@ function createCampaignOnDCM() {
             .then(function(response) {
                 // Handle the results here (response.result has the parsed body).
                 console.log("Response", response);
-                //callbackAfterUpdate();
-                createPlacements();
+                callbackAfterUpdate();
+                // createPlacements();
               },
               function(err) {
                 console.error("Campaign Creation error", err);

@@ -20,14 +20,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.js"></script>
   <script src="https://rawgit.com/unconditional/jquery-table2excel/master/src/jquery.table2excel.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
-
   <!--Import materialize.css-->
   <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
   <!--Let browser know website is optimized for mobile-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script type="text/javascript" src="js\materialize.min.js"></script>
   <script type="text/javascript" src="js\traffickingrequestform.js"></script>
-  <script type="text/javascript" src="js\createTSTable.js"></script>
   <script type="text/javascript" src="data\countries.json"></script>
   <script type="text/javascript" src="data\countriesLL.json"></script>
   <script type="text/javascript" src="data\networkNamesList.json"></script>
@@ -286,6 +284,11 @@
               <option value="VAST/VPAID">VAST/VPAID Tags</option>
               <option value="Appsflyer Machine Wrapped">Appsflyer Machine Wrapped Tags</option>
             </select>
+          </div>
+
+          <div class="row input-field col s12">
+            <i class="material-icons prefix">center_focus_strong</i>
+            <input id="btag" placeholder="Please enter BTAG value" type="text" class="pname validate tooltipped" data-position="right" data-tooltip="This is just for affiliate team">
           </div>
 
           <div class="row input-field col s12">
