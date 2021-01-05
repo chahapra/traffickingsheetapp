@@ -8,10 +8,15 @@ document.addEventListener('DOMContentLoaded', function() {
   var elems = document.querySelectorAll('.modal');
   var instances = M.Modal.init(elems, null);
   document.getElementsByClassName("card")[0].style.display = "none";
+  document.getElementById("burgermenu-img-vendorpage").addEventListener("click", event => {
+    $('.sidenav-trigger')[0].click();
+  });
 });
 
 function getdetails() {
   document.getElementById("background-img-vendorpage").style.display = "none";
+  document.getElementById("burgermenu-img-vendorpage").style.display = "none";
+   document.getElementsByTagName("blockquote")[0].style.display = "none";
   document.getElementsByClassName("card")[0].style.display = "block";
   var vendorname = $(event.target).text().replace("cloud", "");
   document.getElementsByClassName("card-title")[0].innerText = vendorname;

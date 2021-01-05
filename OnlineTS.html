@@ -9,7 +9,7 @@
   <!-- <script src="https://appsforoffice.microsoft.com/lib/1/hosted/Office.js" type="text/javascript"></script> -->
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet' type='text/css'>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>.
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
   <script src="https://apis.google.com/js/client.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 
@@ -23,7 +23,7 @@
   <!--Import materialize.css-->
   <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
   <!--Let browser know website is optimized for mobile-->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="iso-8859-1" />
   <script type="text/javascript" src="js\materialize.min.js"></script>
   <script type="text/javascript" src="js\traffickingrequestform.js"></script>
   <script type="text/javascript" src="data\countries.json"></script>
@@ -50,6 +50,16 @@
 </head>
 
 <body>
+  <nav>
+    <div class="nav-wrapper">
+      <a href="" class="brand-logo">Online Trafficking Request</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="ARS.html">Audience Request</a></li>
+        <li><a href="vendordetails.html">Vendor Details</a></li>
+      </ul>
+    </div>
+  </nav>
+
   <!-- Sign In Modal Trigger -->
   <a id="signInModal" style="display:none" class="waves-effect waves-light btn modal-trigger signInModal" href="#modalInitial">Modal</a>
   <!-- Modal Structure -->
@@ -77,7 +87,7 @@
     </div>
   </div>
   <div class="row container left">
-
+<img id="background-img-vendorpage" src="images/starsgroup-white.png">
     <div class="col s12">
       <ul class="tabs">
         <li class="tab col s3"><a class="active" href="#campaignDetails">Campaign Details</a></li>
@@ -125,7 +135,7 @@
           <h6>GEO</h6>
           <div class="row input-field col s12">
             <i class="material-icons prefix">my_location</i>
-            <input type="text" style="text-transform: uppercase"  class="pname countries tooltipped" data-position="right" data-tooltip="Start typing a geo name.">
+            <input type="text" style="text-transform: uppercase" class="pname countries tooltipped" data-position="right" data-tooltip="Start typing a geo name.">
           </div>
           <!--Flight Dates-->
           <h6>FLIGHT DATES</h6>
@@ -140,7 +150,7 @@
           <h6>BUYING METRIC</h6>
           <div class="row input-field col s12">
             <i class="material-icons prefix">attach_money</i>
-            <input type="text" value="CPM" style="text-transform: uppercase"  class="pname buyingMetrics tooltipped" data-position="right" data-tooltip="Start typing buying metric.">
+            <input type="text" value="CPM" style="text-transform: uppercase" class="pname buyingMetrics tooltipped" data-position="right" data-tooltip="Start typing buying metric.">
           </div>
           <!--COST-->
           <h6>COST</h6>
@@ -178,13 +188,13 @@
           <h6>AGENCY</h6>
           <div class="row input-field col s12">
             <i class="material-icons prefix">text_format</i>
-            <input type="text" value="TSG"  style="text-transform: uppercase" class="pname agencyNamesList tooltipped trim" data-position="right" data-tooltip="Start entering an agency name.">
+            <input type="text" value="TSG" style="text-transform: uppercase" class="pname agencyNamesList tooltipped trim" data-position="right" data-tooltip="Start entering an agency name.">
           </div>
           <!--Buying Platform/Trading Desk-->
           <h6>PLATFORM TO BUY</h6>
           <div class="row input-field col s12">
             <i class="material-icons prefix">storefront</i>
-            <input type="text" value="Mediamath"  style="text-transform: uppercase" class="pname networkNamesList tooltipped" data-position="right" data-tooltip="Start entering an platform name.">
+            <input type="text" value="Mediamath" style="text-transform: uppercase" class="pname networkNamesList tooltipped" data-position="right" data-tooltip="Start entering an platform name.">
           </div>
           <!--Publisher/Network-->
           <h6>PUBLISHER OR NETWORK</h6>

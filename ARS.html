@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet' type='text/css'>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
+  <script src="https://apis.google.com/js/client.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="iso-8859-1" />
+  <script type="text/javascript" src="js\materialize.min.js"></script>
+  <script type="text/javascript" src="js\ars.js"></script>
+<title>ARS</title>
+</head>
+
+<body>
+  <nav>
+    <div class="nav-wrapper">
+      <a href="" class="brand-logo">Audiece Request</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="OnlineTS.html">Online Trafficking Request</a></li>
+        <li><a href="vendordetails.html">Vendor Details</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="row container left">
+    <img id="background-img-vendorpage" src="images/starsgroup-white.png">
+    <form id="arsform" class="col s12" onsubmit="return false">
+      <div class="row">
+        <div class="input-field col s6">
+          <select name="Vertical">
+            <option value="" disabled selected>Choose Vertical</option>
+            <option value="PKR">Poker</option>
+            <option value="CSN">Casino</option>
+            <option value="BET">Sports</option>
+          </select>
+          <label>VERTICAL</label>
+        </div>
+        <div class="input-field col s6">
+          <select name="GEO">
+            <option value="" disabled selected>Choose Geo</option>
+            <option value="UK">UK</option>
+            <option value="DE">Germany</option>
+            <option value="PT">Portugal</option>
+          </select>
+          <label>GEO</label>
+        </div>
+        <div class="input-field col s6">
+          <input name="Audience Name" placeholder="Audience Name" id="audience_name" type="text" class="validate">
+          <label for="audience_name">Audience Name</label>
+        </div>
+        <div class="input-field col s6">
+          <input name="Audience Description" placeholder="Audience Description" id="audience_desc" type="text" class="validate">
+          <label for="audience_desc">Audience Description</label>
+        </div>
+        <div class="input-field col s6">
+          <select name="AcquitisionOrCRM">
+            <option value="" disabled selected>Choose Acquisition or CRM</option>
+            <option value="acq">Acquisition</option>
+            <option value="crm">CRM</option>
+            <!-- <option value="3">Option 3</option> -->
+          </select>
+          <label>Acquisition or CRM</label>
+        </div>
+        <div class="input-field col s6">
+          <select name="Tactic">
+            <option value="" disabled selected>Choose Tactic</option>
+            <option value="REM">Re-engagement</option>
+            <option value="R">Remarketing</option>
+            <!-- <option value="3">Option 3</option> -->
+          </select>
+          <label>Tactic</label>
+        </div>
+        <div class="input-field col s6">
+          <select name="RealTimeOrBatch">
+            <option value="" disabled selected>Choose Acquisition or CRM</option>
+            <option  value="rt">Real-Time</option>
+            <option  value="bat">Batch</option>
+            <!-- <option value="3">Option 3</option> -->
+          </select>
+          <label>Real-Time or Batch</label>
+        </div>
+        <div class="input-field col s6">
+          <select name="MarketingExclueded">
+            <option value="" disabled selected>Marketing Excluded</option>
+            <option  value="me-yes">Yes</option>
+            <option  value="me-no">No</option>
+            <!-- <option value="3">Option 3</option> -->
+          </select>
+          <label>Marketing Excluded</label>
+        </div>
+        <div class="input-field col s6">
+          <button class="btn waves-effect waves-light" type="submit" onclick="generateaudiencenames()">Submit
+            <i class="material-icons right">send</i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <table id="audiencetable" class="responsive-table">
+    <thead>
+      <tr>
+        <th>Signal - Audience Name</th>
+        <th>Flashtalking - Segment Name</th>
+        <th>Advertiser - Id</th>
+        <th>Mediamath - Pixel Name</th>
+        <th>Data Pixel Id</th>
+        <th>Event Pixel Id</th>
+        <th>Advertiser Id</th>
+        <th>Facebook - Audience Name</th>
+        <th>Account Id</th>
+        <th>Account Token</th>
+        <th>Snap - Audience Name</th>
+        <th>Account Id</th>
+        <th>Twitter - Audience Name</th>
+        <th>Account Id</th>
+        <th>Appnexus - Audience Name</th>
+        <th>Pixel Id</th>
+        <th>DV360</th>
+        <th>Appsflyer</th>
+      </tr>
+    </thead>
+  </table>
+  </script>
+  <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()">
+  </script>
+
+</body>
+
+</html>
