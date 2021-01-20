@@ -7,5 +7,6 @@ brands = {
   "SkyBet": "SB",
   "Sport": "SPORT",
   "Pokerstars Sports":"PSS",
-  "Masterbrand":"MB"
+  "Masterbrand":"MB",
+  "Pokerstars Dojo" : "PSDJ"
 };
