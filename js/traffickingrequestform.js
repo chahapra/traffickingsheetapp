@@ -14,7 +14,7 @@ let collectAmsData = [];
 let updatingValues;
 let updatedAMSArr;
 let tsTBE;
-let gSheetToUpdate = 'Sheet1!B:H';
+let gSheetToUpdate = 'Display!B:H';
 let paidSocialCampaign;
 let kpi;
 let buyingMetric;
@@ -283,7 +283,7 @@ function generateOutput() {
   }
 
   if (budgetCode == 'PAIDSOCIAL' || agency == 'Outflink' || agency == 'outflink' || agency == 'OUTFLINK' || buyingPlatforms == 'Outflink') {
-    gSheetToUpdate = 'Sheet2!B:H';
+    gSheetToUpdate = 'PaidSocial!B:H';
     paidSocialCampaign = true;
   }
 
