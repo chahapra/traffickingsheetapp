@@ -611,7 +611,6 @@ function fnExcelReport() {
     }
   });
 
-  debugger;
   if (!affiliate_req) {
     updatingValues = [amsIdUsedArr, placementNameUsedArr, forAMSsystem, buyingMetricArr, costArr, profileNamePsuedoArr].reduce((c, v) => {
       v.forEach((o, i) => {
