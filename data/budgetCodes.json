@@ -8,5 +8,6 @@ budgetCodes = {
   "PAIDSOCIAL": "PAIDSOCIAL",
   "CRM": "CRM",
   "ADDITIONAL": "ADD",
-  "BRP002" : "BRP002"
+  "BRP002" : "BRP002",
+  "MMD" : "MMD"
 }

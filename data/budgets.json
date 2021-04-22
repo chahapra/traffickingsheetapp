@@ -8,5 +8,6 @@ budgets = {
   "PAIDSOCIAL": null,
   "CRM": null,
   "ADDITIONAL": null,
-  "BRP002" : null
+  "BRP002" : null,
+  "MMD" : null
 }
