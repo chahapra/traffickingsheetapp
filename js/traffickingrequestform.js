@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
       //displayNone('mobLp2')
       displayNone('dsklpIcon');
       displayNone('moblpIcon');
-      displayNone('ctvLpIcon');
+      displayNone('ctvlpIcon');
     }
     if (platforms.includes("ANDLP")) {
       displayBlock('andLp');
@@ -282,17 +282,18 @@ function generateOutput() {
     return;
   }
 
-  if (budgetCode == 'PAIDSOCIAL' || agency == 'Outflink' || agency == 'outflink' || agency == 'OUTFLINK' || buyingPlatforms == 'Outflink') {
-    gSheetToUpdate = 'PaidSocial!B:H';
-    paidSocialCampaign = true;
-  }
-
   let publisherOrNetwork = getElementById('publisherOrNetwork').value;
   if (!publisherOrNetwork) {
     $('#modal-trigger')[0].click();
     getElementById('modal1text').innerHTML = "Please select a Publisher Network."
     return;
   }
+  debugger
+  if (publisherOrNetwork.toLowerCase() == 'facebook' || publisherOrNetwork.toLowerCase() == 'snapchat' || publisherOrNetwork.toLowerCase() == 'twitter') {
+    gSheetToUpdate = 'PaidSocial!B:H';
+    paidSocialCampaign = true;
+  }
+
   let subSite = getValueById('sub-site');
   if (!subSite) {
     $('#modal-trigger')[0].click();
