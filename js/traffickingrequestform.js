@@ -108,7 +108,8 @@ document.addEventListener('DOMContentLoaded', function() {
     "buyingMetrics": buyingMetrics,
     "agencyNamesList": agencyNamesList,
     "networkNamesList": networkNamesList,
-    "dimensionsArr": dimensionsArr
+    "dimensionsArr": dimensionsArr,
+    "targetAudienceList" :targetAudienceList
   };
   var arrSize = Object.keys(arrayofDataObjs).length;
   var keys = Object.keys(arrayofDataObjs);
@@ -288,7 +289,7 @@ function generateOutput() {
     getElementById('modal1text').innerHTML = "Please select a Publisher Network."
     return;
   }
-  debugger
+  
   if (publisherOrNetwork.toLowerCase() == 'facebook' || publisherOrNetwork.toLowerCase() == 'snapchat' || publisherOrNetwork.toLowerCase() == 'twitter') {
     gSheetToUpdate = 'PaidSocial!B:H';
     paidSocialCampaign = true;
@@ -499,7 +500,7 @@ function generateOutput() {
         //add and remove buttons added in the below function
         addandremovebuttons();
 
-        tsData.push(brand, country, truncatedPlatform, campaignName.replace(/\s/g, ''), budgetCode, agency.replace(/\s/g, ''), buyingPlatforms, publisherOrNetwork.replace(/\s/g, ''), subSite.replace(/\s/g, ''), audience.replace(/\s/g, ''), vertical.replace(/\s/g, ''), message.replace(/\s/g, ''), offer.replace(/\s/g, ''), subAdDimensionsSelected.replace(/\s/g, ''), targetingSelected, subTargeting.replace(/\s/g, ''), deliverables, buyingMetric, cost, landingPage);
+        tsData.push(brand, country, truncatedPlatform, campaignName.replace(/\s/g, ''), budgetCode, agency.replace(/\s/g, ''), buyingPlatforms.replace(/\s/g, ''), publisherOrNetwork.replace(/\s/g, ''), subSite.replace(/\s/g, ''), audience.replace(/\s/g, ''), vertical.replace(/\s/g, ''), message.replace(/\s/g, ''), offer.replace(/\s/g, ''), subAdDimensionsSelected.replace(/\s/g, ''), targetingSelected, subTargeting.replace(/\s/g, ''), deliverables, buyingMetric, cost, landingPage);
         tsData.forEach(function(tableElement, indexTSData) {
           let createTd = document.createElement("td");
           let contentEditable = document.createAttribute("contenteditable");
@@ -519,7 +520,7 @@ function generateOutput() {
           truncatedPlatform = "AND";
         }
         let brandCode = brands[brand];
-        tsDtFrPlacmntNme.push(brandCode, country, truncatedPlatform, campaignName.replace(/\s/g, ''), budgetCode, agency.replace(/\s/g, ''), buyingPlatforms, publisherOrNetwork.replace(/\s/g, ''), subSite.replace(/\s/g, ''), audience.replace(/\s/g, ''), vertical.replace(/\s/g, ''), message.replace(/\s/g, ''), offer.replace(/\s/g, ''), "amsId", subAdDimensionsSelected.replace(/\s/g, ''), targetingSelected, subTargeting.replace(/\s/g, ''), buyingMetric, cost, landingPage);
+        tsDtFrPlacmntNme.push(brandCode, country, truncatedPlatform, campaignName.replace(/\s/g, ''), budgetCode, agency.replace(/\s/g, ''), buyingPlatforms.replace(/\s/g, ''), publisherOrNetwork.replace(/\s/g, ''), subSite.replace(/\s/g, ''), audience.replace(/\s/g, ''), vertical.replace(/\s/g, ''), message.replace(/\s/g, ''), offer.replace(/\s/g, ''), "amsId", subAdDimensionsSelected.replace(/\s/g, ''), targetingSelected, subTargeting.replace(/\s/g, ''), buyingMetric, cost, landingPage);
         placementName = tsDtFrPlacmntNme.join("-");
         let networkPublisher = (agency + buyingPlatforms).toUpperCase();
         if (buyingPlatforms === "Direct" || buyingPlatforms === "DIRECT") {

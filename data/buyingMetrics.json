@@ -5,5 +5,7 @@ buyingMetrics = {
  "CPA": null,
  "CPC": null,
  "Flat Fee": null,
- "Comission (%)": null
+ "Comission (%)": null,
+ "CPD": null,
+ "CPCV": null
 }
