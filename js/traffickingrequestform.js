@@ -307,7 +307,7 @@ function generateOutput() {
   }
 
   let audience = getValueById('audience');
-  var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/";
+  var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
   if (format.test(audience)) {
     $('#modal-trigger')[0].click();
     getElementById('modal1text').innerHTML = "Please remove special characters from audience"
