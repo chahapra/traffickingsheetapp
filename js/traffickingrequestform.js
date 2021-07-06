@@ -289,7 +289,7 @@ function generateOutput() {
     getElementById('modal1text').innerHTML = "Please select a Publisher Network."
     return;
   }
-  
+
   if (publisherOrNetwork.toLowerCase() == 'facebook' || publisherOrNetwork.toLowerCase() == 'snapchat' || publisherOrNetwork.toLowerCase() == 'twitter') {
     gSheetToUpdate = 'PaidSocial!B:H';
     paidSocialCampaign = true;
@@ -307,6 +307,12 @@ function generateOutput() {
   }
 
   let audience = getValueById('audience');
+  var format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/";
+  if (format.test(audience)) {
+    $('#modal-trigger')[0].click();
+    getElementById('modal1text').innerHTML = "Please remove special characters from audience"
+    return;
+  }
   let vertical = getValueById('vertical');
   let message = getValueById('message');
   let offer = getValueById('offer');
