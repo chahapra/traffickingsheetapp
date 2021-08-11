@@ -8,5 +8,6 @@ brands = {
   "Sport": "SPORT",
   "Pokerstars Sports":"PSS",
   "Masterbrand":"MB",
-  "Pokerstars Dojo" : "PSDJ"
+  "Pokerstars Dojo" : "PSDJ",
+  "Pokerstars News" : "PSN"
 };

@@ -8,5 +8,6 @@ brandImages = {
 "Sport": "images/pokerstarsports.jpg",
 "Pokerstars Sports": "images/pss-logo.png",
 "Masterbrand": "images/imin-mb.png",
-"Pokerstars Dojo" : "images/psdj.jpg"
+"Pokerstars Dojo" : "images/psdj.jpg",
+"Pokerstars News" :null
 }
