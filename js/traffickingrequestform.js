@@ -304,6 +304,7 @@ function generateOutput() {
   btag = document.getElementById('btag').value;
   if (btag != "") {
     affiliate_req = true;
+    gSheetToUpdate = 'Affiliate!B:H'
   }
 
   let audience = getValueById('audience');
@@ -619,7 +620,6 @@ function fnExcelReport() {
     }
   });
 
-  if (!affiliate_req) {
     updatingValues = [amsIdUsedArr, placementNameUsedArr, forAMSsystem, buyingMetricArr, costArr, profileNamePsuedoArr].reduce((c, v) => {
       v.forEach((o, i) => {
         c[i] = c[i] || [];
@@ -628,7 +628,6 @@ function fnExcelReport() {
       return c;
     }, []);
     batchUpdateValues('1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0', gSheetToUpdate, 'USER_ENTERED', updatingValues, callback);
-  }
 }
 
 
