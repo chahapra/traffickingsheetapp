@@ -854,9 +854,9 @@ function getValues(spreadsheetId, range, fnExcelReport) {
 }
 
 //loadDFAClient & Call to create Campaign
-
+3.
 function loadDFAClient() {
-  return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/dfareporting/v3.4/rest")
+  return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/dfareporting/v3.5/rest")
     .then(function() {
         console.log("GAPI client loaded for API");
         getUserProfileIdAndInsertLandingPage();
@@ -1028,7 +1028,7 @@ function checkTsTableLength() {
 
 //just load DFA client on load of the page
 function justLoadDFAClient() {
-  return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/dfareporting/v3.4/rest")
+  return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/dfareporting/v3.5/rest")
     .then(function() {
         console.log("GAPI client loaded for API");
         //getUserProfileIdAndInsertLandingPage();
