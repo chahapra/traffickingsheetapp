@@ -302,9 +302,8 @@ function generateOutput() {
     return;
   }
   btag = document.getElementById('btag').value;
-  if (btag != "") {
+  if (btag != "" || btag.toLowerCase() === "x") {
     affiliate_req = true;
-    gSheetToUpdate = 'Affiliate!B:H'
   }
 
   let audience = getValueById('audience');
@@ -541,7 +540,11 @@ function generateOutput() {
         } else if (andLandingPage === undefined) {
           andLandingPage = "AppStore";
         }
-        placementTableArray.push(placementName, iOSLandingPage, andLandingPage, dskLandingPage, networkPublisher, "Display", "ft", deliverables, serverCampaignName, buyingMetric, cost, kpi, getValueById('startDate'), getValueById('endDate'));
+        let channelName = "Display";
+        if(affiliate_req){
+          channelName = "Affiliates"
+        }
+        placementTableArray.push(placementName, iOSLandingPage, andLandingPage, dskLandingPage, networkPublisher, channelName, "ft", deliverables, serverCampaignName, buyingMetric, cost, kpi, getValueById('startDate'), getValueById('endDate'));
         placementTableArray.forEach(function(tableElementPlTblArr, indexplTData) {
           let createTdPlTb = document.createElement("td");
           createTdPlTb.innerHTML = tableElementPlTblArr;
