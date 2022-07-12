@@ -857,7 +857,6 @@ function getValues(spreadsheetId, range, fnExcelReport) {
 }
 
 //loadDFAClient & Call to create Campaign
-3.
 function loadDFAClient() {
   return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/dfareporting/v3.5/rest")
     .then(function() {
@@ -873,11 +872,10 @@ function loadDFAClient() {
 let profileId;
 let landingPageId;
 let startDate = new Date().toISOString().slice(0, 10);
-let endDate = new Date("2022-01-31").toISOString().slice(0, 10);
+
 // Create Campaign on DCM
-
 function createCampaignOnDCM() {
-
+  let endDate = getElementById("endDate").value.split("/").reverse().join("-");
   gapi.client.dfareporting.campaigns.list({
       "profileId": profileId
     })
@@ -911,6 +909,7 @@ function createCampaignOnDCM() {
       },
       function(err) {
         console.error("Execute error", err);
+        callbackAfterUpdate();
       });
 
 
