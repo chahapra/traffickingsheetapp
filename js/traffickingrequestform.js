@@ -321,13 +321,14 @@ function generateOutput() {
     return;
   }
 
-  if (
-    publisherOrNetwork.toLowerCase() == "facebook" ||
+  if (  publisherOrNetwork.toLowerCase() == "facebook" ||
     publisherOrNetwork.toLowerCase() == "snapchat" ||
     publisherOrNetwork.toLowerCase() == "twitter"
   ) {
     gSheetToUpdate = "PaidSocial!B:H";
     paidSocialCampaign = true;
+  } else if(budgetCode == "US"){
+    gSheetToUpdate = "US activity (INT7Search)!B:H";
   }
 
   let subSite = getValueById("sub-site");
