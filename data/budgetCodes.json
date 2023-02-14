@@ -12,6 +12,6 @@ budgetCodes = {
   "MMD" : "MMD",
   "TACTICAL" : "TACTICAL",
   "VIRTUALREALITY" : "VIRTUALREALITY",
-  "USA":"USA",
+  "US":"US",
   "JUNGLEE":"JUNGLEE"
 }
