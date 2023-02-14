@@ -321,14 +321,13 @@ function generateOutput() {
     return;
   }
 
-  if (  publisherOrNetwork.toLowerCase() == "facebook" ||
-    publisherOrNetwork.toLowerCase() == "snapchat" ||
-    publisherOrNetwork.toLowerCase() == "twitter"
-  ) {
+  if (publisherOrNetwork.toLowerCase() == "facebook" || publisherOrNetwork.toLowerCase() == "snapchat" || publisherOrNetwork.toLowerCase() == "twitter") {
     gSheetToUpdate = "PaidSocial!B:H";
     paidSocialCampaign = true;
-  } else if(budgetCode == "US"){
+  } else if (budgetCode == "US") {
     gSheetToUpdate = "US activity (INT7Search)!B:H";
+  }  else if(budgetCode == "JUNGLEE"){
+    gSheetToUpdate = "Junglee (jgplayer400)!B:H";
   }
 
   let subSite = getValueById("sub-site");
