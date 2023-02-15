@@ -24,5 +24,6 @@ networkNamesList = {
   "espn":null,
   "WeQ":null,
   "Outflink":null,
-  "Direct":null
+  "Direct":null,
+  "Google":null
 }
