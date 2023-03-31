@@ -321,14 +321,21 @@ function generateOutput() {
     return;
   }
 
-  if (publisherOrNetwork.toLowerCase() == "facebook" || publisherOrNetwork.toLowerCase() == "snapchat" || publisherOrNetwork.toLowerCase() == "twitter") {
+  if (
+    publisherOrNetwork.toLowerCase() == "facebook" ||
+    publisherOrNetwork.toLowerCase() == "snapchat" ||
+    publisherOrNetwork.toLowerCase() == "twitter"
+  ) {
     gSheetToUpdate = "PaidSocial!B:H";
     paidSocialCampaign = true;
   } else if (budgetCode == "US") {
     gSheetToUpdate = "US activity (INT7Search)!B:H";
-  }  else if(budgetCode == "JUNGLEE"){
+  } else if (budgetCode == "JUNGLEE") {
     gSheetToUpdate = "Junglee (jgplayer400)!B:H";
+  } else if (budgetCode == "OrganicSocial") {
+    gSheetToUpdate = "OrganicSocial (SocialPSC)!B:H";
   }
+  
 
   let subSite = getValueById("sub-site");
   if (!subSite) {
@@ -701,11 +708,12 @@ function fnExcelReport() {
   //console.log("placementTable  "+placementTable.rows[0].cells.item(18).innerHTML);
   let tsDtFrPlacmntNmeNew = [];
   let newPlacementName;
-  console.log(
-    "gapi.auth2.getAuthInstance().isSignedIn.get() " +
-      gapi.auth2.getAuthInstance().isSignedIn.get()
-  );
-  updateSignInStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+  // console.log(
+  //   "gapi.auth2.getAuthInstance().isSignedIn.get() " +
+  //     gapi.auth2.getAuthInstance
+  // );
+  // updateSignInStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+  updateSignInStatus(true, access_token);
 
   if (tbl != null && placementTable != null) {
     for (var i = 1; i < tbl.rows.length; i++) {
@@ -827,66 +835,77 @@ const addOptionTags = (elementId, dimensionArr) => {
 
 //This functioncalls a g.sheet and fetches AMSid which are not assigned to the placements.
 let amsIdArr = [];
+    var client;
+    var access_token;
 
-function initClient() {
-  var API_KEY = "AIzaSyCatCt5LLHwUcyQtVdCwu_F46A4pcmSXkQ"; // TODO: Update placeholder with desired API key.
-
-  var CLIENT_ID =
-    "242856726277-6a9j6geqin7hqmngon9i710rptaq93br.apps.googleusercontent.com"; // TODO: Update placeholder with desired client ID.
-  // TODO: Authorize using one of the following scopes:
-  //   'https://www.googleapis.com/auth/drive'
-  //   'https://www.googleapis.com/auth/drive.file'
-  //   'https://www.googleapis.com/auth/spreadsheets'
-  var SCOPE =
-    "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/dfatrafficking";
-
-  gapi.client
-    .init({
-      apiKey: API_KEY,
-      clientId: CLIENT_ID,
-      scope: SCOPE,
-      discoveryDocs: [
-        "https://sheets.googleapis.com/$discovery/rest?version=v4",
-      ],
-    })
-    .then(function () {
-      gapi.auth2.getAuthInstance().isSignedIn.listen(updateSignInStatus);
-      updateSignInStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-    });
+ function initClient() {
+  if(isSignedIn) {
+  displayNone("signinOnLoad");
+  }
+        client = google.accounts.oauth2.initTokenClient({
+          client_id:
+            "242856726277-6a9j6geqin7hqmngon9i710rptaq93br.apps.googleusercontent.com",
+          scope:
+            "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/dfatrafficking",
+          callback: (tokenResponse) => {
+            access_token = tokenResponse.access_token;
+            if(access_token){
+                updateSignInStatus(access_token);
+            }
+          },
+        }
+        );
+                     
 }
-
+      function getToken() {
+        client.requestAccessToken();
+        console.log("access token received : getToken  "+access_token);
+      }
+      function revokeToken() {
+        google.accounts.oauth2.revoke(access_token, () => {
+          console.log("access token revoked");
+        });
+      }
 function handleClientLoad() {
   gapi.load("client:auth2", initClient);
 }
-
-function updateSignInStatus(isSignedIn) {
-  if (isSignedIn) {
-    //getValues("1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0", gSheetToUpdate, callback);
-    profileName = gapi.auth2
-      .getAuthInstance()
-      .currentUser.get()
-      .getBasicProfile()
-      .getName();
-    document.querySelector("#modalInitial > div.modal-content > p").innerText =
-      "Welcome " +
-      gapi.auth2
-        .getAuthInstance()
-        .currentUser.get()
-        .getBasicProfile()
-        .getName();
-    document.querySelector("#requester").value = gapi.auth2
-      .getAuthInstance()
-      .currentUser.get()
-      .getBasicProfile()
-      .getName();
-    displayBlock("closeModal");
-    displayNone("signinOnLoad");
+let isSignedIn = false;
+function updateSignInStatus(access_token) {
+    let getName;
+    getProfileName(getName);
     justLoadDFAClient();
+    justLoadSheetsClient();
+
+  function getProfileName(profileName) {
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "Bearer " + access_token);
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch("https://www.googleapis.com/oauth2/v3/userinfo", requestOptions)
+      .then((response) => response.text())
+      .then((result) => { console.log((JSON.parse(result))["given_name"]);
+      
+    profileName = (JSON.parse(result))["given_name"]
+    document.querySelector("#modalInitial > div.modal-content > p").innerText =
+      "Welcome " + profileName;
+         document.querySelector("#requester").value = profileName;
+        })
+      .catch((error) => console.log("error", error));
+      isSignedIn = true;
+      return;
   }
+           displayBlock("closeModal");
+           displayNone("signinOnLoad");
+
 }
 
 function handleSignInClick(event) {
-  //gapi.auth2.getAuthInstance().signIn();
+  gapi.auth2.getAuthInstance().signIn();
   gapi.auth2
     .getAuthInstance()
     .signIn()
@@ -1243,11 +1262,24 @@ function justLoadDFAClient() {
     )
     .then(
       function () {
-        console.log("GAPI client loaded for API");
+        console.log("GAPI DFA client loaded for API");
         //getUserProfileIdAndInsertLandingPage();
       },
       function (err) {
-        console.error("Error loading GAPI client for API", err);
+        console.error("Error loading GAPI DFA client for API", err);
+      }
+    );
+}
+function justLoadSheetsClient() {
+  return gapi.client
+    .load("https://sheets.googleapis.com/$discovery/rest?version=v4")
+    .then(
+      function () {
+        console.log("GAPI Sheets client loaded for API");
+        //getUserProfileIdAndInsertLandingPage();
+      },
+      function (err) {
+        console.error("Error loading GAPI Sheets client for API", err);
       }
     );
 }
