@@ -320,12 +320,8 @@ function generateOutput() {
       "Please select a Publisher Network.";
     return;
   }
-
-  if (
-    publisherOrNetwork.toLowerCase() == "facebook" ||
-    publisherOrNetwork.toLowerCase() == "snapchat" ||
-    publisherOrNetwork.toLowerCase() == "twitter"
-  ) {
+  
+  if (budgetCode == "PAIDSOCIAL") {
     gSheetToUpdate = "PaidSocial!B:H";
     paidSocialCampaign = true;
   } else if (budgetCode == "US") {
@@ -654,23 +650,27 @@ function generateOutput() {
         let channelName = "Display";
         if (affiliate_req) {
           channelName = "Affiliates";
+        }else if (budgetCode == "PAIDSOCIAL"){
+          channelName = "PaidSocial";
+        }else if(budgetCode == "JUNGLEE"){
+          channelName = "Junglee";
         }
-        placementTableArray.push(
-          placementName,
-          iOSLandingPage,
-          andLandingPage,
-          dskLandingPage,
-          networkPublisher,
-          channelName,
-          "ft",
-          deliverables,
-          serverCampaignName,
-          buyingMetric,
-          cost,
-          kpi,
-          getValueById("startDate"),
-          getValueById("endDate")
-        );
+          placementTableArray.push(
+            placementName,
+            iOSLandingPage,
+            andLandingPage,
+            dskLandingPage,
+            networkPublisher,
+            channelName,
+            "ft or dcm or both",
+            deliverables,
+            serverCampaignName,
+            buyingMetric,
+            cost,
+            kpi,
+            getValueById("startDate"),
+            getValueById("endDate")
+          );
         placementTableArray.forEach(function (
           tableElementPlTblArr,
           indexplTData
@@ -846,15 +846,14 @@ let amsIdArr = [];
           client_id:
             "242856726277-6a9j6geqin7hqmngon9i710rptaq93br.apps.googleusercontent.com",
           scope:
-            "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/dfatrafficking",
+            "https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/dfatrafficking https://www.googleapis.com/auth/doubleclickbidmanager",
           callback: (tokenResponse) => {
             access_token = tokenResponse.access_token;
-            if(access_token){
-                updateSignInStatus(access_token);
+            if (access_token) {
+              updateSignInStatus(access_token);
             }
           },
-        }
-        );
+        });
                      
 }
       function getToken() {
