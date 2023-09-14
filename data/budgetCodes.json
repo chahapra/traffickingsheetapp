@@ -10,5 +10,10 @@ budgetCodes = {
   "ADDITIONAL": "ADD",
   "BRP002" : "BRP002",
   "MMD" : "MMD",
-  "TACTICAL" : "TACTICAL"
+  "TACTICAL" : "TACTICAL",
+  "VIRTUALREALITY" : "VIRTUALREALITY",
+  "US":"US",
+  "JUNGLEE":"JUNGLEE",
+  "OrganicSocial":"OrganicSocial",
+  "TPP":"TPP"
 }

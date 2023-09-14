@@ -10,5 +10,10 @@ budgets = {
   "ADDITIONAL": null,
   "BRP002" : null,
   "MMD" : null,
-  "TACTICAL": null
+  "TACTICAL": null,
+  "VIRTUALREALITY":null,
+  "US":null,
+  "JUNGLEE":null,
+  "OrganicSocial":null,
+  "TPP":null
 }

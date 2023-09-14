@@ -46,21 +46,24 @@
   <script type="text/javascript" src="data\advertIdsDCM.json"></script>
   <script type="text/javascript" src="data\siteIdsDCM.json"></script>
   <script type="text/javascript" src="data\targetAudienceList.json"></script>
-
-  <title>SUBMIT TRAFFICKING REQUEST</title>
+  <script src="https://accounts.google.com/gsi/client" 
+    onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()"
+    async defer></script>
+    <title>SUBMIT TRAFFICKING REQUEST</title>
 </head>
 
 <body>
+  
   <nav>
     <div class="nav-wrapper">
-      <a href="" class="brand-logo">Online Trafficking Request</a>
+      <a href="" class="brand-logo"><img src="images\pokerstars.png" alt="Girl in a jacket" width="25" height="25">
+        Online Trafficking Request</a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a href="ARS.html">Audience Request</a></li>
         <li><a href="vendordetails.html">Vendor Details</a></li>
       </ul>
     </div>
   </nav>
-
   <!-- Sign In Modal Trigger -->
   <a id="signInModal" style="display:none" class="waves-effect waves-light btn modal-trigger signInModal" href="#modalInitial">Modal</a>
   <!-- Modal Structure -->
@@ -71,7 +74,7 @@
       <p>Please click the "signin" button below to login using your work google account credentials. Thanks!</p>
     </div>
     <div class="modal-footer">
-      <a id="signinOnLoad" class="waves-effect waves-light btn" onclick="handleSignInClick()">SIGN IN</a>
+      <a id="signinOnLoad" class="waves-effect waves-light btn" onclick="getToken()">SIGN IN</a>
     </div>
   </div>
   <!-- <blockquote>TRAFFICKING REQUEST FORM</blockquote> -->
@@ -179,7 +182,7 @@
             <input type="text" id="audience" value="All" style="text-transform: uppercase" class="pname targetAudienceList tooltipped" data-position="right" data-tooltip="Start entering an platform name.">
           </div>
           <!--VERTICAL/Sport/GameType-->
-          <h6>TARGET VERTICAL</h6>
+          <h6>TARGET VERTICAL/FORMAT</h6>
           <div class="row input-field col s12">
             <i class="material-icons prefix">arrow_upward</i>
             <!-- <input id="vertical" placeholder="Please enter target vertical" maxlength="10" value="ALL" style="text-transform: uppercase" type="text" class="pname validate tooltipped" data-position="right" data-tooltip="Max character limit of 10"> -->
@@ -187,6 +190,8 @@
               <option value="Poker">Poker</option>
               <option value="Casino">Casino</option>
               <option value="Sports">Sports</option>
+              <option value="Skip">Skip</option>
+              <option value="NonSkip">Non-Skip</option>
               <option value="All">All</option>
             </select>
           </div>
@@ -413,9 +418,6 @@
 
   </div>
 
-  </script>
-  <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()" onreadystatechange="if (this.readyState === 'complete') this.onload()">
-  </script>
 
 </body>
 
