@@ -970,8 +970,8 @@ function batchUpdateValues(
   // 1. Retrieve the existing values from "Sheet1" in the Spreadsheet using the method of values.get in Sheets API.
   gapi.client.sheets.spreadsheets.values
     .get({
-      spreadsheetId: spreadsheetId,
-      range: range,
+      "spreadsheetId": spreadsheetId,
+      "range": range,
     })
     .then(
       function (response) {
@@ -1014,17 +1014,17 @@ function batchUpdateValues(
         // 3. Put the updated values to "Sheet1" using your script.
         var data = [];
         data.push({
-          range: range,
-          values: values,
+          "range": range,
+          "values": values,
         });
         var body = {
-          data: data,
-          valueInputOption: valueInputOption,
+          "data": data,
+          "valueInputOption": valueInputOption,
         };
         gapi.client.sheets.spreadsheets.values
           .batchUpdate({
-            spreadsheetId: spreadsheetId,
-            resource: body,
+            "spreadsheetId": spreadsheetId,
+            "resource": body,
           })
           .then((response) => {
             var result = response.result;
@@ -1047,8 +1047,8 @@ function getValues(spreadsheetId, range, fnExcelReport) {
   // [START sheets_get_values]
   gapi.client.sheets.spreadsheets.values
     .get({
-      spreadsheetId: spreadsheetId,
-      range: range,
+      "spreadsheetId": spreadsheetId,
+      "range": range,
     })
     .then((response) => {
       var result = response.result;
@@ -1072,7 +1072,7 @@ function getValues(spreadsheetId, range, fnExcelReport) {
 function loadDFAClient() {
   return gapi.client
     .load(
-      "https://content.googleapis.com/discovery/v1/apis/dfareporting/v3.5/rest"
+      "https://dfareporting.googleapis.com/$discovery/rest?version=v4"
     )
     .then(
       function () {
