@@ -36,7 +36,7 @@ let collectAmsData = [];
 let updatingValues;
 let updatedAMSArr;
 let tsTBE;
-let gSheetToUpdate = "Display!B:H";
+let gSheetToUpdate = "Display - INTDisMob!B:H";
 let paidSocialCampaign;
 let kpi;
 let buyingMetric;
@@ -322,7 +322,7 @@ function generateOutput() {
   }
   
   if (budgetCode == "PAIDSOCIAL") {
-    gSheetToUpdate = "PaidSocial!B:H";
+    gSheetToUpdate = "PaidSocial -  INTfbUK!B:H";
     paidSocialCampaign = true;
   } else if (budgetCode == "US") {
     gSheetToUpdate = "US activity (INT7Search)!B:H";
