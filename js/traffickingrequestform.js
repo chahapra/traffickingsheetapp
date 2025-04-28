@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 let mobileBannerSizes = [
   "120x60",
   "120x600",
@@ -45,23 +46,22 @@ let affiliate_req;
 let btag;
 
 function saveUsingLocalStorage() {
-  window.localStorage.setItem("kpi", kpi);
-  window.localStorage.setItem("buyingMetric", buyingMetric);
-  window.localStorage.setItem("date_range", date_range);
-  let tstable = document.getElementById("tsTable");
-  let tstablelength = tstable.rows.length;
+  localStorage.setItem("kpi", kpi);
+  localStorage.setItem("buyingMetric", buyingMetric);
+  localStorage.setItem("date_range", date_range);
+  const tstable = document.getElementById("tsTable");
+  const tstablelength = tstable.rows.length;
   localStorage.setItem("tstablelength", tstablelength);
-  for (var i = 1; i < tstablelength; i++) {
-    window.localStorage.setItem("ts" + i, tstable.rows[i].outerHTML);
+  for (let i = 1; i < tstablelength; i++) {
+    localStorage.setItem(`ts${i}`, tstable.rows[i].outerHTML);
   }
 
-  let placementstable = document.getElementById("placementTable");
-  let placementtablelength = placementstable.rows.length;
+  const placementstable = document.getElementById("placementTable");
+  const placementtablelength = placementstable.rows.length;
   localStorage.setItem("placementtablelength", placementtablelength);
-  for (var i = 1; i < placementtablelength; i++) {
-    window.localStorage.setItem("pl" + i, placementstable.rows[i].outerHTML);
-  }
-}
+  for (let i = 1; i < placementtablelength; i++) {
+    localStorage.setItem(`pl${i}`, placementstable.rows[i].outerHTML);
+  }}
 
 function getSavedLocalStorage() {
   addandremovebuttons();
@@ -69,21 +69,20 @@ function getSavedLocalStorage() {
   generateCard();
   displayBlock("modal-outputSection");
   displayBlock("tsTable");
-  let tssavedrows = parseInt(window.localStorage.getItem("tstablelength"));
-  for (var i = 1; i < tssavedrows; i++) {
+  const tssavedrows = parseInt(localStorage.getItem("tstablelength"));
+  for (let i = 1; i < tssavedrows; i++) {
     buttonrm.setAttribute("onclick", "removeRow(this)");
     buttoncpy.setAttribute("onclick", "cpyRow(this)");
-    $("#tsTable").append(window.localStorage.getItem("ts" + i));
+    $("#tsTable").append(localStorage.getItem(`ts${i}`));
   }
-  let pltsavedrows = parseInt(
-    window.localStorage.getItem("placementtablelength")
-  );
-  for (var i = 1; i < pltsavedrows; i++) {
-    $("#placementTable").append(window.localStorage.getItem("pl" + i));
+  const pltsavedrows = parseInt(localStorage.getItem("placementtablelength"));
+  for (let i = 1; i < pltsavedrows; i++) {
+    $("#placementTable").append(localStorage.getItem(`pl${i}`));
   }
   checkTsTableLength();
-  window.localStorage.clear();
+  localStorage.clear();
 }
+
 
 document.addEventListener("DOMContentLoaded", function () {
   document.querySelector(".saveoutput").addEventListener("click", (event) => {
@@ -101,10 +100,10 @@ document.addEventListener("DOMContentLoaded", function () {
     displayNone("check_circle");
   });
   document
-    .querySelector(".networkNamesList")
-    .addEventListener("change", (event) => {
-      let a = getValueByClassName("agencyNamesList");
-      let b = getValueByClassName("networkNamesList");
+    .querySelector(".networkNamesList").addEventListener("change", () => {
+      const a = getValueByClassName("agencyNamesList");
+      const b = getValueByClassName("networkNamesList");
+      
       if (a === "TSG" && b === "DV360") {
         console.log(
           "getElementById('publisherOrNetwork')   " +
@@ -134,16 +133,16 @@ document.addEventListener("DOMContentLoaded", function () {
   let instancesSelect = M.FormSelect.init(elemsSelect, null);
   const arrayofDataObjs = {
     brands: brandImages,
-    countries: countriesLL,
+    countries: Object.values(countriesLL),
     budgets: budgets,
     kpis: kpis,
     buyingMetrics: buyingMetrics,
-    agencyNamesList: agencyNamesList,
-    networkNamesList: networkNamesList,
+    agencyNamesList: Object.values(agencyNamesList),
+    networkNamesList: Object.values(networkNamesList),
     dimensionsArr: dimensionsArr,
     targetAudienceList: targetAudienceList,
   };
-  var arrSize = Object.keys(arrayofDataObjs).length;
+  let arrSize = Object.keys(arrayofDataObjs).length;
   var keys = Object.keys(arrayofDataObjs);
   var values = Object.values(arrayofDataObjs);
   for (i = 0; i <= arrSize; i++) {
@@ -175,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .querySelector(".adDimensions")
     .addEventListener("change", (event) => {
-      let adDimensions = getElementById("adDimensions");
+      const adDimensions = getElementById("adDimensions");
       switch (adDimensions.value) {
         case "BAN":
           displayBlock("bannerSizes");
@@ -197,9 +196,9 @@ document.addEventListener("DOMContentLoaded", function () {
   displayNone("exptToExcel");
   displayNone("nonTableSection");
   document.querySelector(".platforms").addEventListener("change", (event) => {
-    let platforms = [];
+    const platforms = [];
     $("#platforms option:selected").each(function (i, selected) {
-      platforms[i] = $(selected).attr("value");
+      platforms[i] = selected.value;
     });
     if (platforms.length == 0) {
       displayNone("andLp");
@@ -214,7 +213,7 @@ document.addEventListener("DOMContentLoaded", function () {
       displayNone("ctvlpIcon");
     }
     if (platforms.includes("ANDLP")) {
-      displayBlock("andLp");
+        displayBlock("andLp");
       displayBlock("andlpIcon");
     } else if (!platforms.includes("ANDLP")) {
       displayNone("andLp");
@@ -270,7 +269,7 @@ function generateOutput() {
   displayBlock("check_circle");
   displayNone("exptToExcel");
   displayNone("toCreateJiraTkt");
-  //let yourName = getValueById('requester');
+
   let brand = getValueByClassName("brands");
   if (!brand) {
     $("#modal-trigger")[0].click();
@@ -285,7 +284,7 @@ function generateOutput() {
   }
   let platforms = [];
   $("#platforms option:selected").each(function (i, selected) {
-    platforms[i] = $(selected).attr("value");
+    platforms[i] = selected.value;
   });
   let campaignName = getValueById("campaignName");
   if (!campaignName) {
@@ -357,10 +356,10 @@ function generateOutput() {
   let offer = getValueById("offer");
   let targeting = [];
   $("#targeting option:selected").each(function (i, selected) {
-    targeting[i] = $(selected).attr("value");
+    targeting[i] = selected.value;
   });
   let subTargeting = getValueById("subTargeting");
-  let cost = getValueById("cost");
+  const cost = getValueById("cost");
   let regex =
     /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
   let andLpLc;
@@ -370,7 +369,7 @@ function generateOutput() {
   let disLpLc;
   let ctvLpLc;
   if (platforms.toString().includes("LP")) {
-    let andLp = getElementById("andLp").value;
+    const andLp = getElementById("andLp").value;
     if (platforms.toString() == "ANDLP") {
       if (andLp) {
         andLpLc = andLp;
@@ -385,7 +384,7 @@ function generateOutput() {
         return;
       }
     }
-    let iosLp = getElementById("iosLp").value;
+    const iosLp = getElementById("iosLp").value;
     if (platforms.toString() == "IOSLP") {
       if (iosLp) {
         iosLpLc = iosLp;
@@ -400,7 +399,7 @@ function generateOutput() {
         return;
       }
     }
-    let dskLp = getElementById("dskLp").value;
+    const dskLp = getElementById("dskLp").value;
     if (platforms.toString() == "DSKLP") {
       if (dskLp) {
         dskLpLc = dskLp;
@@ -415,7 +414,7 @@ function generateOutput() {
         return;
       }
     }
-    let mobLp = getElementById("mobLp").value;
+    const mobLp = getElementById("mobLp").value;
     if (platforms.toString() == "MOBLP") {
       if (mobLp) {
         mobLpLc = mobLp.toLowerCase();
@@ -430,7 +429,7 @@ function generateOutput() {
         return;
       }
     }
-    let disLp = getElementById("disLp").value;
+    const disLp = getElementById("disLp").value;
     if (platforms.toString() == "DISLP") {
       if (disLp) {
         disLpLc = disLp.toLowerCase();
@@ -445,7 +444,7 @@ function generateOutput() {
         return;
       }
     }
-    let ctvLp = getElementById("ctvLp").value;
+    const ctvLp = getElementById("ctvLp").value;
     if (platforms.toString() == "CTVLP") {
       if (ctvLp) {
         ctvLpLc = ctvLp.toLowerCase();
@@ -467,34 +466,24 @@ function generateOutput() {
   let adDimensions = [];
   $("#adDimensions option:selected").each(function (i, selected) {
     adDimensions[i] = $(selected).attr("value");
-  });
+  });const sd = getElementById("deliverables");
+  const deliverables = sd.options[sd.selectedIndex].text;
+  
   let adDimensionsSelected = [];
-  let sd = getElementById("deliverables");
-  let deliverables = sd.options[sd.selectedIndex].text;
+
   console.log("Develirable Selected   " + deliverables);
   if (adDimensions == "1x1") {
     adDimensionsSelected = ["1x1"];
   } else if (adDimensions == "BAN") {
-    let selectedChipNodesDmsns = document
+    adDimensionsSelected = document
       .querySelector(".bannerSizes")
-      .innerText.split("close");
-    selectedChipNodesDmsns.pop();
-    for (var i = 0; i < selectedChipNodesDmsns.length; i++) {
-      adDimensionsSelected.push(selectedChipNodesDmsns[i]);
-    }
-    //  deliverables = "Javascript Tag";
+      .innerText.split("close").filter(item => item !== '');
   } else if (adDimensions == "VOD") {
-    let selectedChipNodesDmsns = document
+    adDimensionsSelected = document
       .querySelector(".videoLengths")
-      .innerText.split("close");
-    selectedChipNodesDmsns.pop();
-    for (var i = 0; i < selectedChipNodesDmsns.length; i++) {
-      adDimensionsSelected.push(
-        selectedChipNodesDmsns[i].replace("↵close", "")
-      );
-    }
-    //  deliverables = "VAST/VPAID Tag";
-  }
+      .innerText.split("close").filter(item => item !== '').map(item => item.replace("↵", ''));
+  });
+  
   tsTBE = getElementById("tsTable");
   let placementTBE = getElementById("placementTable");
   if (openOutputSectionModal) {
@@ -503,11 +492,10 @@ function generateOutput() {
   }
   targeting.forEach(function (targetingSelected, indexTargetingSelected) {
     adDimensionsSelected.forEach(function (
-      subAdDimensionsSelected,
-      indexSubAdDimnsionSelected
+      subAdDimensionsSelected
     ) {
       platforms.forEach(function (platformSelected, indexPlatforms) {
-        let landingPage = "AppStore";
+        let landingPage = "AppStore";        
         let lowerCasePlatformsSelected;
         if (platformSelected.search("LP") > 1) {
           lowerCasePlatformsSelected =
@@ -526,7 +514,7 @@ function generateOutput() {
         let createTr = document.createElement("tr");
         let createTrPlcmnt = document.createElement("tr");
         tsTBE.appendChild(createTr);
-        placementTBE.appendChild(createTrPlcmnt);
+        placementTBE.appendChild(createTrPlcmnt);        
         let truncatedPlatform = platformSelected.substr(0, 3);
         let iOSLandingPage = "";
         let andLandingPage = "";
@@ -556,8 +544,6 @@ function generateOutput() {
           dskLandingPage = landingPage;
           console.log("dskLandingPage " + dskLandingPage);
         }
-
-        let chosenDimension;
 
         //add and remove buttons added in the below function
         addandremovebuttons();
@@ -594,11 +580,11 @@ function generateOutput() {
           buttonrm.setAttribute("onclick", "removeRow(this)");
           buttoncpy.setAttribute("onclick", "cpyRow(this)");
           createTr.appendChild(buttonrm);
-          createTr.appendChild(buttoncpy);
+          createTr.appendChild(buttoncpy);          
         });
         let tsDtFrPlacmntNme = new Array();
         if (truncatedPlatform == "Desktop") {
-          truncatedPlatform = "DESK";
+            truncatedPlatform = "DESK";
         } else if (truncatedPlatform == "Android") {
           truncatedPlatform = "AND";
         }
@@ -672,16 +658,16 @@ function generateOutput() {
             getValueById("endDate")
           );
         placementTableArray.forEach(function (
-          tableElementPlTblArr,
-          indexplTData
+          tableElementPlTblArr
         ) {
-          let createTdPlTb = document.createElement("td");
+          const createTdPlTb = document.createElement("td");
           createTdPlTb.innerHTML = tableElementPlTblArr;
-          createTrPlcmnt.appendChild(createTdPlTb);
+          createTrPlcmnt.appendChild(createTdPlTb);          
         });
       });
     });
   });
+  saveUsingLocalStorage();
 
   checkTsTableLength();
 }
@@ -700,10 +686,10 @@ function getvaluesandexport() {
 }
 
 function fnExcelReport() {
-  var n = new Date().toLocaleDateString();
-  var d = n.split("/")[2] + n.split("/")[1] + n.split("/")[0];
-  let tsTable = getElementById("tsTable");
-  var tbl = document.getElementById("tsTable");
+  const n = new Date().toLocaleDateString();
+  const d = `${n.split("/")[2]}${n.split("/")[1]}${n.split("/")[0]}`;
+  const tsTable = getElementById("tsTable");
+  const tbl = document.getElementById("tsTable");
   let placementTable = getElementById("placementTable");
   //console.log("placementTable  "+placementTable.rows[0].cells.item(18).innerHTML);
   let tsDtFrPlacmntNmeNew = [];
@@ -716,10 +702,10 @@ function fnExcelReport() {
   updateSignInStatus(true, access_token);
 
   if (tbl != null && placementTable != null) {
-    for (var i = 1; i < tbl.rows.length; i++) {
-      let tsDtInnerFrPlacmntNmeNew = [];
-      let brandNew;
-      for (var j = 0; j <= 15; j++) {
+    for (let i = 1; i < tbl.rows.length; i++) {
+      const tsDtInnerFrPlacmntNmeNew = [];
+      
+      for (let j = 0; j <= 15; j++) {
         tsDtInnerFrPlacmntNmeNew.push(tbl.rows[i].cells.item(j).innerHTML);
         //console.log("row item    " + j + "  " + tbl.rows[i].cells.item(j).innerHTML);
       }
@@ -792,12 +778,12 @@ function fnExcelReport() {
   batchUpdateValues(
     "1-n2IWBQmrO2wSlR3b3W8bolNxrBRwL2gkPJeaLz79G0",
     gSheetToUpdate,
-    "USER_ENTERED",
+    "USER_ENTERED",    
     updatingValues,
     callback
   );
 }
-
+// eslint-disable-next-line no-unused-vars
 //9374
 
 //function to display an element
@@ -837,7 +823,7 @@ const addOptionTags = (elementId, dimensionArr) => {
 let amsIdArr = [];
     var client;
     var access_token;
-
+// eslint-disable-next-line no-unused-vars
  function initClient() {
   if(isSignedIn) {
   displayNone("signinOnLoad");
@@ -856,11 +842,13 @@ let amsIdArr = [];
         });
                      
 }
+// eslint-disable-next-line no-unused-vars
       function getToken() {
         client.requestAccessToken();
         console.log("access token received : getToken  "+access_token);
       }
-      function revokeToken() {
+      // eslint-disable-next-line no-unused-vars
+    function revokeToken() {
         google.accounts.oauth2.revoke(access_token, () => {
           console.log("access token revoked");
         });
@@ -898,7 +886,7 @@ function updateSignInStatus(access_token) {
       isSignedIn = true;
       return;
   }
-           displayBlock("closeModal");
+           displayBlock("closeModal");           
            displayNone("signinOnLoad");
 
 }
@@ -934,11 +922,11 @@ function handleSignOutClick(event) {
   gapi.auth2.getAuthInstance().signOut();
 }
 
-function callback(response) {
+function callback() {
   // console.log("called back   " + response.result);
 }
 
-function callbackAfterUpdate(response) {
+function callbackAfterUpdate() {
   // console.log("called back   " + response.result);
   location.reload();
 }
@@ -976,9 +964,10 @@ function batchUpdateValues(
     .then(
       function (response) {
         // 2. Create the updated values using the retrieved values.
-        let values = response.result.values;
+        let {values} = response.result;
         const obj = values.reduce(
-          (o, [b], i) =>
+          (o, [b], i) =>{
+
             Object.assign(o, {
               [b]: i,
             }),
@@ -1011,7 +1000,7 @@ function batchUpdateValues(
         }, []);
 
         values = values.concat(addValues);
-        // 3. Put the updated values to "Sheet1" using your script.
+        // 3. Put the updated values to "Sheet1" using your script.        
         var data = [];
         data.push({
           "range": range,
@@ -1042,13 +1031,14 @@ function batchUpdateValues(
     );
   localStorage.clear();
 }
-
+// eslint-disable-next-line no-unused-vars
 function getValues(spreadsheetId, range, fnExcelReport) {
   // [START sheets_get_values]
   gapi.client.sheets.spreadsheets.values
     .get({
       "spreadsheetId": spreadsheetId,
       "range": range,
+      
     })
     .then((response) => {
       var result = response.result;
@@ -1068,7 +1058,7 @@ function getValues(spreadsheetId, range, fnExcelReport) {
   // [END sheets_get_values]
 }
 
-//loadDFAClient & Call to create Campaign
+//loadDFAClient & Call to create Campaign 
 function loadDFAClient() {
   return gapi.client
     .load(
@@ -1085,7 +1075,7 @@ function loadDFAClient() {
     );
 }
 // Make sure the client is loaded and sign-in is complete before calling this method.
-let profileId;
+let profileId = "";
 let landingPageId;
 let startDate = new Date().toISOString().slice(0, 10);
 
@@ -1101,6 +1091,7 @@ function createCampaignOnDCM() {
         // Handle the results here (response.result has the parsed body).
         if (
           response.result.campaigns.filter(
+            // eslint-disable-next-line eqeqeq
             (p) => p.name == serverCampaignName + " FT TRACKING"
           )[0]
         ) {
@@ -1157,7 +1148,7 @@ function getUserProfileIdAndInsertLandingPage() {
   );
 }
 
-// get DCM landing Page ID
+// get DCM landing Page ID 
 
 function getLandingePageId() {
   console.log(" Profile Id in getLandingPagId  " + profileId);
@@ -1188,7 +1179,7 @@ function getLandingePageId() {
     );
 }
 
-// function to create placement names
+// function to create placement names 
 let siteId;
 
 function createPlacements() {
@@ -1230,13 +1221,13 @@ function createPlacements() {
 function removeRow(oButton) {
   var empTab = document.getElementById("tsTable");
   empTab.deleteRow(oButton.parentNode.rowIndex); // buttton -> td -> tr
-  var plcmntTab = document.getElementById("placementTable");
+  const plcmntTab = document.getElementById("placementTable");
   plcmntTab.deleteRow(oButton.parentNode.rowIndex); // buttton -> td -> tr
   checkTsTableLength();
 }
 
 function cpyRow(oButton) {
-  var empTab = document.getElementById("tsTable");
+  const empTab = document.getElementById("tsTable");
   var tsRow = oButton.parentNode;
   var newRow = tsRow.cloneNode(true);
   empTab.appendChild(newRow);
@@ -1247,7 +1238,7 @@ function cpyRow(oButton) {
 }
 
 function checkTsTableLength() {
-  var x = document.getElementById("tsTable").rows.length - 1;
+  const x = document.getElementById("tsTable").rows.length - 1;
   console.log("x " + x);
   document.getElementById("showTableRows").innerHTML = x + " placements";
   return;
@@ -1269,6 +1260,7 @@ function justLoadDFAClient() {
       }
     );
 }
+// eslint-disable-next-line no-unused-vars
 function justLoadSheetsClient() {
   return gapi.client
     .load("https://sheets.googleapis.com/$discovery/rest?version=v4")
@@ -1286,7 +1278,7 @@ function justLoadSheetsClient() {
 function generateCard() {
   kpi = window.localStorage.getItem("kpi");
   buyingMetric = window.localStorage.getItem("buyingMetric");
-  date_range = window.localStorage.getItem("date_range");
+  date_range = localStorage.getItem("date_range");
   yourName = document.querySelector("#requester").value;
   if (kpi === null) {
     kpi = getValueByClassName("kpis");
@@ -1316,7 +1308,7 @@ function addandremovebuttons() {
   buttonrm.setAttribute("class", "waves-effect waves-light btn-small");
   buttonrm.appendChild(ibtnRemove);
 
-  ibtncpy = document.createElement("i");
+  ibtncpy = document.createElement("i");  
   ibtncpy.setAttribute("class", "material-icons");
   ibtncpy.innerHTML = "add";
 
