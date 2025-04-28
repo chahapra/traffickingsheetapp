@@ -472,7 +472,7 @@ function generateOutput() {
     adDimensionsSelected = document
       .querySelector(".videoLengths")
       .innerText.split("close").filter(item => item !== '').map(item => item.replace("↵", ''));
-  });
+  }
   
   tsTBE = getElementById("tsTable");
   let placementTBE = getElementById("placementTable");
@@ -787,6 +787,10 @@ function fnExcelReport() {
 
 
       fetch(domoWebhookUrl, {
+        headers: {
+          "X-Hub-Signature": "z02QSEPgkjBh92z4KIZwBFy64x7Fg0prPuW45BXs4woAibZkz6rWDJuhh37424cI",
+          "Content-Type":"application/json"
+        },
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
