@@ -872,6 +872,9 @@ let amsIdArr = [];
 // eslint-disable-next-line no-unused-vars
       function getToken() {
         client.requestAccessToken();
+        if (!client.requestAccessToken) {
+          return;
+        }
         console.log("access token received : getToken  "+access_token);
       }
       // eslint-disable-next-line no-unused-vars
