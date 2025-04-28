@@ -786,30 +786,8 @@ function fnExcelReport() {
   }, []);
 
 
-      fetch(domoWebhookUrl, {
-        headers: {
-          "X-Hub-Signature": "z02QSEPgkjBh92z4KIZwBFy64x7Fg0prPuW45BXs4woAibZkz6rWDJuhh37424cI",
-          "Content-Type":"application/json"
-        },
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatingValues)
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Success:', data);
-        loadDFAClient(); 
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });}
+      updateDomoData(updatingValues);
+      loadDFAClient();}
 // eslint-disable-next-line no-unused-vars
 //9374
 
@@ -871,14 +849,40 @@ let amsIdArr = [];
 }
 // eslint-disable-next-line no-unused-vars
       function getToken() {
-        client.requestAccessToken();
-        if (!client.requestAccessToken) {
+        if (!client || !client.requestAccessToken) {
           return;
         }
+        client.requestAccessToken();
+        
         console.log("access token received : getToken  "+access_token);
       }
       // eslint-disable-next-line no-unused-vars
     function revokeToken() {
+        // eslint-disable-next-line no-undef
+        google.accounts.oauth2.revoke(access_token, () => {
+          console.log("access token revoked");
+        });
+      }
+
+function updateDomoData(data) {
+  fetch(domoWebhookUrl, {
+    headers: {
+      "X-Hub-Signature": "z02QSEPgkjBh92z4KIZwBFy64x7Fg0prPuW45BXs4woAibZkz6rWDJuhh37424cI",
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Success from domo:", data);
+    })
+    .catch((error) => {
+      console.error("Error from domo:", error);
+    });
         google.accounts.oauth2.revoke(access_token, () => {
           console.log("access token revoked");
         });
